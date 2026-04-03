@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Standing Instructions - Fineract</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>body{font-family:'Inter',sans-serif}</style>
+</head>
+<body class="bg-gray-50 flex h-screen overflow-hidden">
+  <aside class="w-64 bg-white border-r border-gray-100 flex flex-col flex-shrink-0">
+    <div class="h-16 flex items-center px-6 border-b border-gray-100">
+      <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">F</div>
+      <span class="ml-3 font-semibold text-gray-900">Fineract</span>
+    </div>
+    <nav class="flex-1 py-4 px-3 space-y-1 text-sm">
+      <a href="#" class="flex items-center px-3 py-2 rounded-lg text-gray-500 hover:bg-gray-50">Dashboard</a>
+      <a href="#" class="flex items-center px-3 py-2 rounded-lg text-gray-500 hover:bg-gray-50">Clients</a>
+      <a href="#" class="flex items-center px-3 py-2 rounded-lg text-gray-500 hover:bg-gray-50">Accounting</a>
+      <a href="#" class="flex items-center px-3 py-2 rounded-lg bg-blue-50 text-blue-600 font-medium">Organisation</a>
+      <a href="#" class="flex items-center px-3 py-2 rounded-lg text-gray-500 hover:bg-gray-50">System</a>
+      <a href="#" class="flex items-center px-3 py-2 rounded-lg text-gray-500 hover:bg-gray-50">Products</a>
+    </nav>
+    <div class="p-4 border-t border-gray-100">
+      <div class="flex items-center">
+        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-medium text-xs">AW</div>
+        <div class="ml-3"><p class="text-sm font-medium text-gray-900">Amina Wanjiku</p><p class="text-xs text-gray-500">Westlands Branch</p></div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="flex-1 flex flex-col overflow-hidden">
+    <header class="sticky top-0 z-10 h-16 bg-white border-b border-gray-100 flex items-center justify-between px-8">
+      <div>
+        <h1 class="text-lg font-semibold text-gray-900">Standing Instructions</h1>
+        <p class="text-xs text-gray-500">Organisation &gt; Standing Instructions</p>
+      </div>
+      <div class="flex items-center space-x-4">
+        <button class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-xl hover:bg-blue-700 transition">+ Create Instruction</button>
+        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-medium text-xs">AW</div>
+      </div>
+    </header>
+
+    <main class="flex-1 overflow-y-auto p-8">
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+          <input type="text" placeholder="Search instructions..." class="rounded-xl border border-gray-200 px-4 py-2 text-sm w-72 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+          <div class="flex items-center space-x-2">
+            <select class="rounded-xl border border-gray-200 px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+              <option>All Statuses</option><option>Active</option><option>Paused</option><option>Disabled</option>
+            </select>
+            <span class="text-xs text-gray-500">5 instructions</span>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-gray-100">
+                <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">From Client</th>
+                <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">From Account</th>
+                <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">To Client</th>
+                <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">To Account</th>
+                <th class="text-right px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Amount (KES)</th>
+                <th class="text-center px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Frequency</th>
+                <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Next Run</th>
+                <th class="text-center px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-50">
+              <tr class="hover:bg-blue-50/30 transition">
+                <td class="px-6 py-4 font-medium text-blue-600">SI-001</td>
+                <td class="px-6 py-4 text-gray-900">Grace Muthoni</td>
+                <td class="px-6 py-4 text-gray-600">SAV-10234</td>
+                <td class="px-6 py-4 text-gray-900">Grace Muthoni</td>
+                <td class="px-6 py-4 text-gray-600">LN-00234</td>
+                <td class="px-6 py-4 text-right font-medium text-gray-900">5,200</td>
+                <td class="px-6 py-4 text-center text-gray-600">Monthly</td>
+                <td class="px-6 py-4 text-gray-600">01 Apr 2026</td>
+                <td class="px-6 py-4 text-center"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">Active</span></td>
+              </tr>
+              <tr class="hover:bg-blue-50/30 transition">
+                <td class="px-6 py-4 font-medium text-blue-600">SI-002</td>
+                <td class="px-6 py-4 text-gray-900">Peter Kamau</td>
+                <td class="px-6 py-4 text-gray-600">SAV-10301</td>
+                <td class="px-6 py-4 text-gray-900">Peter Kamau</td>
+                <td class="px-6 py-4 text-gray-600">LN-00235</td>
+                <td class="px-6 py-4 text-right font-medium text-gray-900">3,800</td>
+                <td class="px-6 py-4 text-center text-gray-600">Monthly</td>
+                <td class="px-6 py-4 text-gray-600">01 Apr 2026</td>
+                <td class="px-6 py-4 text-center"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">Active</span></td>
+              </tr>
+              <tr class="hover:bg-blue-50/30 transition">
+                <td class="px-6 py-4 font-medium text-blue-600">SI-003</td>
+                <td class="px-6 py-4 text-gray-900">David Omondi</td>
+                <td class="px-6 py-4 text-gray-600">SAV-10455</td>
+                <td class="px-6 py-4 text-gray-900">Sarah Njeri</td>
+                <td class="px-6 py-4 text-gray-600">SAV-10520</td>
+                <td class="px-6 py-4 text-right font-medium text-gray-900">10,000</td>
+                <td class="px-6 py-4 text-center text-gray-600">Weekly</td>
+                <td class="px-6 py-4 text-gray-600">02 Apr 2026</td>
+                <td class="px-6 py-4 text-center"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700">Paused</span></td>
+              </tr>
+              <tr class="hover:bg-blue-50/30 transition">
+                <td class="px-6 py-4 font-medium text-blue-600">SI-004</td>
+                <td class="px-6 py-4 text-gray-900">Lucy Wambui</td>
+                <td class="px-6 py-4 text-gray-600">SAV-10178</td>
+                <td class="px-6 py-4 text-gray-900">Lucy Wambui</td>
+                <td class="px-6 py-4 text-gray-600">FD-00045</td>
+                <td class="px-6 py-4 text-right font-medium text-gray-900">15,000</td>
+                <td class="px-6 py-4 text-center text-gray-600">Monthly</td>
+                <td class="px-6 py-4 text-gray-600">05 Apr 2026</td>
+                <td class="px-6 py-4 text-center"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">Active</span></td>
+              </tr>
+              <tr class="hover:bg-blue-50/30 transition">
+                <td class="px-6 py-4 font-medium text-blue-600">SI-005</td>
+                <td class="px-6 py-4 text-gray-900">James Ochieng</td>
+                <td class="px-6 py-4 text-gray-600">SAV-10092</td>
+                <td class="px-6 py-4 text-gray-900">James Ochieng</td>
+                <td class="px-6 py-4 text-gray-600">LN-00410</td>
+                <td class="px-6 py-4 text-right font-medium text-gray-900">7,500</td>
+                <td class="px-6 py-4 text-center text-gray-600">Bi-Weekly</td>
+                <td class="px-6 py-4 text-gray-600">--</td>
+                <td class="px-6 py-4 text-center"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700">Disabled</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

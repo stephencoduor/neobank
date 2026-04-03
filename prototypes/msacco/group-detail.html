@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nguzo Women - Group Detail - Fineract SACCO</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>body { font-family: 'Inter', sans-serif; }</style>
+</head>
+<body class="bg-gray-50 min-h-screen flex">
+
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white border-r border-gray-100 flex flex-col min-h-screen fixed left-0 top-0 z-30">
+    <div class="h-16 flex items-center px-6 border-b border-gray-100">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+          <span class="text-white font-bold text-sm">F</span>
+        </div>
+        <span class="font-semibold text-gray-900 text-lg">Fineract</span>
+      </div>
+    </div>
+    <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+      <a href="#" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 rounded-lg hover:bg-gray-50">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0h4"/></svg>
+        Dashboard
+      </a>
+      <a href="#" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 rounded-lg hover:bg-gray-50">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+        Clients
+      </a>
+      <a href="groups-list.html" class="flex items-center gap-3 px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        Groups
+      </a>
+      <a href="centers-list.html" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 rounded-lg hover:bg-gray-50">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+        Centers
+      </a>
+      <a href="#" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 rounded-lg hover:bg-gray-50">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2v16z"/></svg>
+        Loans
+      </a>
+      <a href="fixed-deposits-list.html" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 rounded-lg hover:bg-gray-50">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2z"/></svg>
+        Savings
+      </a>
+      <a href="#" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 rounded-lg hover:bg-gray-50">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        Accounting
+      </a>
+      <a href="products-list.html" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 rounded-lg hover:bg-gray-50">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        Admin
+      </a>
+    </nav>
+    <div class="px-4 py-3 border-t border-gray-100">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+          <span class="text-blue-600 font-medium text-xs">AW</span>
+        </div>
+        <div>
+          <p class="text-sm font-medium text-gray-900">Amina Wanjiku</p>
+          <p class="text-xs text-gray-500">Westlands Branch</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="flex-1 ml-64">
+    <!-- Header -->
+    <header class="sticky top-0 z-20 h-16 bg-white border-b border-gray-100 flex items-center justify-between px-8">
+      <nav class="flex items-center text-sm text-gray-500">
+        <a href="#" class="hover:text-blue-600">Home</a>
+        <svg class="w-4 h-4 mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <a href="groups-list.html" class="hover:text-blue-600">Groups</a>
+        <svg class="w-4 h-4 mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <span class="text-gray-900 font-medium">Nguzo Women (GRP-00142)</span>
+      </nav>
+      <div class="flex items-center gap-4">
+        <button class="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-50">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+        </button>
+        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+          <span class="text-blue-600 font-medium text-xs">AW</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="p-8">
+      <!-- Group Header Card -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mb-6">
+        <div class="flex items-start justify-between">
+          <div class="flex items-start gap-5">
+            <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center">
+              <svg class="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-3">
+                <h1 class="text-2xl font-semibold text-gray-900">Nguzo Women</h1>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700">Active</span>
+              </div>
+              <p class="text-sm text-gray-500 mt-1">GRP-00142</p>
+              <div class="flex items-center gap-6 mt-3 text-sm text-gray-600">
+                <div class="flex items-center gap-1.5">
+                  <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5"/></svg>
+                  Westlands Branch
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                  Staff: Ochieng Barasa
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                  Activated: 15 Jun 2022
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/></svg>
+                  12 Members
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button class="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">Edit</button>
+            <button class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">Add Member</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-500">Members</p>
+              <p class="text-2xl font-semibold text-gray-900 mt-1">12</p>
+            </div>
+            <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center">
+              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-500">Active Loans</p>
+              <p class="text-2xl font-semibold text-gray-900 mt-1">8</p>
+            </div>
+            <div class="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center">
+              <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2v16z"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-500">Loan Portfolio</p>
+              <p class="text-2xl font-semibold text-gray-900 mt-1">KES 1.2M</p>
+            </div>
+            <div class="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div class="border-b border-gray-100">
+          <nav class="flex px-6 -mb-px">
+            <button class="px-4 py-3 text-sm text-gray-500 hover:text-gray-700 border-b-2 border-transparent">General</button>
+            <button class="px-4 py-3 text-sm font-medium text-blue-600 border-b-2 border-blue-600">Members</button>
+            <button class="px-4 py-3 text-sm text-gray-500 hover:text-gray-700 border-b-2 border-transparent">Loans</button>
+            <button class="px-4 py-3 text-sm text-gray-500 hover:text-gray-700 border-b-2 border-transparent">Savings</button>
+            <button class="px-4 py-3 text-sm text-gray-500 hover:text-gray-700 border-b-2 border-transparent">Notes</button>
+          </nav>
+        </div>
+
+        <!-- Members Tab Content -->
+        <div class="p-0">
+          <table class="w-full">
+            <thead>
+              <tr class="border-b border-gray-100">
+                <th class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-6 py-3">Member Name</th>
+                <th class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-6 py-3">Account No</th>
+                <th class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-6 py-3">Role</th>
+                <th class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-6 py-3">Status</th>
+                <th class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-6 py-3">Joined Date</th>
+                <th class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-6 py-3">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-50">
+              <tr class="hover:bg-blue-50/30 transition-colors">
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                      <span class="text-purple-600 font-medium text-xs">GK</span>
+                    </div>
+                    <span class="text-sm font-medium text-gray-900">Grace Kemunto</span>
+                  </div>
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-600">CLI-004521</td>
+                <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">Leader</span></td>
+                <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700">Active</span></td>
+                <td class="px-6 py-4 text-sm text-gray-600">15 Jun 2022</td>
+                <td class="px-6 py-4">
+                  <button class="text-sm text-blue-600 hover:text-blue-800 font-medium">View</button>
+                </td>
+              </tr>
+              <tr class="hover:bg-blue-50/30 transition-colors">
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center">
+                      <span class="text-teal-600 font-medium text-xs">WA</span>
+                    </div>
+                    <span class="text-sm font-medium text-gray-900">Wambui Achola</span>
+                  </div>
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-600">CLI-004533</td>
+                <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700">Secretary</span></td>
+                <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700">Active</span></td>
+                <td class="px-6 py-4 text-sm text-gray-600">15 Jun 2022</td>
+                <td class="px-6 py-4">
+                  <button class="text-sm text-blue-600 hover:text-blue-800 font-medium">View</button>
+                </td>
+              </tr>
+              <tr class="hover:bg-blue-50/30 transition-colors">
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center">
+                      <span class="text-amber-600 font-medium text-xs">EN</span>
+                    </div>
+                    <span class="text-sm font-medium text-gray-900">Esther Nyambura</span>
+                  </div>
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-600">CLI-004548</td>
+                <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-700">Treasurer</span></td>
+                <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700">Active</span></td>
+                <td class="px-6 py-4 text-sm text-gray-600">15 Jun 2022</td>
+                <td class="px-6 py-4">
+                  <button class="text-sm text-blue-600 hover:text-blue-800 font-medium">View</button>
+                </td>
+              </tr>
+              <tr class="hover:bg-blue-50/30 transition-colors">
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-rose-100 rounded-full flex items-center justify-center">
+                      <span class="text-rose-600 font-medium text-xs">LM</span>
+                    </div>
+                    <span class="text-sm font-medium text-gray-900">Lilian Mutiso</span>
+                  </div>
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-600">CLI-004562</td>
+                <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-50 text-gray-600">Member</span></td>
+                <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700">Active</span></td>
+                <td class="px-6 py-4 text-sm text-gray-600">22 Jul 2022</td>
+                <td class="px-6 py-4">
+                  <button class="text-sm text-blue-600 hover:text-blue-800 font-medium">View</button>
+                </td>
+              </tr>
+              <tr class="hover:bg-blue-50/30 transition-colors">
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-sky-100 rounded-full flex items-center justify-center">
+                      <span class="text-sky-600 font-medium text-xs">FW</span>
+                    </div>
+                    <span class="text-sm font-medium text-gray-900">Faith Wangari</span>
+                  </div>
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-600">CLI-004578</td>
+                <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-50 text-gray-600">Member</span></td>
+                <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700">Active</span></td>
+                <td class="px-6 py-4 text-sm text-gray-600">10 Aug 2022</td>
+                <td class="px-6 py-4">
+                  <button class="text-sm text-blue-600 hover:text-blue-800 font-medium">View</button>
+                </td>
+              </tr>
+              <tr class="hover:bg-blue-50/30 transition-colors">
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center">
+                      <span class="text-emerald-600 font-medium text-xs">RA</span>
+                    </div>
+                    <span class="text-sm font-medium text-gray-900">Rose Achieng</span>
+                  </div>
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-600">CLI-004591</td>
+                <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-50 text-gray-600">Member</span></td>
+                <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700">Active</span></td>
+                <td class="px-6 py-4 text-sm text-gray-600">10 Aug 2022</td>
+                <td class="px-6 py-4">
+                  <button class="text-sm text-blue-600 hover:text-blue-800 font-medium">View</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="flex items-center justify-between px-6 py-4 border-t border-gray-100">
+            <p class="text-sm text-gray-500">Showing 6 of 12 members</p>
+            <button class="text-sm text-blue-600 hover:text-blue-800 font-medium">View All Members</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+</body>
+</html>

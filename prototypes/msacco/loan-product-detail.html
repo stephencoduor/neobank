@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kilimo Booster - Loan Product | Fineract</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Inter', sans-serif; }</style>
+</head>
+<body class="bg-gray-50 min-h-screen flex">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white border-r border-gray-100 fixed inset-y-0 left-0 z-30 flex flex-col">
+        <div class="h-16 flex items-center px-6 border-b border-gray-100">
+            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                <span class="text-white font-bold text-sm">F</span>
+            </div>
+            <span class="ml-3 font-bold text-gray-900 text-lg">Fineract</span>
+        </div>
+        <nav class="flex-1 px-3 py-4 space-y-1 text-sm overflow-y-auto">
+            <a href="#" class="flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+                <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1"/></svg>
+                Dashboard
+            </a>
+            <a href="#" class="flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+                <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                Clients
+            </a>
+            <div>
+                <a href="#" class="flex items-center px-3 py-2 rounded-lg bg-blue-50 text-blue-700 font-medium">
+                    <svg class="w-5 h-5 mr-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                    Products
+                </a>
+                <div class="ml-8 mt-1 space-y-1">
+                    <a href="#" class="block px-3 py-1.5 rounded-lg text-blue-700 bg-blue-50/60 font-medium text-xs">Loan Products</a>
+                    <a href="#" class="block px-3 py-1.5 rounded-lg text-gray-500 hover:bg-gray-50 text-xs">Savings Products</a>
+                    <a href="#" class="block px-3 py-1.5 rounded-lg text-gray-500 hover:bg-gray-50 text-xs">Share Products</a>
+                    <a href="#" class="block px-3 py-1.5 rounded-lg text-gray-500 hover:bg-gray-50 text-xs">Charges</a>
+                </div>
+            </div>
+            <a href="#" class="flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+                <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                Accounting
+            </a>
+            <a href="#" class="flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+                <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+                Account Transfers
+            </a>
+            <a href="#" class="flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+                <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                System
+            </a>
+        </nav>
+        <div class="p-4 border-t border-gray-100">
+            <div class="flex items-center">
+                <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 font-semibold text-xs">AW</div>
+                <div class="ml-3">
+                    <p class="text-sm font-medium text-gray-900">Amina Wanjiku</p>
+                    <p class="text-xs text-gray-500">Westlands Branch</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main -->
+    <div class="flex-1 ml-64">
+        <!-- Header -->
+        <header class="sticky top-0 z-20 h-16 bg-white border-b border-gray-100 flex items-center justify-between px-8">
+            <nav class="flex items-center text-sm text-gray-500">
+                <a href="#" class="hover:text-blue-600">Home</a>
+                <svg class="w-4 h-4 mx-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                <a href="#" class="hover:text-blue-600">Products</a>
+                <svg class="w-4 h-4 mx-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                <a href="#" class="hover:text-blue-600">Loan Products</a>
+                <svg class="w-4 h-4 mx-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                <span class="text-gray-900 font-medium">Kilimo Booster</span>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <button class="relative p-2 text-gray-400 hover:text-gray-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                    <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
+                </button>
+            </div>
+        </header>
+
+        <main class="p-8">
+            <!-- Title -->
+            <div class="flex items-center justify-between mb-8">
+                <div class="flex items-center space-x-4">
+                    <h1 class="text-2xl font-bold text-gray-900">Kilimo Booster</h1>
+                    <span class="px-3 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700">Active</span>
+                </div>
+                <button class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-xl hover:bg-blue-700 transition-colors">Edit Product</button>
+            </div>
+
+            <!-- Summary Grid -->
+            <div class="grid grid-cols-3 gap-6 mb-8">
+                <!-- General -->
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                    <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">General</h3>
+                    <dl class="space-y-3 text-sm">
+                        <div class="flex justify-between"><dt class="text-gray-500">Short Name</dt><dd class="font-medium text-gray-900">KIL</dd></div>
+                        <div class="flex justify-between"><dt class="text-gray-500">Fund</dt><dd class="font-medium text-gray-900">Agricultural Fund</dd></div>
+                        <div class="flex justify-between"><dt class="text-gray-500">Currency</dt><dd class="font-medium text-gray-900">KES</dd></div>
+                        <div class="flex justify-between"><dt class="text-gray-500">Decimal Places</dt><dd class="font-medium text-gray-900">2</dd></div>
+                        <div class="flex justify-between"><dt class="text-gray-500">Include in Borrower Cycle</dt><dd class="font-medium text-gray-900">Yes</dd></div>
+                        <hr class="border-gray-100">
+                        <div class="flex justify-between"><dt class="text-gray-500">Active Loans</dt><dd class="font-semibold text-gray-900">142</dd></div>
+                        <div class="flex justify-between"><dt class="text-gray-500">Total Disbursed</dt><dd class="font-semibold text-blue-700">KES 18.5M</dd></div>
+                    </dl>
+                </div>
+
+                <!-- Terms -->
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                    <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Terms</h3>
+                    <dl class="space-y-3 text-sm">
+                        <div class="flex justify-between"><dt class="text-gray-500">Principal Default</dt><dd class="font-medium text-gray-900">KES 250,000</dd></div>
+                        <div class="flex justify-between"><dt class="text-gray-500">Min Principal</dt><dd class="font-medium text-gray-900">KES 50,000</dd></div>
+                        <div class="flex justify-between"><dt class="text-gray-500">Max Principal</dt><dd class="font-medium text-gray-900">KES 1,000,000</dd></div>
+                        <div class="flex justify-between"><dt class="text-gray-500">Installments Default</dt><dd class="font-medium text-gray-900">12</dd></div>
+                        <div class="flex justify-between"><dt class="text-gray-500">Min / Max Installments</dt><dd class="font-medium text-gray-900">3 / 24</dd></div>
+                        <div class="flex justify-between"><dt class="text-gray-500">Interest Rate</dt><dd class="font-semibold text-blue-700">14%</dd></div>
+                        <div class="flex justify-between"><dt class="text-gray-500">Method</dt><dd class="font-medium text-gray-900">Flat</dd></div>
+                        <div class="flex justify-between"><dt class="text-gray-500">Amortization</dt><dd class="font-medium text-gray-900">Equal Installments</dd></div>
+                        <div class="flex justify-between"><dt class="text-gray-500">Repayment</dt><dd class="font-medium text-gray-900">Monthly</dd></div>
+                    </dl>
+                </div>
+
+                <!-- Charges & Accounting -->
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                    <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Charges & Accounting</h3>
+                    <dl class="space-y-3 text-sm">
+                        <div class="flex justify-between"><dt class="text-gray-500">Processing Fee</dt><dd class="font-medium text-gray-900">1% of disbursement</dd></div>
+                        <div class="flex justify-between"><dt class="text-gray-500">Insurance</dt><dd class="font-medium text-gray-900">1.5%</dd></div>
+                        <div class="flex justify-between"><dt class="text-gray-500">Late Fee</dt><dd class="font-medium text-gray-900">2% overdue</dd></div>
+                        <hr class="border-gray-100">
+                        <div class="flex justify-between"><dt class="text-gray-500">Accounting Rule</dt><dd class="font-medium text-gray-900">Accrual based</dd></div>
+                        <div class="flex justify-between"><dt class="text-gray-500">Fund Source</dt><dd class="font-medium text-gray-900">10200</dd></div>
+                        <div class="flex justify-between"><dt class="text-gray-500">Loan Portfolio</dt><dd class="font-medium text-gray-900">12100</dd></div>
+                        <div class="flex justify-between"><dt class="text-gray-500">Interest Income</dt><dd class="font-medium text-gray-900">40000</dd></div>
+                    </dl>
+                </div>
+            </div>
+
+            <!-- Interest Rate Chart -->
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mb-8">
+                <h3 class="text-base font-semibold text-gray-900 mb-4">Interest Rate Chart</h3>
+                <div class="flex items-center space-x-3 text-sm text-gray-600 bg-blue-50/50 rounded-xl p-4">
+                    <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <span>Flat rate: <strong class="text-gray-900">14% per annum</strong> applied uniformly across all loan tiers.</span>
+                </div>
+            </div>
+
+            <!-- Linked Charges -->
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                <h3 class="text-base font-semibold text-gray-900 mb-4">Linked Charges</h3>
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-gray-100">
+                            <th class="text-left py-3 px-4 text-gray-500 font-medium">Charge Name</th>
+                            <th class="text-left py-3 px-4 text-gray-500 font-medium">Type</th>
+                            <th class="text-right py-3 px-4 text-gray-500 font-medium">Amount</th>
+                            <th class="text-left py-3 px-4 text-gray-500 font-medium">Applied To</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-50 hover:bg-blue-50/30 transition-colors">
+                            <td class="py-3 px-4 font-medium text-gray-900">Processing Fee</td>
+                            <td class="py-3 px-4 text-gray-600">% of Amount</td>
+                            <td class="py-3 px-4 text-right font-medium text-gray-900">1%</td>
+                            <td class="py-3 px-4"><span class="px-2 py-0.5 text-xs rounded-full bg-blue-100 text-blue-700">Disbursement</span></td>
+                        </tr>
+                        <tr class="border-b border-gray-50 hover:bg-blue-50/30 transition-colors">
+                            <td class="py-3 px-4 font-medium text-gray-900">Insurance Premium</td>
+                            <td class="py-3 px-4 text-gray-600">% of Amount</td>
+                            <td class="py-3 px-4 text-right font-medium text-gray-900">1.5%</td>
+                            <td class="py-3 px-4"><span class="px-2 py-0.5 text-xs rounded-full bg-purple-100 text-purple-700">Disbursement</span></td>
+                        </tr>
+                        <tr class="hover:bg-blue-50/30 transition-colors">
+                            <td class="py-3 px-4 font-medium text-gray-900">Late Payment Penalty</td>
+                            <td class="py-3 px-4 text-gray-600">% of Amount</td>
+                            <td class="py-3 px-4 text-right font-medium text-gray-900">2%</td>
+                            <td class="py-3 px-4"><span class="px-2 py-0.5 text-xs rounded-full bg-red-100 text-red-700">Overdue</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

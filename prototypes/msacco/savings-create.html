@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Savings Account - Fineract</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex">
+
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white border-r border-gray-100 min-h-screen flex flex-col fixed left-0 top-0 bottom-0 z-10">
+    <!-- Logo -->
+    <div class="px-6 py-5 border-b border-gray-100">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+          <span class="text-white font-bold text-sm">F</span>
+        </div>
+        <span class="text-lg font-bold text-gray-900">Fineract</span>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="flex-1 px-3 py-4 space-y-1">
+      <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-sm text-gray-600 rounded-xl hover:bg-gray-50">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1"/></svg>
+        Dashboard
+      </a>
+      <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-sm text-gray-600 rounded-xl hover:bg-gray-50">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        Clients
+      </a>
+      <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-blue-600 bg-blue-50 rounded-xl">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+        Savings
+      </a>
+      <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-sm text-gray-600 rounded-xl hover:bg-gray-50">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+        Loans
+      </a>
+      <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-sm text-gray-600 rounded-xl hover:bg-gray-50">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+        Accounting
+      </a>
+      <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-sm text-gray-600 rounded-xl hover:bg-gray-50">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        Reports
+      </a>
+      <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-sm text-gray-600 rounded-xl hover:bg-gray-50">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        Admin
+      </a>
+    </nav>
+
+    <!-- User -->
+    <div class="px-4 py-4 border-t border-gray-100">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 bg-blue-100 rounded-full flex items-center justify-center">
+          <span class="text-sm font-semibold text-blue-600">AW</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-medium text-gray-900 truncate">Amina Wanjiku</p>
+          <p class="text-xs text-gray-500 truncate">Westlands Branch</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 ml-64">
+    <!-- Top bar -->
+    <header class="bg-white border-b border-gray-100 px-8 py-4 flex items-center justify-between sticky top-0 z-[5]">
+      <nav class="flex items-center gap-2 text-sm">
+        <a href="#" class="text-gray-400 hover:text-gray-600">Home</a>
+        <svg class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <a href="#" class="text-gray-400 hover:text-gray-600">Savings</a>
+        <svg class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <span class="text-gray-700 font-medium">New Savings Account</span>
+      </nav>
+      <div class="flex items-center gap-3">
+        <button class="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-50">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Page content -->
+    <div class="px-8 py-8">
+      <h1 class="text-2xl font-bold text-gray-900 mb-8">Open Savings Account</h1>
+
+      <!-- Form Card -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm max-w-3xl">
+        <div class="p-8 space-y-6">
+
+          <!-- Client -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Client <span class="text-red-500">*</span></label>
+            <div class="relative">
+              <input type="text" value="Samuel Mwangi (MBR-001198)" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50 pr-10" readonly>
+              <div class="absolute right-3 top-1/2 -translate-y-1/2">
+                <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Savings Product <span class="text-red-500">*</span></label>
+            <select class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none appearance-none bg-white">
+              <option selected>Ordinary Savings</option>
+              <option>Fixed Deposit 6M</option>
+              <option>Fixed Deposit 12M</option>
+              <option>Recurring Deposit</option>
+              <option>Holiday Savings</option>
+            </select>
+          </div>
+
+          <!-- Field Officer -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Field Officer</label>
+            <input type="text" value="Akinyi Roselyn" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50" readonly>
+            <p class="text-xs text-gray-400 mt-1">Auto-assigned from client</p>
+          </div>
+
+          <!-- Submitted Date -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Submitted Date <span class="text-red-500">*</span></label>
+            <input type="date" value="2026-03-30" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+          </div>
+
+          <!-- Section Divider: Terms -->
+          <div class="pt-4">
+            <div class="flex items-center gap-3">
+              <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wide">Terms</h3>
+              <div class="flex-1 h-px bg-gray-200"></div>
+            </div>
+          </div>
+
+          <!-- Nominal Annual Interest Rate -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Nominal Annual Interest Rate <span class="text-red-500">*</span></label>
+            <div class="relative">
+              <input type="text" value="5.0" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none pr-10">
+              <span class="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-gray-400">%</span>
+            </div>
+            <p class="text-xs text-gray-400 mt-1">Pre-filled from product configuration</p>
+          </div>
+
+          <!-- Interest Compounding Period -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Interest Compounding Period <span class="text-red-500">*</span></label>
+            <select class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none appearance-none bg-white">
+              <option>Daily</option>
+              <option selected>Monthly</option>
+              <option>Quarterly</option>
+              <option>Semi-Annual</option>
+              <option>Annually</option>
+            </select>
+          </div>
+
+          <!-- Interest Posting Period -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Interest Posting Period <span class="text-red-500">*</span></label>
+            <select class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none appearance-none bg-white">
+              <option>Monthly</option>
+              <option selected>Quarterly</option>
+              <option>Bi-Annual</option>
+              <option>Annually</option>
+            </select>
+          </div>
+
+          <!-- Interest Calculation -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Interest Calculation <span class="text-red-500">*</span></label>
+            <select class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none appearance-none bg-white">
+              <option selected>Daily Balance</option>
+              <option>Average Daily Balance</option>
+            </select>
+          </div>
+
+          <!-- Days in Year -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Days in Year <span class="text-red-500">*</span></label>
+            <select class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none appearance-none bg-white">
+              <option>360</option>
+              <option selected>365</option>
+            </select>
+          </div>
+
+          <!-- Section Divider: Settings -->
+          <div class="pt-4">
+            <div class="flex items-center gap-3">
+              <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wide">Settings</h3>
+              <div class="flex-1 h-px bg-gray-200"></div>
+            </div>
+          </div>
+
+          <!-- Minimum Opening Balance -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Minimum Opening Balance</label>
+            <div class="relative">
+              <span class="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-400">KES</span>
+              <input type="text" value="1,000" class="w-full pl-14 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+            </div>
+            <p class="text-xs text-gray-400 mt-1">Pre-filled from product configuration</p>
+          </div>
+
+          <!-- Lock-in Period -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Lock-in Period</label>
+            <div class="flex gap-3">
+              <input type="text" value="" placeholder="None" class="flex-1 px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+              <select class="w-32 px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none appearance-none bg-white">
+                <option>Days</option>
+                <option>Weeks</option>
+                <option selected>Months</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Allow Overdraft -->
+          <div class="flex items-center gap-3">
+            <input type="checkbox" id="overdraft" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+            <label for="overdraft" class="text-sm font-medium text-gray-700">Allow Overdraft</label>
+          </div>
+
+          <!-- Minimum Balance for Interest -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Minimum Balance for Interest Calculation</label>
+            <div class="relative">
+              <span class="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-400">KES</span>
+              <input type="text" value="500" class="w-full pl-14 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="px-8 py-5 bg-gray-50 rounded-b-2xl border-t border-gray-100 flex items-center justify-end gap-3">
+          <button class="px-6 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">Cancel</button>
+          <button class="px-6 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-xl hover:bg-blue-700 transition-colors">Submit Application</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>

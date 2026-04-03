@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fineract - Clients</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif']}}}}</script>
+  <style>.sidebar-item.active{background:#eff6ff;color:#2563eb}.sidebar-item:hover{background:#f8fafc}.sidebar-item.active:hover{background:#eff6ff}</style>
+</head>
+<body class="bg-gray-50 font-sans min-h-screen flex">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white border-r border-gray-100 flex flex-col fixed inset-y-0 left-0 z-30">
+    <div class="h-16 flex items-center gap-3 px-5 border-b border-gray-100">
+      <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+      <span class="font-bold text-gray-900 text-lg">Fineract</span>
+    </div>
+    <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1">
+      <p class="px-3 text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">Main</p>
+      <a href="dashboard.html" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z"/></svg>Dashboard</a>
+      <a href="#" class="sidebar-item active flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>Clients</a>
+      <a href="loans-list.html" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg>Loans</a>
+      <a href="#" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2z"/></svg>Savings</a>
+      <a href="#" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>Groups</a>
+      <p class="px-3 text-[11px] font-semibold text-gray-400 uppercase tracking-wider mt-6 mb-2">Finance</p>
+      <a href="#" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>Accounting</a>
+      <a href="#" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>Reports</a>
+    </nav>
+    <div class="border-t border-gray-100 p-3">
+      <div class="flex items-center gap-3 px-3 py-2 rounded-xl">
+        <div class="w-9 h-9 bg-blue-100 rounded-full flex items-center justify-center"><span class="text-blue-600 font-semibold text-sm">AW</span></div>
+        <div class="flex-1 min-w-0"><p class="text-sm font-medium text-gray-900 truncate">Amina Wanjiku</p><p class="text-xs text-gray-500 truncate">Westlands Branch</p></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="ml-64 flex-1 flex flex-col min-h-screen">
+    <header class="h-16 bg-white border-b border-gray-100 flex items-center justify-between px-6 sticky top-0 z-20">
+      <div class="flex items-center gap-2 text-sm">
+        <a href="dashboard.html" class="text-gray-400 hover:text-gray-600">Home</a>
+        <svg class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <span class="text-gray-900 font-medium">Clients</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <div class="relative">
+          <svg class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          <input type="text" placeholder="Search clients, loans..." class="pl-10 pr-4 py-2 w-64 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none">
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1 p-6 space-y-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900">Clients</h1>
+          <p class="text-sm text-gray-500 mt-0.5">Manage registered members and their financial accounts</p>
+        </div>
+        <button class="px-4 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-xl hover:bg-blue-700 transition shadow-sm flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          New Client
+        </button>
+      </div>
+
+      <!-- Stats -->
+      <div class="grid grid-cols-4 gap-4">
+        <div class="bg-white rounded-xl border border-gray-100 p-4 shadow-sm">
+          <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">Total Members</p>
+          <p class="text-2xl font-bold text-gray-900 mt-1">1,847</p>
+          <p class="text-xs text-green-600 mt-1">+23 this month</p>
+        </div>
+        <div class="bg-white rounded-xl border border-gray-100 p-4 shadow-sm">
+          <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">Active</p>
+          <p class="text-2xl font-bold text-green-600 mt-1">1,612</p>
+          <p class="text-xs text-gray-400 mt-1">87.2% of total</p>
+        </div>
+        <div class="bg-white rounded-xl border border-gray-100 p-4 shadow-sm">
+          <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">Pending Activation</p>
+          <p class="text-2xl font-bold text-amber-600 mt-1">143</p>
+          <p class="text-xs text-gray-400 mt-1">Awaiting KYC review</p>
+        </div>
+        <div class="bg-white rounded-xl border border-gray-100 p-4 shadow-sm">
+          <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">Closed / Withdrawn</p>
+          <p class="text-2xl font-bold text-gray-400 mt-1">92</p>
+          <p class="text-xs text-gray-400 mt-1">5.0% attrition rate</p>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm">
+        <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="relative">
+              <svg class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              <input type="text" placeholder="Search by name, ID, or phone..." class="pl-10 pr-4 py-2 w-72 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none">
+            </div>
+            <select class="px-3 py-2 border border-gray-200 rounded-lg text-sm text-gray-600 bg-white outline-none">
+              <option>All Branches</option>
+              <option>Westlands</option>
+              <option>Kilimani</option>
+              <option>Thika Road</option>
+              <option>Mombasa CBD</option>
+              <option>Kisumu Lakeside</option>
+            </select>
+            <select class="px-3 py-2 border border-gray-200 rounded-lg text-sm text-gray-600 bg-white outline-none">
+              <option>All Statuses</option>
+              <option>Active</option>
+              <option>Pending</option>
+              <option>Closed</option>
+            </select>
+          </div>
+          <span class="text-sm text-gray-500">Showing 1-20 of 1,847</span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-gray-100">
+                <th class="text-left py-3 px-5 text-xs font-medium text-gray-400 uppercase tracking-wider"><input type="checkbox" class="w-4 h-4 rounded border-gray-300"></th>
+                <th class="text-left py-3 px-3 text-xs font-medium text-gray-400 uppercase tracking-wider">Member</th>
+                <th class="text-left py-3 px-3 text-xs font-medium text-gray-400 uppercase tracking-wider">Account No</th>
+                <th class="text-left py-3 px-3 text-xs font-medium text-gray-400 uppercase tracking-wider">Branch</th>
+                <th class="text-left py-3 px-3 text-xs font-medium text-gray-400 uppercase tracking-wider">Status</th>
+                <th class="text-left py-3 px-3 text-xs font-medium text-gray-400 uppercase tracking-wider">Joined</th>
+                <th class="text-left py-3 px-3 text-xs font-medium text-gray-400 uppercase tracking-wider">Loan Officer</th>
+                <th class="py-3 px-3"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-gray-50 hover:bg-blue-50/30 cursor-pointer" onclick="window.location='client-detail.html'">
+                <td class="py-3 px-5"><input type="checkbox" class="w-4 h-4 rounded border-gray-300"></td>
+                <td class="py-3 px-3">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 bg-teal-100 rounded-full flex items-center justify-center"><span class="text-teal-700 text-xs font-semibold">GK</span></div>
+                    <div>
+                      <p class="font-medium text-gray-900">Grace Kemunto</p>
+                      <p class="text-xs text-gray-400">National ID: 28451923</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="py-3 px-3 text-gray-600 font-mono text-xs">MBR-001247</td>
+                <td class="py-3 px-3 text-gray-600">Westlands</td>
+                <td class="py-3 px-3"><span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700">Active</span></td>
+                <td class="py-3 px-3 text-gray-500">2023-04-12</td>
+                <td class="py-3 px-3 text-gray-500">Ochieng B.</td>
+                <td class="py-3 px-3"><button class="p-1 text-gray-400 hover:text-gray-600 rounded"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/></svg></button></td>
+              </tr>
+
+              <tr class="border-b border-gray-50 hover:bg-blue-50/30 cursor-pointer">
+                <td class="py-3 px-5"><input type="checkbox" class="w-4 h-4 rounded border-gray-300"></td>
+                <td class="py-3 px-3">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 bg-amber-100 rounded-full flex items-center justify-center"><span class="text-amber-700 text-xs font-semibold">SM</span></div>
+                    <div>
+                      <p class="font-medium text-gray-900">Samuel Mwangi</p>
+                      <p class="text-xs text-gray-400">National ID: 31209874</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="py-3 px-3 text-gray-600 font-mono text-xs">MBR-001198</td>
+                <td class="py-3 px-3 text-gray-600">Thika Road</td>
+                <td class="py-3 px-3"><span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700">Active</span></td>
+                <td class="py-3 px-3 text-gray-500">2022-11-05</td>
+                <td class="py-3 px-3 text-gray-500">Akinyi R.</td>
+                <td class="py-3 px-3"><button class="p-1 text-gray-400 hover:text-gray-600 rounded"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/></svg></button></td>
+              </tr>
+
+              <tr class="border-b border-gray-50 hover:bg-blue-50/30 cursor-pointer">
+                <td class="py-3 px-5"><input type="checkbox" class="w-4 h-4 rounded border-gray-300"></td>
+                <td class="py-3 px-3">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 bg-purple-100 rounded-full flex items-center justify-center"><span class="text-purple-700 text-xs font-semibold">EN</span></div>
+                    <div>
+                      <p class="font-medium text-gray-900">Esther Nyambura</p>
+                      <p class="text-xs text-gray-400">National ID: 25678341</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="py-3 px-3 text-gray-600 font-mono text-xs">MBR-001302</td>
+                <td class="py-3 px-3 text-gray-600">Kilimani</td>
+                <td class="py-3 px-3"><span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700">Active</span></td>
+                <td class="py-3 px-3 text-gray-500">2024-01-18</td>
+                <td class="py-3 px-3 text-gray-500">Kamau P.</td>
+                <td class="py-3 px-3"><button class="p-1 text-gray-400 hover:text-gray-600 rounded"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/></svg></button></td>
+              </tr>
+
+              <tr class="border-b border-gray-50 hover:bg-blue-50/30 cursor-pointer">
+                <td class="py-3 px-5"><input type="checkbox" class="w-4 h-4 rounded border-gray-300"></td>
+                <td class="py-3 px-3">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 bg-red-100 rounded-full flex items-center justify-center"><span class="text-red-700 text-xs font-semibold">FN</span></div>
+                    <div>
+                      <p class="font-medium text-gray-900">Felix Njoroge</p>
+                      <p class="text-xs text-gray-400">National ID: 29834561</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="py-3 px-3 text-gray-600 font-mono text-xs">MBR-000891</td>
+                <td class="py-3 px-3 text-gray-600">Westlands</td>
+                <td class="py-3 px-3"><span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700">Active</span></td>
+                <td class="py-3 px-3 text-gray-500">2021-08-22</td>
+                <td class="py-3 px-3 text-gray-500">Kamau P.</td>
+                <td class="py-3 px-3"><button class="p-1 text-gray-400 hover:text-gray-600 rounded"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/></svg></button></td>
+              </tr>
+
+              <tr class="border-b border-gray-50 hover:bg-blue-50/30 cursor-pointer">
+                <td class="py-3 px-5"><input type="checkbox" class="w-4 h-4 rounded border-gray-300"></td>
+                <td class="py-3 px-3">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 bg-blue-100 rounded-full flex items-center justify-center"><span class="text-blue-700 text-xs font-semibold">PO</span></div>
+                    <div>
+                      <p class="font-medium text-gray-900">Peter Otieno</p>
+                      <p class="text-xs text-gray-400">National ID: 33452178</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="py-3 px-3 text-gray-600 font-mono text-xs">MBR-001455</td>
+                <td class="py-3 px-3 text-gray-600">Kisumu Lakeside</td>
+                <td class="py-3 px-3"><span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-700">Pending</span></td>
+                <td class="py-3 px-3 text-gray-400">-</td>
+                <td class="py-3 px-3 text-gray-500">Ochieng B.</td>
+                <td class="py-3 px-3"><button class="p-1 text-gray-400 hover:text-gray-600 rounded"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/></svg></button></td>
+              </tr>
+
+              <tr class="border-b border-gray-50 hover:bg-blue-50/30 cursor-pointer">
+                <td class="py-3 px-5"><input type="checkbox" class="w-4 h-4 rounded border-gray-300"></td>
+                <td class="py-3 px-3">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 bg-green-100 rounded-full flex items-center justify-center"><span class="text-green-700 text-xs font-semibold">WA</span></div>
+                    <div>
+                      <p class="font-medium text-gray-900">Wambui Achola</p>
+                      <p class="text-xs text-gray-400">National ID: 27893456</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="py-3 px-3 text-gray-600 font-mono text-xs">MBR-001089</td>
+                <td class="py-3 px-3 text-gray-600">Westlands</td>
+                <td class="py-3 px-3"><span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700">Active</span></td>
+                <td class="py-3 px-3 text-gray-500">2022-06-30</td>
+                <td class="py-3 px-3 text-gray-500">Kamau P.</td>
+                <td class="py-3 px-3"><button class="p-1 text-gray-400 hover:text-gray-600 rounded"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/></svg></button></td>
+              </tr>
+
+              <tr class="border-b border-gray-50 hover:bg-blue-50/30 cursor-pointer">
+                <td class="py-3 px-5"><input type="checkbox" class="w-4 h-4 rounded border-gray-300"></td>
+                <td class="py-3 px-3">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 bg-indigo-100 rounded-full flex items-center justify-center"><span class="text-indigo-700 text-xs font-semibold">LM</span></div>
+                    <div>
+                      <p class="font-medium text-gray-900">Lilian Mutiso</p>
+                      <p class="text-xs text-gray-400">National ID: 30124567</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="py-3 px-3 text-gray-600 font-mono text-xs">MBR-001510</td>
+                <td class="py-3 px-3 text-gray-600">Mombasa CBD</td>
+                <td class="py-3 px-3"><span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700">Active</span></td>
+                <td class="py-3 px-3 text-gray-500">2024-09-14</td>
+                <td class="py-3 px-3 text-gray-500">Akinyi R.</td>
+                <td class="py-3 px-3"><button class="p-1 text-gray-400 hover:text-gray-600 rounded"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/></svg></button></td>
+              </tr>
+
+              <tr class="hover:bg-blue-50/30 cursor-pointer">
+                <td class="py-3 px-5"><input type="checkbox" class="w-4 h-4 rounded border-gray-300"></td>
+                <td class="py-3 px-3">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 bg-gray-200 rounded-full flex items-center justify-center"><span class="text-gray-600 text-xs font-semibold">JK</span></div>
+                    <div>
+                      <p class="font-medium text-gray-900">Josphat Kiprop</p>
+                      <p class="text-xs text-gray-400">National ID: 24561789</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="py-3 px-3 text-gray-600 font-mono text-xs">MBR-000634</td>
+                <td class="py-3 px-3 text-gray-600">Thika Road</td>
+                <td class="py-3 px-3"><span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600">Closed</span></td>
+                <td class="py-3 px-3 text-gray-500">2020-03-08</td>
+                <td class="py-3 px-3 text-gray-500">Ochieng B.</td>
+                <td class="py-3 px-3"><button class="p-1 text-gray-400 hover:text-gray-600 rounded"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/></svg></button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="px-5 py-4 border-t border-gray-100 flex items-center justify-between">
+          <div class="flex items-center gap-2 text-sm text-gray-500">
+            <span>Rows per page:</span>
+            <select class="px-2 py-1 border border-gray-200 rounded-lg text-sm bg-white outline-none"><option>20</option><option>50</option><option>100</option></select>
+          </div>
+          <div class="flex items-center gap-1">
+            <button class="px-3 py-1.5 text-sm text-gray-400 rounded-lg" disabled>Previous</button>
+            <button class="px-3 py-1.5 text-sm bg-blue-600 text-white rounded-lg">1</button>
+            <button class="px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-50 rounded-lg">2</button>
+            <button class="px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-50 rounded-lg">3</button>
+            <span class="px-2 text-gray-400">...</span>
+            <button class="px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-50 rounded-lg">93</button>
+            <button class="px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-50 rounded-lg">Next</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

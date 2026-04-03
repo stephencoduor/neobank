@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fineract - Loan Detail</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif']}}}}</script>
+  <style>.sidebar-item.active{background:#eff6ff;color:#2563eb}.sidebar-item:hover{background:#f8fafc}.sidebar-item.active:hover{background:#eff6ff}.tab-active{color:#2563eb;border-bottom-color:#2563eb}.tab-item:hover{color:#2563eb}</style>
+</head>
+<body class="bg-gray-50 font-sans min-h-screen flex">
+
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white border-r border-gray-100 flex flex-col fixed inset-y-0 left-0 z-30">
+    <div class="h-16 flex items-center gap-3 px-5 border-b border-gray-100">
+      <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+      <span class="font-bold text-gray-900 text-lg">Fineract</span>
+    </div>
+    <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1">
+      <p class="px-3 text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">Main</p>
+      <a href="dashboard.html" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z"/></svg>Dashboard</a>
+      <a href="clients-list.html" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>Clients</a>
+      <a href="loans-list.html" class="sidebar-item active flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg>Loans</a>
+      <a href="#" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2z"/></svg>Savings</a>
+      <p class="px-3 text-[11px] font-semibold text-gray-400 uppercase tracking-wider mt-6 mb-2">Finance</p>
+      <a href="#" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>Accounting</a>
+      <a href="#" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>Reports</a>
+    </nav>
+    <div class="border-t border-gray-100 p-3">
+      <div class="flex items-center gap-3 px-3 py-2 rounded-xl">
+        <div class="w-9 h-9 bg-blue-100 rounded-full flex items-center justify-center"><span class="text-blue-600 font-semibold text-sm">AW</span></div>
+        <div class="flex-1 min-w-0"><p class="text-sm font-medium text-gray-900 truncate">Amina Wanjiku</p><p class="text-xs text-gray-500 truncate">Westlands Branch</p></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="ml-64 flex-1 flex flex-col min-h-screen">
+    <header class="h-16 bg-white border-b border-gray-100 flex items-center justify-between px-6 sticky top-0 z-20">
+      <div class="flex items-center gap-2 text-sm">
+        <a href="dashboard.html" class="text-gray-400 hover:text-gray-600">Home</a>
+        <svg class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <a href="loans-list.html" class="text-gray-400 hover:text-gray-600">Loans</a>
+        <svg class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <span class="text-gray-900 font-medium">LN-00042781</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button class="px-3 py-1.5 text-sm border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2z"/></svg>Print Schedule
+        </button>
+        <div class="relative">
+          <button class="px-4 py-1.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-1.5" onclick="document.getElementById('actionMenu').classList.toggle('hidden')">
+            Actions
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div id="actionMenu" class="hidden absolute right-0 mt-2 w-56 bg-white border border-gray-100 rounded-xl shadow-lg py-2 z-50">
+            <a href="#" class="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50"><svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8V7m0 1v8m0 0v1"/></svg>Make Repayment</a>
+            <a href="#" class="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50"><svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>Reschedule</a>
+            <a href="#" class="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50"><svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>Waive Interest</a>
+            <div class="border-t border-gray-100 my-1"></div>
+            <a href="#" class="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50"><svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>Foreclosure</a>
+            <a href="#" class="flex items-center gap-2 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>Write Off</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1 p-6 space-y-6">
+      <!-- Loan Header -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+        <div class="flex items-start justify-between">
+          <div class="flex items-start gap-5">
+            <div class="w-16 h-16 bg-teal-100 rounded-2xl flex items-center justify-center">
+              <span class="text-teal-700 text-xl font-bold">GK</span>
+            </div>
+            <div>
+              <div class="flex items-center gap-3">
+                <h1 class="text-xl font-bold text-gray-900">Grace Kemunto</h1>
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">Active</span>
+              </div>
+              <p class="text-sm text-gray-500 mt-1">LN-00042781 &bull; Kilimo Booster &bull; Westlands Branch</p>
+              <div class="flex items-center gap-6 mt-4">
+                <div>
+                  <p class="text-xs text-gray-400 uppercase tracking-wider font-medium">Loan Officer</p>
+                  <p class="text-sm text-gray-900 mt-0.5 font-medium">Ochieng Barasa</p>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-400 uppercase tracking-wider font-medium">Submitted</p>
+                  <p class="text-sm text-gray-900 mt-0.5 font-medium">2025-10-28</p>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-400 uppercase tracking-wider font-medium">Approved</p>
+                  <p class="text-sm text-gray-900 mt-0.5 font-medium">2025-11-10</p>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-400 uppercase tracking-wider font-medium">Disbursed</p>
+                  <p class="text-sm text-gray-900 mt-0.5 font-medium">2025-11-15</p>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-400 uppercase tracking-wider font-medium">Maturity</p>
+                  <p class="text-sm text-gray-900 mt-0.5 font-medium">2026-11-15</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Loan Key Metrics -->
+          <div class="flex gap-3">
+            <div class="bg-blue-50 rounded-xl p-4 text-center min-w-[120px]">
+              <p class="text-xs text-blue-500 font-medium">Principal</p>
+              <p class="text-lg font-bold text-blue-700 mt-1">KES 250,000</p>
+            </div>
+            <div class="bg-green-50 rounded-xl p-4 text-center min-w-[120px]">
+              <p class="text-xs text-green-500 font-medium">Total Repaid</p>
+              <p class="text-lg font-bold text-green-700 mt-1">KES 78,125</p>
+            </div>
+            <div class="bg-amber-50 rounded-xl p-4 text-center min-w-[120px]">
+              <p class="text-xs text-amber-500 font-medium">Outstanding</p>
+              <p class="text-lg font-bold text-amber-700 mt-1">KES 187,500</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Repayment Progress Bar -->
+        <div class="mt-6">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-medium text-gray-500">Repayment Progress</span>
+            <span class="text-xs font-semibold text-blue-600">25% (3 of 12 installments)</span>
+          </div>
+          <div class="w-full bg-gray-100 rounded-full h-2.5">
+            <div class="bg-blue-600 h-2.5 rounded-full" style="width: 25%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loan Details Grid -->
+      <div class="grid grid-cols-3 gap-4">
+        <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
+          <h3 class="text-sm font-semibold text-gray-900 mb-3">Terms</h3>
+          <div class="space-y-2.5">
+            <div class="flex justify-between"><span class="text-xs text-gray-400">Product</span><span class="text-sm font-medium text-gray-900">Kilimo Booster</span></div>
+            <div class="flex justify-between"><span class="text-xs text-gray-400">Principal</span><span class="text-sm font-medium text-gray-900">KES 250,000</span></div>
+            <div class="flex justify-between"><span class="text-xs text-gray-400">Interest Rate</span><span class="text-sm font-medium text-gray-900">14% per annum (flat)</span></div>
+            <div class="flex justify-between"><span class="text-xs text-gray-400">Term</span><span class="text-sm font-medium text-gray-900">12 months</span></div>
+            <div class="flex justify-between"><span class="text-xs text-gray-400">Repayment Frequency</span><span class="text-sm font-medium text-gray-900">Monthly</span></div>
+            <div class="flex justify-between"><span class="text-xs text-gray-400">Amortization</span><span class="text-sm font-medium text-gray-900">Equal Installments</span></div>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
+          <h3 class="text-sm font-semibold text-gray-900 mb-3">Summary</h3>
+          <div class="space-y-2.5">
+            <div class="flex justify-between"><span class="text-xs text-gray-400">Total Expected</span><span class="text-sm font-medium text-gray-900">KES 285,000</span></div>
+            <div class="flex justify-between"><span class="text-xs text-gray-400">Principal Paid</span><span class="text-sm font-medium text-green-600">KES 62,500</span></div>
+            <div class="flex justify-between"><span class="text-xs text-gray-400">Interest Paid</span><span class="text-sm font-medium text-green-600">KES 15,625</span></div>
+            <div class="flex justify-between"><span class="text-xs text-gray-400">Fees Paid</span><span class="text-sm font-medium text-green-600">KES 2,500</span></div>
+            <div class="flex justify-between"><span class="text-xs text-gray-400">Penalties</span><span class="text-sm font-medium text-gray-900">KES 0</span></div>
+            <div class="flex justify-between border-t border-gray-100 pt-2"><span class="text-xs text-gray-700 font-semibold">Total Outstanding</span><span class="text-sm font-bold text-gray-900">KES 204,375</span></div>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
+          <h3 class="text-sm font-semibold text-gray-900 mb-3">Charges & Collateral</h3>
+          <div class="space-y-2.5">
+            <div class="flex justify-between"><span class="text-xs text-gray-400">Processing Fee</span><span class="text-sm font-medium text-gray-900">KES 2,500 (1%)</span></div>
+            <div class="flex justify-between"><span class="text-xs text-gray-400">Insurance Premium</span><span class="text-sm font-medium text-gray-900">KES 3,750</span></div>
+            <div class="flex justify-between"><span class="text-xs text-gray-400">Late Payment Fee</span><span class="text-sm font-medium text-gray-900">2% of overdue</span></div>
+            <div class="border-t border-gray-100 pt-2 mt-3">
+              <p class="text-xs text-gray-400 mb-1.5">Collateral</p>
+              <div class="bg-gray-50 rounded-lg p-2.5">
+                <p class="text-sm font-medium text-gray-900">Title Deed - Plot LR/2341</p>
+                <p class="text-xs text-gray-500">Valued at KES 1,200,000 &bull; Murang'a County</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm">
+        <div class="border-b border-gray-100 px-6">
+          <nav class="flex gap-6 -mb-px">
+            <button class="tab-item tab-active py-4 text-sm font-medium border-b-2 transition">Repayment Schedule</button>
+            <button class="tab-item py-4 text-sm font-medium text-gray-500 border-b-2 border-transparent transition">Transactions</button>
+            <button class="tab-item py-4 text-sm font-medium text-gray-500 border-b-2 border-transparent transition">Charges</button>
+            <button class="tab-item py-4 text-sm font-medium text-gray-500 border-b-2 border-transparent transition">Collateral</button>
+            <button class="tab-item py-4 text-sm font-medium text-gray-500 border-b-2 border-transparent transition">Notes</button>
+            <button class="tab-item py-4 text-sm font-medium text-gray-500 border-b-2 border-transparent transition">Documents</button>
+          </nav>
+        </div>
+
+        <!-- Repayment Schedule Table -->
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-base font-semibold text-gray-900">Repayment Schedule</h3>
+            <div class="flex items-center gap-3 text-xs">
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-green-500 rounded-full"></span>Paid</span>
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-blue-500 rounded-full"></span>Upcoming</span>
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-gray-300 rounded-full"></span>Future</span>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b border-gray-100 bg-gray-50/50">
+                  <th class="text-left py-3 px-4 text-xs font-medium text-gray-400 uppercase tracking-wider">#</th>
+                  <th class="text-left py-3 px-4 text-xs font-medium text-gray-400 uppercase tracking-wider">Due Date</th>
+                  <th class="text-right py-3 px-4 text-xs font-medium text-gray-400 uppercase tracking-wider">Principal</th>
+                  <th class="text-right py-3 px-4 text-xs font-medium text-gray-400 uppercase tracking-wider">Interest</th>
+                  <th class="text-right py-3 px-4 text-xs font-medium text-gray-400 uppercase tracking-wider">Fees</th>
+                  <th class="text-right py-3 px-4 text-xs font-medium text-gray-400 uppercase tracking-wider">Total Due</th>
+                  <th class="text-right py-3 px-4 text-xs font-medium text-gray-400 uppercase tracking-wider">Balance</th>
+                  <th class="text-left py-3 px-4 text-xs font-medium text-gray-400 uppercase tracking-wider">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Disbursement row -->
+                <tr class="border-b border-gray-50 bg-blue-50/30">
+                  <td class="py-3 px-4 text-gray-400">-</td>
+                  <td class="py-3 px-4 font-medium text-gray-900">2025-11-15</td>
+                  <td class="py-3 px-4 text-right text-gray-900 font-medium" colspan="4">Disbursement: KES 250,000</td>
+                  <td class="py-3 px-4 text-right font-medium text-gray-900">250,000</td>
+                  <td class="py-3 px-4"><span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-700">Disbursed</span></td>
+                </tr>
+                <!-- Paid installments -->
+                <tr class="border-b border-gray-50">
+                  <td class="py-3 px-4 text-gray-500 font-medium">1</td>
+                  <td class="py-3 px-4 text-gray-900">2025-12-15</td>
+                  <td class="py-3 px-4 text-right text-gray-900">20,833</td>
+                  <td class="py-3 px-4 text-right text-gray-900">2,917</td>
+                  <td class="py-3 px-4 text-right text-gray-900">2,500</td>
+                  <td class="py-3 px-4 text-right font-medium text-gray-900">26,250</td>
+                  <td class="py-3 px-4 text-right text-gray-900">229,167</td>
+                  <td class="py-3 px-4"><span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-50 text-green-700">Paid 2025-12-14</span></td>
+                </tr>
+                <tr class="border-b border-gray-50">
+                  <td class="py-3 px-4 text-gray-500 font-medium">2</td>
+                  <td class="py-3 px-4 text-gray-900">2026-01-15</td>
+                  <td class="py-3 px-4 text-right text-gray-900">20,833</td>
+                  <td class="py-3 px-4 text-right text-gray-900">2,917</td>
+                  <td class="py-3 px-4 text-right text-gray-400">-</td>
+                  <td class="py-3 px-4 text-right font-medium text-gray-900">23,750</td>
+                  <td class="py-3 px-4 text-right text-gray-900">208,334</td>
+                  <td class="py-3 px-4"><span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-50 text-green-700">Paid 2026-01-13</span></td>
+                </tr>
+                <tr class="border-b border-gray-50">
+                  <td class="py-3 px-4 text-gray-500 font-medium">3</td>
+                  <td class="py-3 px-4 text-gray-900">2026-02-15</td>
+                  <td class="py-3 px-4 text-right text-gray-900">20,834</td>
+                  <td class="py-3 px-4 text-right text-gray-900">2,917</td>
+                  <td class="py-3 px-4 text-right text-gray-400">-</td>
+                  <td class="py-3 px-4 text-right font-medium text-gray-900">23,751</td>
+                  <td class="py-3 px-4 text-right text-gray-900">187,500</td>
+                  <td class="py-3 px-4"><span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-50 text-green-700">Paid 2026-02-15</span></td>
+                </tr>
+                <!-- Current/upcoming installment -->
+                <tr class="border-b border-gray-50 bg-blue-50/20">
+                  <td class="py-3 px-4 text-blue-600 font-bold">4</td>
+                  <td class="py-3 px-4 font-medium text-blue-700">2026-03-15</td>
+                  <td class="py-3 px-4 text-right text-gray-900">20,833</td>
+                  <td class="py-3 px-4 text-right text-gray-900">2,917</td>
+                  <td class="py-3 px-4 text-right text-gray-400">-</td>
+                  <td class="py-3 px-4 text-right font-bold text-blue-700">23,750</td>
+                  <td class="py-3 px-4 text-right text-gray-900">166,667</td>
+                  <td class="py-3 px-4"><span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-50 text-amber-700">Due - 15 days ago</span></td>
+                </tr>
+                <!-- Future installments -->
+                <tr class="border-b border-gray-50">
+                  <td class="py-3 px-4 text-gray-400">5</td>
+                  <td class="py-3 px-4 text-gray-500">2026-04-15</td>
+                  <td class="py-3 px-4 text-right text-gray-400">20,833</td>
+                  <td class="py-3 px-4 text-right text-gray-400">2,917</td>
+                  <td class="py-3 px-4 text-right text-gray-400">-</td>
+                  <td class="py-3 px-4 text-right text-gray-500">23,750</td>
+                  <td class="py-3 px-4 text-right text-gray-400">145,834</td>
+                  <td class="py-3 px-4"><span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-500">Upcoming</span></td>
+                </tr>
+                <tr class="border-b border-gray-50">
+                  <td class="py-3 px-4 text-gray-400">6</td>
+                  <td class="py-3 px-4 text-gray-500">2026-05-15</td>
+                  <td class="py-3 px-4 text-right text-gray-400">20,834</td>
+                  <td class="py-3 px-4 text-right text-gray-400">2,917</td>
+                  <td class="py-3 px-4 text-right text-gray-400">-</td>
+                  <td class="py-3 px-4 text-right text-gray-500">23,751</td>
+                  <td class="py-3 px-4 text-right text-gray-400">125,000</td>
+                  <td class="py-3 px-4"><span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-500">Upcoming</span></td>
+                </tr>
+                <tr class="border-b border-gray-50">
+                  <td class="py-3 px-4 text-gray-400">7</td>
+                  <td class="py-3 px-4 text-gray-500">2026-06-15</td>
+                  <td class="py-3 px-4 text-right text-gray-400">20,833</td>
+                  <td class="py-3 px-4 text-right text-gray-400">2,917</td>
+                  <td class="py-3 px-4 text-right text-gray-400">-</td>
+                  <td class="py-3 px-4 text-right text-gray-500">23,750</td>
+                  <td class="py-3 px-4 text-right text-gray-400">104,167</td>
+                  <td class="py-3 px-4"><span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-500">Upcoming</span></td>
+                </tr>
+                <tr class="border-b border-gray-50">
+                  <td class="py-3 px-4 text-gray-400">8</td>
+                  <td class="py-3 px-4 text-gray-500">2026-07-15</td>
+                  <td class="py-3 px-4 text-right text-gray-400">20,833</td>
+                  <td class="py-3 px-4 text-right text-gray-400">2,917</td>
+                  <td class="py-3 px-4 text-right text-gray-400">-</td>
+                  <td class="py-3 px-4 text-right text-gray-500">23,750</td>
+                  <td class="py-3 px-4 text-right text-gray-400">83,334</td>
+                  <td class="py-3 px-4"><span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-500">Upcoming</span></td>
+                </tr>
+                <tr class="border-b border-gray-50">
+                  <td class="py-3 px-4 text-gray-400">9</td>
+                  <td class="py-3 px-4 text-gray-500">2026-08-15</td>
+                  <td class="py-3 px-4 text-right text-gray-400">20,834</td>
+                  <td class="py-3 px-4 text-right text-gray-400">2,917</td>
+                  <td class="py-3 px-4 text-right text-gray-400">-</td>
+                  <td class="py-3 px-4 text-right text-gray-500">23,751</td>
+                  <td class="py-3 px-4 text-right text-gray-400">62,500</td>
+                  <td class="py-3 px-4"><span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-500">Upcoming</span></td>
+                </tr>
+                <tr class="border-b border-gray-50">
+                  <td class="py-3 px-4 text-gray-400">10</td>
+                  <td class="py-3 px-4 text-gray-500">2026-09-15</td>
+                  <td class="py-3 px-4 text-right text-gray-400">20,833</td>
+                  <td class="py-3 px-4 text-right text-gray-400">2,917</td>
+                  <td class="py-3 px-4 text-right text-gray-400">-</td>
+                  <td class="py-3 px-4 text-right text-gray-500">23,750</td>
+                  <td class="py-3 px-4 text-right text-gray-400">41,667</td>
+                  <td class="py-3 px-4"><span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-500">Upcoming</span></td>
+                </tr>
+                <tr class="border-b border-gray-50">
+                  <td class="py-3 px-4 text-gray-400">11</td>
+                  <td class="py-3 px-4 text-gray-500">2026-10-15</td>
+                  <td class="py-3 px-4 text-right text-gray-400">20,833</td>
+                  <td class="py-3 px-4 text-right text-gray-400">2,917</td>
+                  <td class="py-3 px-4 text-right text-gray-400">-</td>
+                  <td class="py-3 px-4 text-right text-gray-500">23,750</td>
+                  <td class="py-3 px-4 text-right text-gray-400">20,834</td>
+                  <td class="py-3 px-4"><span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-500">Upcoming</span></td>
+                </tr>
+                <tr>
+                  <td class="py-3 px-4 text-gray-400">12</td>
+                  <td class="py-3 px-4 text-gray-500">2026-11-15</td>
+                  <td class="py-3 px-4 text-right text-gray-400">20,834</td>
+                  <td class="py-3 px-4 text-right text-gray-400">2,916</td>
+                  <td class="py-3 px-4 text-right text-gray-400">-</td>
+                  <td class="py-3 px-4 text-right text-gray-500">23,750</td>
+                  <td class="py-3 px-4 text-right text-gray-400">0</td>
+                  <td class="py-3 px-4"><span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-500">Upcoming</span></td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr class="border-t-2 border-gray-200 bg-gray-50/50 font-semibold">
+                  <td class="py-3 px-4 text-gray-900" colspan="2">Totals</td>
+                  <td class="py-3 px-4 text-right text-gray-900">250,000</td>
+                  <td class="py-3 px-4 text-right text-gray-900">35,000</td>
+                  <td class="py-3 px-4 text-right text-gray-900">2,500</td>
+                  <td class="py-3 px-4 text-right text-gray-900">287,500</td>
+                  <td class="py-3 px-4"></td>
+                  <td class="py-3 px-4"></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

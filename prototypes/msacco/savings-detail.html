@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fineract - Savings Detail</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif']}}}}</script>
+  <style>.sidebar-item.active{background:#eff6ff;color:#2563eb}.sidebar-item:hover{background:#f8fafc}.sidebar-item.active:hover{background:#eff6ff}.tab-active{color:#2563eb;border-bottom-color:#2563eb}.tab-item:hover{color:#2563eb}</style>
+</head>
+<body class="bg-gray-50 font-sans min-h-screen flex">
+
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white border-r border-gray-100 flex flex-col fixed inset-y-0 left-0 z-30">
+    <div class="h-16 flex items-center gap-3 px-5 border-b border-gray-100">
+      <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+      <span class="font-bold text-gray-900 text-lg">Fineract</span>
+    </div>
+    <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1">
+      <p class="px-3 text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">Main</p>
+      <a href="dashboard.html" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z"/></svg>Dashboard</a>
+      <a href="clients-list.html" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>Clients</a>
+      <a href="loans-list.html" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg>Loans</a>
+      <a href="savings-list.html" class="sidebar-item active flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2z"/></svg>Savings</a>
+      <p class="px-3 text-[11px] font-semibold text-gray-400 uppercase tracking-wider mt-6 mb-2">Finance</p>
+      <a href="#" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>Accounting</a>
+      <a href="#" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>Reports</a>
+    </nav>
+    <div class="border-t border-gray-100 p-3">
+      <div class="flex items-center gap-3 px-3 py-2 rounded-xl">
+        <div class="w-9 h-9 bg-blue-100 rounded-full flex items-center justify-center"><span class="text-blue-600 font-semibold text-sm">AW</span></div>
+        <div class="flex-1 min-w-0"><p class="text-sm font-medium text-gray-900 truncate">Amina Wanjiku</p><p class="text-xs text-gray-500 truncate">Westlands Branch</p></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="ml-64 flex-1 flex flex-col min-h-screen">
+    <header class="h-16 bg-white border-b border-gray-100 flex items-center justify-between px-6 sticky top-0 z-20">
+      <div class="flex items-center gap-2 text-sm">
+        <a href="dashboard.html" class="text-gray-400 hover:text-gray-600">Home</a>
+        <svg class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <a href="savings-list.html" class="text-gray-400 hover:text-gray-600">Savings</a>
+        <svg class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <span class="text-gray-900 font-medium">SA-00089742</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button class="px-3 py-1.5 text-sm border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 flex items-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2z"/></svg>Print Statement
+        </button>
+        <div class="relative">
+          <button class="px-4 py-1.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-1.5" onclick="document.getElementById('actionMenu').classList.toggle('hidden')">
+            Actions
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div id="actionMenu" class="hidden absolute right-0 mt-2 w-56 bg-white border border-gray-100 rounded-xl shadow-lg py-2 z-50">
+            <a href="#" class="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50"><svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>Deposit</a>
+            <a href="#" class="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50"><svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>Withdraw</a>
+            <a href="#" class="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50"><svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>Transfer</a>
+            <div class="border-t border-gray-100 my-1"></div>
+            <a href="#" class="flex items-center gap-2 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>Close Account</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1 p-6 space-y-6">
+      <!-- Account Header Card -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+        <div class="flex items-start justify-between">
+          <div class="flex items-start gap-5">
+            <div class="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center">
+              <span class="text-purple-700 text-xl font-bold">EN</span>
+            </div>
+            <div>
+              <div class="flex items-center gap-3">
+                <h1 class="text-xl font-bold text-gray-900">Esther Nyambura</h1>
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">Active</span>
+              </div>
+              <p class="text-sm text-gray-500 mt-1">SA-00089742 &bull; Ordinary Savings &bull; Westlands Branch</p>
+              <div class="flex items-center gap-6 mt-4">
+                <div>
+                  <p class="text-xs text-gray-400 uppercase tracking-wider font-medium">Loan Officer</p>
+                  <p class="text-sm text-gray-900 mt-0.5 font-medium">Akinyi Roselyn</p>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-400 uppercase tracking-wider font-medium">Opened</p>
+                  <p class="text-sm text-gray-900 mt-0.5 font-medium">2023-04-12</p>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-400 uppercase tracking-wider font-medium">Currency</p>
+                  <p class="text-sm text-gray-900 mt-0.5 font-medium">KES</p>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-400 uppercase tracking-wider font-medium">Last Activity</p>
+                  <p class="text-sm text-gray-900 mt-0.5 font-medium">2026-03-25</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Key Metrics -->
+          <div class="flex gap-3">
+            <div class="bg-blue-50 rounded-xl p-4 text-center min-w-[130px]">
+              <p class="text-xs text-blue-500 font-medium">Current Balance</p>
+              <p class="text-lg font-bold text-blue-700 mt-1">KES 234,500</p>
+            </div>
+            <div class="bg-green-50 rounded-xl p-4 text-center min-w-[130px]">
+              <p class="text-xs text-green-500 font-medium">Total Deposits</p>
+              <p class="text-lg font-bold text-green-700 mt-1">KES 412,000</p>
+            </div>
+            <div class="bg-amber-50 rounded-xl p-4 text-center min-w-[130px]">
+              <p class="text-xs text-amber-500 font-medium">Total Withdrawals</p>
+              <p class="text-lg font-bold text-amber-700 mt-1">KES 177,500</p>
+            </div>
+            <div class="bg-purple-50 rounded-xl p-4 text-center min-w-[130px]">
+              <p class="text-xs text-purple-500 font-medium">Interest Earned</p>
+              <p class="text-lg font-bold text-purple-700 mt-1">KES 8,750</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Account Summary Card -->
+      <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
+        <h3 class="text-sm font-semibold text-gray-900 mb-3">Account Summary</h3>
+        <div class="grid grid-cols-6 gap-6">
+          <div>
+            <p class="text-xs text-gray-400">Product</p>
+            <p class="text-sm font-medium text-gray-900 mt-0.5">Ordinary Savings</p>
+          </div>
+          <div>
+            <p class="text-xs text-gray-400">Interest Rate</p>
+            <p class="text-sm font-medium text-gray-900 mt-0.5">5% per annum</p>
+          </div>
+          <div>
+            <p class="text-xs text-gray-400">Interest Compounding</p>
+            <p class="text-sm font-medium text-gray-900 mt-0.5">Monthly</p>
+          </div>
+          <div>
+            <p class="text-xs text-gray-400">Interest Posting</p>
+            <p class="text-sm font-medium text-gray-900 mt-0.5">Quarterly</p>
+          </div>
+          <div>
+            <p class="text-xs text-gray-400">Min Balance</p>
+            <p class="text-sm font-medium text-gray-900 mt-0.5">KES 1,000</p>
+          </div>
+          <div>
+            <p class="text-xs text-gray-400">Lockin Period</p>
+            <p class="text-sm font-medium text-gray-900 mt-0.5">None</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs + Transaction Table -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm">
+        <div class="border-b border-gray-100 px-6">
+          <nav class="flex gap-6 -mb-px">
+            <button class="tab-item tab-active py-4 text-sm font-medium border-b-2 transition">Transactions</button>
+            <button class="tab-item py-4 text-sm font-medium text-gray-500 border-b-2 border-transparent transition">Charges</button>
+            <button class="tab-item py-4 text-sm font-medium text-gray-500 border-b-2 border-transparent transition">Standing Instructions</button>
+            <button class="tab-item py-4 text-sm font-medium text-gray-500 border-b-2 border-transparent transition">Documents</button>
+          </nav>
+        </div>
+
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-base font-semibold text-gray-900">Recent Transactions</h3>
+            <div class="flex items-center gap-3 text-xs">
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-green-500 rounded-full"></span>Credit</span>
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-red-400 rounded-full"></span>Debit</span>
+            </div>
+          </div>
+
+          <table class="w-full">
+            <thead>
+              <tr class="border-b border-gray-100">
+                <th class="text-left text-xs font-semibold text-gray-400 uppercase tracking-wider px-4 py-3">Date</th>
+                <th class="text-left text-xs font-semibold text-gray-400 uppercase tracking-wider px-4 py-3">Type</th>
+                <th class="text-left text-xs font-semibold text-gray-400 uppercase tracking-wider px-4 py-3">Reference</th>
+                <th class="text-right text-xs font-semibold text-gray-400 uppercase tracking-wider px-4 py-3">Debit (KES)</th>
+                <th class="text-right text-xs font-semibold text-gray-400 uppercase tracking-wider px-4 py-3">Credit (KES)</th>
+                <th class="text-right text-xs font-semibold text-gray-400 uppercase tracking-wider px-4 py-3">Balance (KES)</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-50">
+              <tr class="hover:bg-blue-50/30 transition">
+                <td class="px-4 py-3.5"><span class="text-sm text-gray-900">2026-03-25</span></td>
+                <td class="px-4 py-3.5"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-50 text-green-700">Deposit</span></td>
+                <td class="px-4 py-3.5"><span class="text-sm text-gray-600">Salary Credit - Safaricom PLC</span></td>
+                <td class="px-4 py-3.5 text-right"><span class="text-sm text-gray-300">--</span></td>
+                <td class="px-4 py-3.5 text-right"><span class="text-sm font-semibold text-green-600">65,000.00</span></td>
+                <td class="px-4 py-3.5 text-right"><span class="text-sm font-semibold text-gray-900">234,500.00</span></td>
+              </tr>
+              <tr class="hover:bg-blue-50/30 transition">
+                <td class="px-4 py-3.5"><span class="text-sm text-gray-900">2026-03-22</span></td>
+                <td class="px-4 py-3.5"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-50 text-red-700">Withdrawal</span></td>
+                <td class="px-4 py-3.5"><span class="text-sm text-gray-600">ATM - Westlands Mall</span></td>
+                <td class="px-4 py-3.5 text-right"><span class="text-sm font-semibold text-red-600">15,000.00</span></td>
+                <td class="px-4 py-3.5 text-right"><span class="text-sm text-gray-300">--</span></td>
+                <td class="px-4 py-3.5 text-right"><span class="text-sm font-semibold text-gray-900">169,500.00</span></td>
+              </tr>
+              <tr class="hover:bg-blue-50/30 transition">
+                <td class="px-4 py-3.5"><span class="text-sm text-gray-900">2026-03-18</span></td>
+                <td class="px-4 py-3.5"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-50 text-green-700">Deposit</span></td>
+                <td class="px-4 py-3.5"><span class="text-sm text-gray-600">M-Pesa Deposit - MPESA7K42RT</span></td>
+                <td class="px-4 py-3.5 text-right"><span class="text-sm text-gray-300">--</span></td>
+                <td class="px-4 py-3.5 text-right"><span class="text-sm font-semibold text-green-600">10,000.00</span></td>
+                <td class="px-4 py-3.5 text-right"><span class="text-sm font-semibold text-gray-900">184,500.00</span></td>
+              </tr>
+              <tr class="hover:bg-blue-50/30 transition">
+                <td class="px-4 py-3.5"><span class="text-sm text-gray-900">2026-03-15</span></td>
+                <td class="px-4 py-3.5"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-50 text-red-700">Withdrawal</span></td>
+                <td class="px-4 py-3.5"><span class="text-sm text-gray-600">Counter Withdrawal - Teller 04</span></td>
+                <td class="px-4 py-3.5 text-right"><span class="text-sm font-semibold text-red-600">30,000.00</span></td>
+                <td class="px-4 py-3.5 text-right"><span class="text-sm text-gray-300">--</span></td>
+                <td class="px-4 py-3.5 text-right"><span class="text-sm font-semibold text-gray-900">174,500.00</span></td>
+              </tr>
+              <tr class="hover:bg-blue-50/30 transition">
+                <td class="px-4 py-3.5"><span class="text-sm text-gray-900">2026-03-01</span></td>
+                <td class="px-4 py-3.5"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-50 text-purple-700">Interest</span></td>
+                <td class="px-4 py-3.5"><span class="text-sm text-gray-600">Quarterly Interest Posting - Q1 2026</span></td>
+                <td class="px-4 py-3.5 text-right"><span class="text-sm text-gray-300">--</span></td>
+                <td class="px-4 py-3.5 text-right"><span class="text-sm font-semibold text-green-600">2,450.00</span></td>
+                <td class="px-4 py-3.5 text-right"><span class="text-sm font-semibold text-gray-900">204,500.00</span></td>
+              </tr>
+              <tr class="hover:bg-blue-50/30 transition">
+                <td class="px-4 py-3.5"><span class="text-sm text-gray-900">2026-02-25</span></td>
+                <td class="px-4 py-3.5"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-50 text-green-700">Deposit</span></td>
+                <td class="px-4 py-3.5"><span class="text-sm text-gray-600">Salary Credit - Safaricom PLC</span></td>
+                <td class="px-4 py-3.5 text-right"><span class="text-sm text-gray-300">--</span></td>
+                <td class="px-4 py-3.5 text-right"><span class="text-sm font-semibold text-green-600">65,000.00</span></td>
+                <td class="px-4 py-3.5 text-right"><span class="text-sm font-semibold text-gray-900">202,050.00</span></td>
+              </tr>
+              <tr class="hover:bg-blue-50/30 transition">
+                <td class="px-4 py-3.5"><span class="text-sm text-gray-900">2026-02-20</span></td>
+                <td class="px-4 py-3.5"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700">Transfer In</span></td>
+                <td class="px-4 py-3.5"><span class="text-sm text-gray-600">From SA-00091205 (Samuel Mwangi)</span></td>
+                <td class="px-4 py-3.5 text-right"><span class="text-sm text-gray-300">--</span></td>
+                <td class="px-4 py-3.5 text-right"><span class="text-sm font-semibold text-green-600">25,000.00</span></td>
+                <td class="px-4 py-3.5 text-right"><span class="text-sm font-semibold text-gray-900">137,050.00</span></td>
+              </tr>
+              <tr class="hover:bg-blue-50/30 transition">
+                <td class="px-4 py-3.5"><span class="text-sm text-gray-900">2026-02-10</span></td>
+                <td class="px-4 py-3.5"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-50 text-green-700">Deposit</span></td>
+                <td class="px-4 py-3.5"><span class="text-sm text-gray-600">M-Pesa Deposit - MPESA3R19PQ</span></td>
+                <td class="px-4 py-3.5 text-right"><span class="text-sm text-gray-300">--</span></td>
+                <td class="px-4 py-3.5 text-right"><span class="text-sm font-semibold text-green-600">5,000.00</span></td>
+                <td class="px-4 py-3.5 text-right"><span class="text-sm font-semibold text-gray-900">112,050.00</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+          <p class="text-sm text-gray-500">Showing <span class="font-medium text-gray-700">1 - 8</span> of <span class="font-medium text-gray-700">47</span> transactions</p>
+          <div class="flex items-center gap-1">
+            <button class="px-3 py-1.5 text-sm text-gray-400 border border-gray-200 rounded-lg cursor-not-allowed">Previous</button>
+            <button class="px-3 py-1.5 text-sm bg-blue-600 text-white rounded-lg font-medium">1</button>
+            <button class="px-3 py-1.5 text-sm text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50">2</button>
+            <button class="px-3 py-1.5 text-sm text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50">3</button>
+            <span class="px-2 text-gray-400">...</span>
+            <button class="px-3 py-1.5 text-sm text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50">6</button>
+            <button class="px-3 py-1.5 text-sm text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50">Next</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+</body>
+</html>

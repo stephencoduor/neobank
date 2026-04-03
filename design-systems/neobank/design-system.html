@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NeoBank — Design System & Page Designs</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            savanna: {
+              primary: '#2D6A4F',
+              'primary-dark': '#1B4332',
+              'primary-light': '#D8F3DC',
+              gold: '#E9B949',
+              'gold-light': '#FEF9E7',
+              'gold-dark': '#854D0E',
+              surface: '#FAFAF5',
+              'surface-warm': '#F5F0E8',
+              'surface-muted': '#F0EDE6',
+              'surface-card': '#FFFFFF',
+              'border-warm': '#E8E5DE',
+              'text-heading': '#1A1A1A',
+              'text-body': '#374151',
+              'text-secondary': '#6B7280',
+              'text-muted': '#9CA3AF',
+              success: '#22C55E',
+              'success-bg': '#F0FDF4',
+              warning: '#EAB308',
+              'warning-bg': '#FEFCE8',
+              danger: '#EF4444',
+              'danger-bg': '#FEF2F2',
+              info: '#3B82F6',
+              'info-bg': '#EFF6FF',
+              sidebar: '#1B4332',
+              'sidebar-hover': '#2D6A4F',
+            },
+          },
+          fontFamily: {
+            sans: ['DM Sans', 'system-ui', 'sans-serif'],
+          },
+          borderRadius: {
+            'savanna-sm': '6px',
+            'savanna-md': '12px',
+            'savanna-lg': '20px',
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    body { font-family: 'DM Sans', sans-serif; }
+    .section-anchor::before { content: ''; display: block; height: 80px; margin-top: -80px; visibility: hidden; }
+    .color-swatch { transition: transform 0.2s; }
+    .color-swatch:hover { transform: scale(1.05); }
+    .page-preview { border: 1px solid #E8E5DE; border-radius: 12px; overflow: hidden; }
+    .page-preview:hover { box-shadow: 0 8px 30px rgba(45,106,79,0.12); }
+    nav.sticky-nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(12px); }
+  </style>
+</head>
+<body class="bg-savanna-surface text-savanna-text-body">
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       NAVIGATION
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <nav class="sticky-nav bg-savanna-primary-dark/95 text-white border-b border-savanna-primary">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-savanna-gold flex items-center justify-center">
+          <svg class="w-5 h-5 text-savanna-primary-dark" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+        </div>
+        <span class="text-xl font-bold">NeoBank</span>
+        <span class="text-xs bg-savanna-gold/20 text-savanna-gold px-2 py-0.5 rounded-full ml-2">Design System v1.0</span>
+      </div>
+      <div class="hidden md:flex items-center gap-6 text-sm">
+        <a href="#colors" class="hover:text-savanna-gold transition">Colors</a>
+        <a href="#typography" class="hover:text-savanna-gold transition">Typography</a>
+        <a href="#components" class="hover:text-savanna-gold transition">Components</a>
+        <a href="#pages" class="hover:text-savanna-gold transition">Pages</a>
+        <a href="#icons" class="hover:text-savanna-gold transition">Icons</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       HERO
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <section class="bg-gradient-to-br from-savanna-primary-dark via-savanna-primary to-savanna-primary-dark text-white py-20">
+    <div class="max-w-7xl mx-auto px-6">
+      <p class="text-savanna-gold font-medium mb-2">Qsoftwares Ltd — Digital Financial Solutions</p>
+      <h1 class="text-5xl font-bold leading-tight mb-4">NeoBank Design System</h1>
+      <p class="text-savanna-primary-light text-lg max-w-2xl mb-8">
+        Comprehensive design language for a next-generation digital banking &amp; payments ecosystem.
+        Built for emerging markets. Mobile-first. Bank-grade.
+      </p>
+      <div class="flex gap-4 flex-wrap">
+        <span class="bg-white/10 px-4 py-2 rounded-savanna-md text-sm">Tailwind CSS</span>
+        <span class="bg-white/10 px-4 py-2 rounded-savanna-md text-sm">shadcn/ui</span>
+        <span class="bg-white/10 px-4 py-2 rounded-savanna-md text-sm">React 19</span>
+        <span class="bg-white/10 px-4 py-2 rounded-savanna-md text-sm">DM Sans</span>
+        <span class="bg-white/10 px-4 py-2 rounded-savanna-md text-sm">Lucide Icons</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="max-w-7xl mx-auto px-6 py-16 space-y-24">
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         SECTION 1: COLOR PALETTE
+         ═══════════════════════════════════════════════════════════════════ -->
+    <section id="colors" class="section-anchor">
+      <h2 class="text-3xl font-bold text-savanna-text-heading mb-2">Color Palette</h2>
+      <p class="text-savanna-text-secondary mb-8">Savanna-inspired palette rooted in African landscapes — deep forest greens, warm golds, and natural earth tones.</p>
+
+      <!-- Primary Colors -->
+      <h3 class="text-lg font-semibold text-savanna-text-heading mb-4">Primary</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-10">
+        <div class="color-swatch">
+          <div class="h-24 rounded-t-savanna-md bg-savanna-primary-dark"></div>
+          <div class="bg-white p-3 rounded-b-savanna-md border border-savanna-border-warm">
+            <p class="font-semibold text-sm">Primary Dark</p>
+            <p class="text-xs text-savanna-text-muted">#1B4332</p>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="h-24 rounded-t-savanna-md bg-savanna-primary"></div>
+          <div class="bg-white p-3 rounded-b-savanna-md border border-savanna-border-warm">
+            <p class="font-semibold text-sm">Primary</p>
+            <p class="text-xs text-savanna-text-muted">#2D6A4F</p>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="h-24 rounded-t-savanna-md bg-savanna-primary-light"></div>
+          <div class="bg-white p-3 rounded-b-savanna-md border border-savanna-border-warm">
+            <p class="font-semibold text-sm">Primary Light</p>
+            <p class="text-xs text-savanna-text-muted">#D8F3DC</p>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="h-24 rounded-t-savanna-md bg-savanna-gold"></div>
+          <div class="bg-white p-3 rounded-b-savanna-md border border-savanna-border-warm">
+            <p class="font-semibold text-sm">Gold (Accent)</p>
+            <p class="text-xs text-savanna-text-muted">#E9B949</p>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="h-24 rounded-t-savanna-md bg-savanna-gold-light"></div>
+          <div class="bg-white p-3 rounded-b-savanna-md border border-savanna-border-warm">
+            <p class="font-semibold text-sm">Gold Light</p>
+            <p class="text-xs text-savanna-text-muted">#FEF9E7</p>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="h-24 rounded-t-savanna-md bg-savanna-gold-dark"></div>
+          <div class="bg-white p-3 rounded-b-savanna-md border border-savanna-border-warm">
+            <p class="font-semibold text-sm">Gold Dark</p>
+            <p class="text-xs text-savanna-text-muted">#854D0E</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Surfaces -->
+      <h3 class="text-lg font-semibold text-savanna-text-heading mb-4">Surfaces &amp; Backgrounds</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-10">
+        <div class="color-swatch">
+          <div class="h-20 rounded-t-savanna-md bg-savanna-surface border border-savanna-border-warm"></div>
+          <div class="bg-white p-3 rounded-b-savanna-md border border-savanna-border-warm">
+            <p class="font-semibold text-sm">Surface</p>
+            <p class="text-xs text-savanna-text-muted">#FAFAF5</p>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="h-20 rounded-t-savanna-md bg-savanna-surface-warm"></div>
+          <div class="bg-white p-3 rounded-b-savanna-md border border-savanna-border-warm">
+            <p class="font-semibold text-sm">Surface Warm</p>
+            <p class="text-xs text-savanna-text-muted">#F5F0E8</p>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="h-20 rounded-t-savanna-md bg-savanna-surface-muted"></div>
+          <div class="bg-white p-3 rounded-b-savanna-md border border-savanna-border-warm">
+            <p class="font-semibold text-sm">Surface Muted</p>
+            <p class="text-xs text-savanna-text-muted">#F0EDE6</p>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="h-20 rounded-t-savanna-md bg-white border border-savanna-border-warm"></div>
+          <div class="bg-white p-3 rounded-b-savanna-md border border-savanna-border-warm">
+            <p class="font-semibold text-sm">Card</p>
+            <p class="text-xs text-savanna-text-muted">#FFFFFF</p>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="h-20 rounded-t-savanna-md bg-savanna-sidebar"></div>
+          <div class="bg-white p-3 rounded-b-savanna-md border border-savanna-border-warm">
+            <p class="font-semibold text-sm">Sidebar</p>
+            <p class="text-xs text-savanna-text-muted">#1B4332</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Semantic Colors -->
+      <h3 class="text-lg font-semibold text-savanna-text-heading mb-4">Semantic</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+        <div class="color-swatch">
+          <div class="h-16 rounded-t-savanna-md bg-savanna-success"></div>
+          <div class="bg-savanna-success-bg p-3 rounded-b-savanna-md border border-green-200">
+            <p class="font-semibold text-sm">Success</p>
+            <p class="text-xs text-savanna-text-muted">#22C55E / bg #F0FDF4</p>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="h-16 rounded-t-savanna-md bg-savanna-warning"></div>
+          <div class="bg-savanna-warning-bg p-3 rounded-b-savanna-md border border-yellow-200">
+            <p class="font-semibold text-sm">Warning</p>
+            <p class="text-xs text-savanna-text-muted">#EAB308 / bg #FEFCE8</p>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="h-16 rounded-t-savanna-md bg-savanna-danger"></div>
+          <div class="bg-savanna-danger-bg p-3 rounded-b-savanna-md border border-red-200">
+            <p class="font-semibold text-sm">Danger</p>
+            <p class="text-xs text-savanna-text-muted">#EF4444 / bg #FEF2F2</p>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="h-16 rounded-t-savanna-md bg-savanna-info"></div>
+          <div class="bg-savanna-info-bg p-3 rounded-b-savanna-md border border-blue-200">
+            <p class="font-semibold text-sm">Info</p>
+            <p class="text-xs text-savanna-text-muted">#3B82F6 / bg #EFF6FF</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Text Colors -->
+      <h3 class="text-lg font-semibold text-savanna-text-heading mb-4">Typography Colors</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-white p-4 rounded-savanna-md border border-savanna-border-warm">
+          <p class="text-savanna-text-heading font-bold text-lg">Heading</p>
+          <p class="text-xs text-savanna-text-muted mt-1">#1A1A1A</p>
+        </div>
+        <div class="bg-white p-4 rounded-savanna-md border border-savanna-border-warm">
+          <p class="text-savanna-text-body text-lg">Body</p>
+          <p class="text-xs text-savanna-text-muted mt-1">#374151</p>
+        </div>
+        <div class="bg-white p-4 rounded-savanna-md border border-savanna-border-warm">
+          <p class="text-savanna-text-secondary text-lg">Secondary</p>
+          <p class="text-xs text-savanna-text-muted mt-1">#6B7280</p>
+        </div>
+        <div class="bg-white p-4 rounded-savanna-md border border-savanna-border-warm">
+          <p class="text-savanna-text-muted text-lg">Muted</p>
+          <p class="text-xs text-savanna-text-muted mt-1">#9CA3AF</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         SECTION 2: TYPOGRAPHY
+         ═══════════════════════════════════════════════════════════════════ -->
+    <section id="typography" class="section-anchor">
+      <h2 class="text-3xl font-bold text-savanna-text-heading mb-2">Typography</h2>
+      <p class="text-savanna-text-secondary mb-8">DM Sans — clean, modern geometric sans-serif. Excellent readability for financial data.</p>
+
+      <div class="bg-white rounded-savanna-lg p-8 border border-savanna-border-warm space-y-6">
+        <div>
+          <p class="text-xs text-savanna-text-muted mb-1">Display — 48px / Bold</p>
+          <p class="text-5xl font-bold text-savanna-text-heading">KES 1,039,620</p>
+        </div>
+        <hr class="border-savanna-border-warm" />
+        <div>
+          <p class="text-xs text-savanna-text-muted mb-1">H1 — 36px / Bold</p>
+          <p class="text-4xl font-bold text-savanna-text-heading">Good morning, Amina</p>
+        </div>
+        <hr class="border-savanna-border-warm" />
+        <div>
+          <p class="text-xs text-savanna-text-muted mb-1">H2 — 30px / Bold</p>
+          <p class="text-3xl font-bold text-savanna-text-heading">My Accounts</p>
+        </div>
+        <hr class="border-savanna-border-warm" />
+        <div>
+          <p class="text-xs text-savanna-text-muted mb-1">H3 — 24px / Semibold</p>
+          <p class="text-2xl font-semibold text-savanna-text-heading">Recent Transactions</p>
+        </div>
+        <hr class="border-savanna-border-warm" />
+        <div>
+          <p class="text-xs text-savanna-text-muted mb-1">H4 — 20px / Semibold</p>
+          <p class="text-xl font-semibold text-savanna-text-heading">Card Details</p>
+        </div>
+        <hr class="border-savanna-border-warm" />
+        <div>
+          <p class="text-xs text-savanna-text-muted mb-1">Body — 16px / Regular</p>
+          <p class="text-base text-savanna-text-body">Transfer KES 5,000 to James Ochieng via M-Pesa. The funds will be available in their account within 30 seconds.</p>
+        </div>
+        <hr class="border-savanna-border-warm" />
+        <div>
+          <p class="text-xs text-savanna-text-muted mb-1">Body Small — 14px / Regular</p>
+          <p class="text-sm text-savanna-text-secondary">Transaction ref: P2P-2026040310300001 &bull; Completed at 10:30 AM</p>
+        </div>
+        <hr class="border-savanna-border-warm" />
+        <div>
+          <p class="text-xs text-savanna-text-muted mb-1">Caption — 12px / Medium</p>
+          <p class="text-xs font-medium text-savanna-text-muted">AVAILABLE BALANCE</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         SECTION 3: SPACING & SHAPES
+         ═══════════════════════════════════════════════════════════════════ -->
+    <section>
+      <h2 class="text-3xl font-bold text-savanna-text-heading mb-2">Spacing &amp; Border Radius</h2>
+      <p class="text-savanna-text-secondary mb-8">Consistent spacing scale and rounded corners for a warm, approachable feel.</p>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <!-- Border Radius -->
+        <div class="bg-white rounded-savanna-lg p-6 border border-savanna-border-warm">
+          <h3 class="font-semibold text-savanna-text-heading mb-4">Border Radius</h3>
+          <div class="space-y-4">
+            <div class="flex items-center gap-4">
+              <div class="w-16 h-16 bg-savanna-primary-light border-2 border-savanna-primary rounded-[6px]"></div>
+              <div><p class="font-medium">Small — 6px</p><p class="text-sm text-savanna-text-muted">Badges, chips, tags</p></div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="w-16 h-16 bg-savanna-primary-light border-2 border-savanna-primary rounded-[12px]"></div>
+              <div><p class="font-medium">Medium — 12px</p><p class="text-sm text-savanna-text-muted">Inputs, buttons, small cards</p></div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="w-16 h-16 bg-savanna-primary-light border-2 border-savanna-primary rounded-[20px]"></div>
+              <div><p class="font-medium">Large — 20px</p><p class="text-sm text-savanna-text-muted">Cards, dialogs, panels</p></div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="w-16 h-16 bg-savanna-primary-light border-2 border-savanna-primary rounded-full"></div>
+              <div><p class="font-medium">Full — 9999px</p><p class="text-sm text-savanna-text-muted">Avatars, icon buttons, pills</p></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Shadows -->
+        <div class="bg-white rounded-savanna-lg p-6 border border-savanna-border-warm">
+          <h3 class="font-semibold text-savanna-text-heading mb-4">Elevation / Shadows</h3>
+          <div class="space-y-4">
+            <div class="flex items-center gap-4">
+              <div class="w-16 h-16 bg-white rounded-savanna-md border border-savanna-border-warm"></div>
+              <div><p class="font-medium">Level 0 — Border only</p><p class="text-sm text-savanna-text-muted">Static cards, inputs</p></div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="w-16 h-16 bg-white rounded-savanna-md shadow-sm"></div>
+              <div><p class="font-medium">Level 1 — shadow-sm</p><p class="text-sm text-savanna-text-muted">Hover states, dropdowns</p></div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="w-16 h-16 bg-white rounded-savanna-md shadow-md"></div>
+              <div><p class="font-medium">Level 2 — shadow-md</p><p class="text-sm text-savanna-text-muted">Floating cards, popovers</p></div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="w-16 h-16 bg-white rounded-savanna-md shadow-lg"></div>
+              <div><p class="font-medium">Level 3 — shadow-lg</p><p class="text-sm text-savanna-text-muted">Modals, dialogs</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         SECTION 4: COMPONENTS
+         ═══════════════════════════════════════════════════════════════════ -->
+    <section id="components" class="section-anchor">
+      <h2 class="text-3xl font-bold text-savanna-text-heading mb-2">Components</h2>
+      <p class="text-savanna-text-secondary mb-8">Core UI components built with shadcn/ui, themed to the Savanna design system.</p>
+
+      <!-- Buttons -->
+      <div class="bg-white rounded-savanna-lg p-8 border border-savanna-border-warm mb-8">
+        <h3 class="font-semibold text-savanna-text-heading mb-6">Buttons</h3>
+        <div class="flex flex-wrap gap-4 mb-6">
+          <button class="bg-savanna-primary text-white px-6 py-2.5 rounded-savanna-md font-medium hover:bg-savanna-primary-dark transition">Primary</button>
+          <button class="bg-savanna-gold text-savanna-primary-dark px-6 py-2.5 rounded-savanna-md font-medium hover:bg-savanna-gold/90 transition">Gold Accent</button>
+          <button class="bg-white text-savanna-text-body px-6 py-2.5 rounded-savanna-md font-medium border border-savanna-border-warm hover:bg-savanna-surface transition">Outline</button>
+          <button class="bg-savanna-danger text-white px-6 py-2.5 rounded-savanna-md font-medium hover:bg-red-600 transition">Destructive</button>
+          <button class="bg-savanna-primary-light text-savanna-primary px-6 py-2.5 rounded-savanna-md font-medium hover:bg-savanna-primary-light/80 transition">Ghost</button>
+          <button class="text-savanna-primary px-6 py-2.5 rounded-savanna-md font-medium underline hover:text-savanna-primary-dark transition">Link</button>
+        </div>
+        <div class="flex flex-wrap gap-4 mb-6">
+          <button class="bg-savanna-primary text-white px-4 py-1.5 rounded-savanna-sm text-sm font-medium">Small</button>
+          <button class="bg-savanna-primary text-white px-6 py-2.5 rounded-savanna-md font-medium">Medium</button>
+          <button class="bg-savanna-primary text-white px-8 py-3 rounded-savanna-md text-lg font-medium">Large</button>
+          <button class="bg-savanna-primary text-white w-full py-3 rounded-savanna-md font-medium mt-2">Full Width</button>
+        </div>
+        <div class="flex flex-wrap gap-4">
+          <button class="bg-savanna-primary/50 text-white/60 px-6 py-2.5 rounded-savanna-md font-medium cursor-not-allowed">Disabled</button>
+          <button class="bg-savanna-primary text-white px-6 py-2.5 rounded-savanna-md font-medium flex items-center gap-2">
+            <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            Loading...
+          </button>
+        </div>
+      </div>
+
+      <!-- Inputs -->
+      <div class="bg-white rounded-savanna-lg p-8 border border-savanna-border-warm mb-8">
+        <h3 class="font-semibold text-savanna-text-heading mb-6">Form Inputs</h3>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-medium text-savanna-text-heading mb-1.5">Phone Number</label>
+            <div class="flex">
+              <span class="bg-savanna-surface-muted border border-r-0 border-savanna-border-warm rounded-l-savanna-md px-3 py-2.5 text-sm text-savanna-text-secondary">+254</span>
+              <input type="text" value="712 345 678" class="w-full border border-savanna-border-warm rounded-r-savanna-md px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-savanna-primary/30 focus:border-savanna-primary" />
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-savanna-text-heading mb-1.5">Amount (KES)</label>
+            <input type="text" value="5,000" class="w-full border border-savanna-border-warm rounded-savanna-md px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-savanna-primary/30 focus:border-savanna-primary" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-savanna-text-heading mb-1.5">Select Account</label>
+            <select class="w-full border border-savanna-border-warm rounded-savanna-md px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-savanna-primary/30">
+              <option>Main Account — KES 147,520</option>
+              <option>Business Account — KES 892,100</option>
+              <option>USD Account — $1,250</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-savanna-text-heading mb-1.5">Search</label>
+            <div class="relative">
+              <svg class="w-4 h-4 absolute left-3 top-3 text-savanna-text-muted" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m21 21-6-6m2-5a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/></svg>
+              <input type="text" placeholder="Search transactions..." class="w-full border border-savanna-border-warm rounded-savanna-md pl-10 pr-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-savanna-primary/30 focus:border-savanna-primary" />
+            </div>
+          </div>
+        </div>
+        <div class="mt-6">
+          <label class="block text-sm font-medium text-savanna-text-heading mb-1.5">Error State</label>
+          <input type="text" value="abc" class="w-full border border-savanna-danger rounded-savanna-md px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-savanna-danger/30" />
+          <p class="text-xs text-savanna-danger mt-1">Please enter a valid amount</p>
+        </div>
+      </div>
+
+      <!-- Cards -->
+      <div class="bg-white rounded-savanna-lg p-8 border border-savanna-border-warm mb-8">
+        <h3 class="font-semibold text-savanna-text-heading mb-6">Cards</h3>
+        <div class="grid md:grid-cols-3 gap-6">
+          <!-- Stat Card -->
+          <div class="bg-white rounded-savanna-lg p-5 border border-savanna-border-warm">
+            <p class="text-xs font-medium text-savanna-text-muted uppercase tracking-wide">Total Balance</p>
+            <p class="text-2xl font-bold text-savanna-text-heading mt-1">KES 1,039,620</p>
+            <p class="text-sm text-savanna-success mt-1">+12.5% from last month</p>
+          </div>
+          <!-- Accent Card -->
+          <div class="bg-gradient-to-br from-savanna-primary to-savanna-primary-dark rounded-savanna-lg p-5 text-white">
+            <p class="text-xs font-medium text-savanna-primary-light uppercase tracking-wide">Main Account</p>
+            <p class="text-2xl font-bold mt-1">KES 147,520</p>
+            <p class="text-sm text-savanna-primary-light mt-1">2024 **** **** 7891</p>
+          </div>
+          <!-- Gold Card -->
+          <div class="bg-gradient-to-br from-savanna-gold to-yellow-600 rounded-savanna-lg p-5 text-savanna-primary-dark">
+            <p class="text-xs font-medium text-savanna-gold-dark uppercase tracking-wide">Gold Tier</p>
+            <p class="text-2xl font-bold mt-1">Premium</p>
+            <p class="text-sm text-savanna-gold-dark mt-1">Unlimited transfers &bull; 0% fees</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Badges -->
+      <div class="bg-white rounded-savanna-lg p-8 border border-savanna-border-warm mb-8">
+        <h3 class="font-semibold text-savanna-text-heading mb-6">Badges &amp; Status</h3>
+        <div class="flex flex-wrap gap-3">
+          <span class="bg-savanna-success-bg text-savanna-success text-xs font-semibold px-2.5 py-1 rounded-savanna-sm">Completed</span>
+          <span class="bg-savanna-warning-bg text-savanna-warning text-xs font-semibold px-2.5 py-1 rounded-savanna-sm">Pending</span>
+          <span class="bg-savanna-danger-bg text-savanna-danger text-xs font-semibold px-2.5 py-1 rounded-savanna-sm">Failed</span>
+          <span class="bg-savanna-info-bg text-savanna-info text-xs font-semibold px-2.5 py-1 rounded-savanna-sm">Processing</span>
+          <span class="bg-savanna-primary-light text-savanna-primary text-xs font-semibold px-2.5 py-1 rounded-savanna-sm">Active</span>
+          <span class="bg-savanna-surface-muted text-savanna-text-secondary text-xs font-semibold px-2.5 py-1 rounded-savanna-sm">Inactive</span>
+          <span class="bg-savanna-gold-light text-savanna-gold-dark text-xs font-semibold px-2.5 py-1 rounded-savanna-sm">Premium</span>
+          <span class="bg-savanna-primary text-white text-xs font-semibold px-2.5 py-1 rounded-savanna-sm">Verified</span>
+        </div>
+      </div>
+
+      <!-- Alerts -->
+      <div class="bg-white rounded-savanna-lg p-8 border border-savanna-border-warm mb-8">
+        <h3 class="font-semibold text-savanna-text-heading mb-6">Alerts</h3>
+        <div class="space-y-4">
+          <div class="flex items-start gap-3 p-4 bg-savanna-success-bg border border-green-200 rounded-savanna-md">
+            <svg class="w-5 h-5 text-savanna-success mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 12 2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+            <div><p class="font-medium text-savanna-primary-dark text-sm">Payment Successful</p><p class="text-sm text-savanna-text-secondary mt-0.5">KES 5,000 sent to James Ochieng. Reference: P2P-2026040310300001</p></div>
+          </div>
+          <div class="flex items-start gap-3 p-4 bg-savanna-warning-bg border border-yellow-200 rounded-savanna-md">
+            <svg class="w-5 h-5 text-savanna-warning mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"/></svg>
+            <div><p class="font-medium text-savanna-gold-dark text-sm">KYC Pending</p><p class="text-sm text-savanna-text-secondary mt-0.5">Please upload your proof of address to complete verification.</p></div>
+          </div>
+          <div class="flex items-start gap-3 p-4 bg-savanna-danger-bg border border-red-200 rounded-savanna-md">
+            <svg class="w-5 h-5 text-savanna-danger mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+            <div><p class="font-medium text-red-800 text-sm">Transaction Failed</p><p class="text-sm text-savanna-text-secondary mt-0.5">Insufficient balance. Required: KES 15,000. Available: KES 12,500.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Credit Card Visual -->
+      <div class="bg-white rounded-savanna-lg p-8 border border-savanna-border-warm mb-8">
+        <h3 class="font-semibold text-savanna-text-heading mb-6">Card Visuals</h3>
+        <div class="grid md:grid-cols-2 gap-6">
+          <!-- Virtual Card -->
+          <div class="bg-gradient-to-br from-savanna-primary-dark via-savanna-primary to-emerald-700 rounded-savanna-lg p-6 text-white aspect-[1.6/1] flex flex-col justify-between shadow-lg">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-xs text-savanna-primary-light/80 uppercase tracking-wider">Virtual Card</p>
+                <p class="text-sm font-medium mt-1">NeoBank</p>
+              </div>
+              <svg class="w-10 h-10 text-savanna-gold" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="6" width="20" height="12" rx="2" opacity="0.3"/><rect x="2" y="6" width="20" height="4" fill="currentColor"/></svg>
+            </div>
+            <div>
+              <p class="text-lg tracking-[0.2em] font-mono">**** **** **** 4523</p>
+              <div class="flex justify-between items-end mt-3">
+                <div>
+                  <p class="text-[10px] text-savanna-primary-light/60 uppercase">Card Holder</p>
+                  <p class="text-sm font-medium">Amina Wanjiku</p>
+                </div>
+                <div>
+                  <p class="text-[10px] text-savanna-primary-light/60 uppercase">Expires</p>
+                  <p class="text-sm font-medium">12/28</p>
+                </div>
+                <p class="text-xl font-bold italic">VISA</p>
+              </div>
+            </div>
+          </div>
+          <!-- Physical Gold Card -->
+          <div class="bg-gradient-to-br from-savanna-gold via-yellow-500 to-amber-600 rounded-savanna-lg p-6 text-savanna-primary-dark aspect-[1.6/1] flex flex-col justify-between shadow-lg">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-xs text-savanna-gold-dark/80 uppercase tracking-wider">Physical Card</p>
+                <p class="text-sm font-medium mt-1">NeoBank Gold</p>
+              </div>
+              <div class="w-10 h-7 bg-savanna-gold-dark/30 rounded-sm border border-savanna-gold-dark/40"></div>
+            </div>
+            <div>
+              <p class="text-lg tracking-[0.2em] font-mono">**** **** **** 8917</p>
+              <div class="flex justify-between items-end mt-3">
+                <div>
+                  <p class="text-[10px] text-savanna-gold-dark/70 uppercase">Card Holder</p>
+                  <p class="text-sm font-medium">Amina Wanjiku</p>
+                </div>
+                <div>
+                  <p class="text-[10px] text-savanna-gold-dark/70 uppercase">Expires</p>
+                  <p class="text-sm font-medium">06/29</p>
+                </div>
+                <p class="text-xl font-bold italic">MC</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transaction List -->
+      <div class="bg-white rounded-savanna-lg p-8 border border-savanna-border-warm mb-8">
+        <h3 class="font-semibold text-savanna-text-heading mb-6">Transaction List Item</h3>
+        <div class="divide-y divide-savanna-border-warm">
+          <div class="flex items-center gap-4 py-3">
+            <div class="w-10 h-10 rounded-full bg-savanna-success-bg flex items-center justify-center shrink-0">
+              <svg class="w-5 h-5 text-savanna-success" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m19 12-7-7-7 7m14 0-7 7-7-7"/></svg>
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="font-medium text-sm text-savanna-text-heading">From James Ochieng</p>
+              <p class="text-xs text-savanna-text-muted">P2P Transfer &bull; Today, 10:30 AM</p>
+            </div>
+            <div class="text-right">
+              <p class="font-semibold text-sm text-savanna-success">+ KES 5,000</p>
+              <span class="bg-savanna-success-bg text-savanna-success text-[10px] font-semibold px-2 py-0.5 rounded-savanna-sm">Completed</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-4 py-3">
+            <div class="w-10 h-10 rounded-full bg-savanna-danger-bg flex items-center justify-center shrink-0">
+              <svg class="w-5 h-5 text-savanna-danger" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"/></svg>
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="font-medium text-sm text-savanna-text-heading">Naivas Supermarket - Westlands</p>
+              <p class="text-xs text-savanna-text-muted">Card Payment &bull; Today, 09:15 AM</p>
+            </div>
+            <div class="text-right">
+              <p class="font-semibold text-sm text-savanna-danger">- KES 3,450</p>
+              <span class="bg-savanna-success-bg text-savanna-success text-[10px] font-semibold px-2 py-0.5 rounded-savanna-sm">Completed</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-4 py-3">
+            <div class="w-10 h-10 rounded-full bg-savanna-warning-bg flex items-center justify-center shrink-0">
+              <svg class="w-5 h-5 text-savanna-warning" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="font-medium text-sm text-savanna-text-heading">Refund - Jumia Kenya</p>
+              <p class="text-xs text-savanna-text-muted">Refund &bull; Mar 29, 11:00 AM</p>
+            </div>
+            <div class="text-right">
+              <p class="font-semibold text-sm text-savanna-success">+ KES 4,300</p>
+              <span class="bg-savanna-warning-bg text-savanna-warning text-[10px] font-semibold px-2 py-0.5 rounded-savanna-sm">Pending</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation / Sidebar -->
+      <div class="bg-white rounded-savanna-lg p-8 border border-savanna-border-warm">
+        <h3 class="font-semibold text-savanna-text-heading mb-6">Sidebar Navigation</h3>
+        <div class="w-64 bg-savanna-sidebar rounded-savanna-lg p-4 text-white">
+          <div class="flex items-center gap-3 mb-6 px-2">
+            <div class="w-8 h-8 rounded-full bg-savanna-gold flex items-center justify-center">
+              <span class="text-savanna-primary-dark font-bold text-sm">N</span>
+            </div>
+            <span class="font-bold">NeoBank</span>
+          </div>
+          <nav class="space-y-1">
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-savanna-md bg-savanna-sidebar-hover text-savanna-gold font-medium text-sm" href="#">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg>
+              Dashboard
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-savanna-md text-white/70 hover:bg-savanna-sidebar-hover hover:text-white text-sm transition" href="#">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12a2.25 2.25 0 0 0-2.25-2.25H15a3 3 0 1 1-6 0H5.25A2.25 2.25 0 0 0 3 12m18 0v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 9m18 0V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v3"/></svg>
+              Accounts
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-savanna-md text-white/70 hover:bg-savanna-sidebar-hover hover:text-white text-sm transition" href="#">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z"/></svg>
+              Cards
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-savanna-md text-white/70 hover:bg-savanna-sidebar-hover hover:text-white text-sm transition" href="#">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"/></svg>
+              Send Money
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-savanna-md text-white/70 hover:bg-savanna-sidebar-hover hover:text-white text-sm transition" href="#">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 3.75 9.375v-4.5ZM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 0 1-1.125-1.125v-4.5ZM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 13.5 9.375v-4.5Z"/></svg>
+              QR Payments
+            </a>
+          </nav>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         SECTION 5: PAGE DESIGNS
+         ═══════════════════════════════════════════════════════════════════ -->
+    <section id="pages" class="section-anchor">
+      <h2 class="text-3xl font-bold text-savanna-text-heading mb-2">Page Designs</h2>
+      <p class="text-savanna-text-secondary mb-8">All 22 pages organized by module. Click any page title to open in the live app.</p>
+
+      <!-- Auth Pages -->
+      <h3 class="text-xl font-semibold text-savanna-text-heading mb-4 flex items-center gap-2">
+        <span class="w-8 h-8 rounded-full bg-savanna-primary text-white flex items-center justify-center text-sm font-bold">A</span>
+        Authentication (3 pages)
+      </h3>
+      <div class="grid md:grid-cols-3 gap-6 mb-12">
+        <div class="page-preview bg-white">
+          <div class="bg-gradient-to-br from-savanna-primary-dark to-savanna-primary p-6 text-white">
+            <div class="flex items-center gap-2 mb-3">
+              <div class="w-6 h-6 rounded-full bg-savanna-gold"></div>
+              <span class="font-bold text-sm">NeoBank</span>
+            </div>
+            <div class="space-y-2">
+              <div class="h-2 bg-white/20 rounded w-3/4"></div>
+              <div class="h-8 bg-white/10 rounded-savanna-md"></div>
+              <div class="h-8 bg-white/10 rounded-savanna-md"></div>
+              <div class="h-10 bg-savanna-gold rounded-savanna-md"></div>
+            </div>
+          </div>
+          <div class="p-4">
+            <a href="/login" class="font-semibold text-savanna-primary hover:underline">Login Page</a>
+            <p class="text-xs text-savanna-text-muted mt-1">Phone + password, biometric, split-screen layout</p>
+          </div>
+        </div>
+        <div class="page-preview bg-white">
+          <div class="bg-savanna-surface p-6">
+            <div class="flex gap-1 mb-3">
+              <div class="h-1.5 bg-savanna-primary rounded flex-1"></div>
+              <div class="h-1.5 bg-savanna-primary rounded flex-1"></div>
+              <div class="h-1.5 bg-savanna-border-warm rounded flex-1"></div>
+              <div class="h-1.5 bg-savanna-border-warm rounded flex-1"></div>
+            </div>
+            <div class="space-y-2">
+              <div class="h-2 bg-savanna-border-warm rounded w-1/2"></div>
+              <div class="h-8 bg-white border border-savanna-border-warm rounded-savanna-md"></div>
+              <div class="h-8 bg-white border border-savanna-border-warm rounded-savanna-md"></div>
+              <div class="h-10 bg-savanna-primary rounded-savanna-md"></div>
+            </div>
+          </div>
+          <div class="p-4">
+            <a href="/register" class="font-semibold text-savanna-primary hover:underline">Registration (4-step)</a>
+            <p class="text-xs text-savanna-text-muted mt-1">Phone, personal info, password, OTP verification</p>
+          </div>
+        </div>
+        <div class="page-preview bg-white">
+          <div class="bg-savanna-surface p-6">
+            <div class="grid grid-cols-3 gap-2 mb-3">
+              <div class="h-12 bg-white border-2 border-savanna-primary rounded-savanna-md"></div>
+              <div class="h-12 bg-white border border-savanna-border-warm rounded-savanna-md"></div>
+              <div class="h-12 bg-white border border-savanna-border-warm rounded-savanna-md"></div>
+            </div>
+            <div class="h-24 bg-savanna-border-warm/50 rounded-savanna-md border-2 border-dashed border-savanna-border-warm mb-2"></div>
+            <div class="h-10 bg-savanna-primary rounded-savanna-md"></div>
+          </div>
+          <div class="p-4">
+            <a href="/kyc" class="font-semibold text-savanna-primary hover:underline">KYC Verification (5-step)</a>
+            <p class="text-xs text-savanna-text-muted mt-1">ID type, upload front/back, selfie liveness, review</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Consumer Banking -->
+      <h3 class="text-xl font-semibold text-savanna-text-heading mb-4 flex items-center gap-2">
+        <span class="w-8 h-8 rounded-full bg-savanna-primary text-white flex items-center justify-center text-sm font-bold">B</span>
+        Consumer Banking (6 pages)
+      </h3>
+      <div class="grid md:grid-cols-3 gap-6 mb-12">
+        <div class="page-preview bg-white">
+          <div class="bg-savanna-surface p-4">
+            <div class="bg-gradient-to-r from-savanna-primary to-savanna-primary-dark rounded-savanna-md p-3 text-white mb-2">
+              <div class="h-2 bg-white/20 rounded w-1/2 mb-1"></div>
+              <div class="h-4 bg-white/30 rounded w-3/4"></div>
+            </div>
+            <div class="grid grid-cols-4 gap-1 mb-2">
+              <div class="h-8 bg-white border border-savanna-border-warm rounded-savanna-sm"></div>
+              <div class="h-8 bg-white border border-savanna-border-warm rounded-savanna-sm"></div>
+              <div class="h-8 bg-white border border-savanna-border-warm rounded-savanna-sm"></div>
+              <div class="h-8 bg-white border border-savanna-border-warm rounded-savanna-sm"></div>
+            </div>
+            <div class="h-16 bg-white border border-savanna-border-warm rounded-savanna-md"></div>
+          </div>
+          <div class="p-4">
+            <a href="/dashboard" class="font-semibold text-savanna-primary hover:underline">Dashboard</a>
+            <p class="text-xs text-savanna-text-muted mt-1">Balance, quick actions, accounts, chart, transactions</p>
+          </div>
+        </div>
+        <div class="page-preview bg-white">
+          <div class="bg-savanna-surface p-4">
+            <div class="grid grid-cols-3 gap-2 mb-2">
+              <div class="h-10 bg-white border border-savanna-border-warm rounded-savanna-md"></div>
+              <div class="h-10 bg-white border border-savanna-border-warm rounded-savanna-md"></div>
+              <div class="h-10 bg-white border border-savanna-border-warm rounded-savanna-md"></div>
+            </div>
+            <div class="space-y-2">
+              <div class="h-20 bg-gradient-to-r from-savanna-primary to-savanna-primary-dark rounded-savanna-md"></div>
+              <div class="h-20 bg-gradient-to-r from-blue-500 to-blue-700 rounded-savanna-md"></div>
+            </div>
+          </div>
+          <div class="p-4">
+            <a href="/accounts" class="font-semibold text-savanna-primary hover:underline">Accounts List</a>
+            <p class="text-xs text-savanna-text-muted mt-1">All accounts with balances, stats, account cards</p>
+          </div>
+        </div>
+        <div class="page-preview bg-white">
+          <div class="bg-savanna-surface p-4">
+            <div class="h-16 bg-gradient-to-r from-savanna-primary to-savanna-primary-dark rounded-savanna-md mb-2"></div>
+            <div class="flex gap-2 mb-2">
+              <div class="h-6 bg-savanna-primary-light rounded-savanna-sm flex-1"></div>
+              <div class="h-6 bg-savanna-border-warm rounded-savanna-sm flex-1"></div>
+              <div class="h-6 bg-savanna-border-warm rounded-savanna-sm flex-1"></div>
+            </div>
+            <div class="space-y-1">
+              <div class="h-8 bg-white border border-savanna-border-warm rounded"></div>
+              <div class="h-8 bg-white border border-savanna-border-warm rounded"></div>
+            </div>
+          </div>
+          <div class="p-4">
+            <a href="/accounts/ACC-001" class="font-semibold text-savanna-primary hover:underline">Account Detail</a>
+            <p class="text-xs text-savanna-text-muted mt-1">Transactions, details, statements tabs</p>
+          </div>
+        </div>
+        <div class="page-preview bg-white">
+          <div class="bg-savanna-surface p-4">
+            <div class="grid grid-cols-2 gap-2">
+              <div class="bg-gradient-to-br from-savanna-primary-dark to-savanna-primary rounded-savanna-md p-3 aspect-[1.6/1]"></div>
+              <div class="bg-gradient-to-br from-savanna-gold to-amber-600 rounded-savanna-md p-3 aspect-[1.6/1]"></div>
+            </div>
+          </div>
+          <div class="p-4">
+            <a href="/cards" class="font-semibold text-savanna-primary hover:underline">Cards Overview</a>
+            <p class="text-xs text-savanna-text-muted mt-1">Virtual + physical card visuals, spending, controls</p>
+          </div>
+        </div>
+        <div class="page-preview bg-white">
+          <div class="bg-savanna-surface p-4">
+            <div class="bg-gradient-to-br from-savanna-primary-dark to-savanna-primary rounded-savanna-md p-3 mb-2 aspect-[2/1]"></div>
+            <div class="grid grid-cols-3 gap-1">
+              <div class="h-10 bg-white border border-savanna-border-warm rounded-savanna-sm"></div>
+              <div class="h-10 bg-white border border-savanna-border-warm rounded-savanna-sm"></div>
+              <div class="h-10 bg-white border border-savanna-border-warm rounded-savanna-sm"></div>
+            </div>
+          </div>
+          <div class="p-4">
+            <a href="/cards/CRD-001" class="font-semibold text-savanna-primary hover:underline">Card Detail</a>
+            <p class="text-xs text-savanna-text-muted mt-1">Freeze, limits, PIN, transactions, security toggles</p>
+          </div>
+        </div>
+        <div class="page-preview bg-white">
+          <div class="bg-savanna-surface p-4">
+            <div class="space-y-2">
+              <div class="h-6 bg-white border border-savanna-border-warm rounded flex items-center"><div class="h-3 w-3 bg-savanna-primary rounded-full ml-2"></div></div>
+              <div class="h-6 bg-white border border-savanna-border-warm rounded"></div>
+              <div class="h-6 bg-white border border-savanna-border-warm rounded"></div>
+              <div class="h-6 bg-white border border-savanna-border-warm rounded"></div>
+            </div>
+          </div>
+          <div class="p-4">
+            <a href="/notifications" class="font-semibold text-savanna-primary hover:underline">Notifications</a>
+            <p class="text-xs text-savanna-text-muted mt-1">Transaction, security, card, promo alerts</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payments -->
+      <h3 class="text-xl font-semibold text-savanna-text-heading mb-4 flex items-center gap-2">
+        <span class="w-8 h-8 rounded-full bg-savanna-gold text-savanna-primary-dark flex items-center justify-center text-sm font-bold">C</span>
+        Payments &amp; P2P (4 pages)
+      </h3>
+      <div class="grid md:grid-cols-4 gap-6 mb-12">
+        <div class="page-preview bg-white">
+          <div class="bg-savanna-surface p-4">
+            <div class="flex gap-1 mb-2 overflow-hidden">
+              <div class="w-8 h-8 bg-savanna-primary-light rounded-full shrink-0"></div>
+              <div class="w-8 h-8 bg-savanna-primary-light rounded-full shrink-0"></div>
+              <div class="w-8 h-8 bg-savanna-primary-light rounded-full shrink-0"></div>
+            </div>
+            <div class="text-center my-3">
+              <div class="h-6 bg-savanna-border-warm rounded w-1/2 mx-auto"></div>
+            </div>
+            <div class="h-10 bg-savanna-primary rounded-savanna-md"></div>
+          </div>
+          <div class="p-4">
+            <a href="/payments/send" class="font-semibold text-savanna-primary hover:underline">Send Money</a>
+            <p class="text-xs text-savanna-text-muted mt-1">P2P via phone, contacts, review, success</p>
+          </div>
+        </div>
+        <div class="page-preview bg-white">
+          <div class="bg-savanna-surface p-4">
+            <div class="h-8 bg-white border border-savanna-border-warm rounded-savanna-md mb-2"></div>
+            <div class="h-6 bg-savanna-border-warm rounded w-1/2 mx-auto mb-2"></div>
+            <div class="h-10 bg-savanna-gold rounded-savanna-md"></div>
+          </div>
+          <div class="p-4">
+            <a href="/payments/request" class="font-semibold text-savanna-primary hover:underline">Request Money</a>
+            <p class="text-xs text-savanna-text-muted mt-1">Request from contacts, pending requests list</p>
+          </div>
+        </div>
+        <div class="page-preview bg-white">
+          <div class="bg-savanna-surface p-4">
+            <div class="aspect-square bg-savanna-primary-dark/90 rounded-savanna-md flex items-center justify-center">
+              <div class="w-12 h-12 border-2 border-white/50 rounded-savanna-sm"></div>
+            </div>
+          </div>
+          <div class="p-4">
+            <a href="/payments/qr" class="font-semibold text-savanna-primary hover:underline">QR Payments</a>
+            <p class="text-xs text-savanna-text-muted mt-1">Scan QR, generate my QR, share</p>
+          </div>
+        </div>
+        <div class="page-preview bg-white">
+          <div class="bg-savanna-surface p-4">
+            <div class="grid grid-cols-4 gap-1">
+              <div class="h-10 bg-white border border-savanna-border-warm rounded-savanna-sm"></div>
+              <div class="h-10 bg-white border border-savanna-border-warm rounded-savanna-sm"></div>
+              <div class="h-10 bg-white border border-savanna-border-warm rounded-savanna-sm"></div>
+              <div class="h-10 bg-white border border-savanna-border-warm rounded-savanna-sm"></div>
+              <div class="h-10 bg-white border border-savanna-border-warm rounded-savanna-sm"></div>
+              <div class="h-10 bg-white border border-savanna-border-warm rounded-savanna-sm"></div>
+              <div class="h-10 bg-white border border-savanna-border-warm rounded-savanna-sm"></div>
+              <div class="h-10 bg-white border border-savanna-border-warm rounded-savanna-sm"></div>
+            </div>
+          </div>
+          <div class="p-4">
+            <a href="/payments/bills" class="font-semibold text-savanna-primary hover:underline">Bill Payments</a>
+            <p class="text-xs text-savanna-text-muted mt-1">KPLC, Water, DStv, Internet, School Fees</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Merchant -->
+      <h3 class="text-xl font-semibold text-savanna-text-heading mb-4 flex items-center gap-2">
+        <span class="w-8 h-8 rounded-full bg-savanna-primary text-white flex items-center justify-center text-sm font-bold">D</span>
+        Merchant (3 pages)
+      </h3>
+      <div class="grid md:grid-cols-3 gap-6 mb-12">
+        <div class="page-preview bg-white">
+          <div class="bg-savanna-surface p-4">
+            <div class="grid grid-cols-2 gap-2 mb-2">
+              <div class="h-10 bg-white border border-savanna-border-warm rounded-savanna-md"></div>
+              <div class="h-10 bg-white border border-savanna-border-warm rounded-savanna-md"></div>
+            </div>
+            <div class="h-16 bg-white border border-savanna-border-warm rounded-savanna-md mb-2"></div>
+            <div class="space-y-1">
+              <div class="h-6 bg-white border border-savanna-border-warm rounded"></div>
+              <div class="h-6 bg-white border border-savanna-border-warm rounded"></div>
+            </div>
+          </div>
+          <div class="p-4">
+            <a href="/merchant" class="font-semibold text-savanna-primary hover:underline">Merchant Dashboard</a>
+            <p class="text-xs text-savanna-text-muted mt-1">Revenue stats, hourly chart, transactions, actions</p>
+          </div>
+        </div>
+        <div class="page-preview bg-white">
+          <div class="bg-savanna-surface p-4">
+            <div class="grid grid-cols-2 gap-2">
+              <div class="h-24 bg-white border border-savanna-border-warm rounded-savanna-md p-2">
+                <div class="w-6 h-6 bg-savanna-success rounded-full mb-1"></div>
+                <div class="h-2 bg-savanna-border-warm rounded w-3/4"></div>
+              </div>
+              <div class="h-24 bg-white border border-savanna-border-warm rounded-savanna-md p-2">
+                <div class="w-6 h-6 bg-savanna-warning rounded-full mb-1"></div>
+                <div class="h-2 bg-savanna-border-warm rounded w-3/4"></div>
+              </div>
+            </div>
+          </div>
+          <div class="p-4">
+            <a href="/merchant/pos" class="font-semibold text-savanna-primary hover:underline">POS Management</a>
+            <p class="text-xs text-savanna-text-muted mt-1">Terminals, Bluetooth POS, SoftPOS, add device</p>
+          </div>
+        </div>
+        <div class="page-preview bg-white">
+          <div class="bg-savanna-surface p-4">
+            <div class="grid grid-cols-3 gap-2 mb-2">
+              <div class="h-10 bg-white border border-savanna-border-warm rounded-savanna-md"></div>
+              <div class="h-10 bg-white border border-savanna-border-warm rounded-savanna-md"></div>
+              <div class="h-10 bg-white border border-savanna-border-warm rounded-savanna-md"></div>
+            </div>
+            <div class="space-y-1">
+              <div class="h-6 bg-white border border-savanna-border-warm rounded"></div>
+              <div class="h-6 bg-savanna-surface-warm border border-savanna-border-warm rounded"></div>
+              <div class="h-6 bg-white border border-savanna-border-warm rounded"></div>
+            </div>
+          </div>
+          <div class="p-4">
+            <a href="/merchant/settlements" class="font-semibold text-savanna-primary hover:underline">Settlement History</a>
+            <p class="text-xs text-savanna-text-muted mt-1">Settlement table, filters, CSV export</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Admin -->
+      <h3 class="text-xl font-semibold text-savanna-text-heading mb-4 flex items-center gap-2">
+        <span class="w-8 h-8 rounded-full bg-savanna-danger text-white flex items-center justify-center text-sm font-bold">E</span>
+        Admin &amp; Compliance (5 pages)
+      </h3>
+      <div class="grid md:grid-cols-3 gap-6 mb-12">
+        <div class="page-preview bg-white">
+          <div class="bg-savanna-surface p-4">
+            <div class="grid grid-cols-4 gap-1 mb-2">
+              <div class="h-8 bg-white border border-savanna-border-warm rounded-savanna-sm"></div>
+              <div class="h-8 bg-white border border-savanna-border-warm rounded-savanna-sm"></div>
+              <div class="h-8 bg-white border border-savanna-border-warm rounded-savanna-sm"></div>
+              <div class="h-8 bg-white border border-savanna-border-warm rounded-savanna-sm"></div>
+            </div>
+            <div class="h-16 bg-white border border-savanna-border-warm rounded-savanna-md"></div>
+          </div>
+          <div class="p-4">
+            <a href="/admin" class="font-semibold text-savanna-primary hover:underline">Admin Dashboard</a>
+            <p class="text-xs text-savanna-text-muted mt-1">KPIs, growth charts, revenue by provider, activity feed</p>
+          </div>
+        </div>
+        <div class="page-preview bg-white">
+          <div class="bg-savanna-surface p-4">
+            <div class="h-8 bg-white border border-savanna-border-warm rounded-savanna-md mb-2"></div>
+            <div class="space-y-1">
+              <div class="h-6 bg-white border border-savanna-border-warm rounded"></div>
+              <div class="h-6 bg-savanna-surface-warm border border-savanna-border-warm rounded"></div>
+              <div class="h-6 bg-white border border-savanna-border-warm rounded"></div>
+              <div class="h-6 bg-savanna-surface-warm border border-savanna-border-warm rounded"></div>
+            </div>
+          </div>
+          <div class="p-4">
+            <a href="/admin/users" class="font-semibold text-savanna-primary hover:underline">User Management</a>
+            <p class="text-xs text-savanna-text-muted mt-1">Search, filter, paginated table, suspend/delete</p>
+          </div>
+        </div>
+        <div class="page-preview bg-white">
+          <div class="bg-savanna-surface p-4">
+            <div class="grid grid-cols-4 gap-1 mb-2">
+              <div class="h-8 bg-savanna-warning-bg border border-yellow-200 rounded-savanna-sm"></div>
+              <div class="h-8 bg-savanna-info-bg border border-blue-200 rounded-savanna-sm"></div>
+              <div class="h-8 bg-savanna-success-bg border border-green-200 rounded-savanna-sm"></div>
+              <div class="h-8 bg-savanna-danger-bg border border-red-200 rounded-savanna-sm"></div>
+            </div>
+            <div class="space-y-1">
+              <div class="h-6 bg-white border border-savanna-border-warm rounded"></div>
+              <div class="h-6 bg-white border border-savanna-border-warm rounded"></div>
+            </div>
+          </div>
+          <div class="p-4">
+            <a href="/admin/kyc" class="font-semibold text-savanna-primary hover:underline">KYC Review Queue</a>
+            <p class="text-xs text-savanna-text-muted mt-1">Risk scores, document review, approve/reject</p>
+          </div>
+        </div>
+        <div class="page-preview bg-white">
+          <div class="bg-savanna-surface p-4">
+            <div class="grid grid-cols-4 gap-1 mb-2">
+              <div class="h-8 bg-white border border-savanna-border-warm rounded-savanna-sm"></div>
+              <div class="h-8 bg-white border border-savanna-border-warm rounded-savanna-sm"></div>
+              <div class="h-8 bg-white border border-savanna-border-warm rounded-savanna-sm"></div>
+              <div class="h-8 bg-white border border-savanna-border-warm rounded-savanna-sm"></div>
+            </div>
+            <div class="h-6 bg-savanna-danger-bg border border-red-200 rounded mb-1"></div>
+            <div class="space-y-1">
+              <div class="h-6 bg-white border border-savanna-border-warm rounded"></div>
+              <div class="h-6 bg-white border border-savanna-border-warm rounded"></div>
+            </div>
+          </div>
+          <div class="p-4">
+            <a href="/admin/transactions" class="font-semibold text-savanna-primary hover:underline">Transaction Monitor</a>
+            <p class="text-xs text-savanna-text-muted mt-1">Real-time stats, flagged transactions, filters</p>
+          </div>
+        </div>
+        <div class="page-preview bg-white">
+          <div class="bg-savanna-surface p-4">
+            <div class="flex items-center justify-center mb-2">
+              <div class="w-16 h-16 rounded-full border-4 border-savanna-primary flex items-center justify-center">
+                <span class="text-sm font-bold text-savanna-primary">94</span>
+              </div>
+            </div>
+            <div class="space-y-1">
+              <div class="h-4 bg-savanna-success rounded-full"></div>
+              <div class="h-4 bg-savanna-success rounded-full w-11/12"></div>
+              <div class="h-4 bg-savanna-warning rounded-full w-3/4"></div>
+            </div>
+          </div>
+          <div class="p-4">
+            <a href="/admin/compliance" class="font-semibold text-savanna-primary hover:underline">Compliance</a>
+            <p class="text-xs text-savanna-text-muted mt-1">Score gauge, AML alerts, SARs, regulatory checklist</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Settings -->
+      <h3 class="text-xl font-semibold text-savanna-text-heading mb-4 flex items-center gap-2">
+        <span class="w-8 h-8 rounded-full bg-savanna-text-secondary text-white flex items-center justify-center text-sm font-bold">F</span>
+        Settings (1 page)
+      </h3>
+      <div class="grid md:grid-cols-3 gap-6 mb-12">
+        <div class="page-preview bg-white">
+          <div class="bg-savanna-surface p-4">
+            <div class="flex items-center gap-2 mb-3">
+              <div class="w-10 h-10 bg-savanna-primary-light rounded-full"></div>
+              <div>
+                <div class="h-2 bg-savanna-border-warm rounded w-20"></div>
+                <div class="h-2 bg-savanna-border-warm rounded w-32 mt-1"></div>
+              </div>
+            </div>
+            <div class="space-y-2">
+              <div class="flex justify-between items-center"><div class="h-2 bg-savanna-border-warm rounded w-20"></div><div class="w-8 h-4 bg-savanna-primary rounded-full"></div></div>
+              <div class="flex justify-between items-center"><div class="h-2 bg-savanna-border-warm rounded w-24"></div><div class="w-8 h-4 bg-savanna-border-warm rounded-full"></div></div>
+              <div class="flex justify-between items-center"><div class="h-2 bg-savanna-border-warm rounded w-16"></div><div class="w-8 h-4 bg-savanna-primary rounded-full"></div></div>
+            </div>
+          </div>
+          <div class="p-4">
+            <a href="/settings" class="font-semibold text-savanna-primary hover:underline">Settings</a>
+            <p class="text-xs text-savanna-text-muted mt-1">Profile, security, 2FA, notifications, preferences, about</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         SECTION 6: ICON SET
+         ═══════════════════════════════════════════════════════════════════ -->
+    <section id="icons" class="section-anchor">
+      <h2 class="text-3xl font-bold text-savanna-text-heading mb-2">Icon Library</h2>
+      <p class="text-savanna-text-secondary mb-8">Lucide React icons — consistent 24px stroke icons throughout the app.</p>
+
+      <div class="bg-white rounded-savanna-lg p-8 border border-savanna-border-warm">
+        <div class="grid grid-cols-4 md:grid-cols-8 gap-4">
+          <div class="flex flex-col items-center gap-2 p-3 rounded-savanna-md hover:bg-savanna-surface transition">
+            <svg class="w-6 h-6 text-savanna-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m2.25 12 8.954-8.955a1.126 1.126 0 0 1 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg>
+            <span class="text-[10px] text-savanna-text-muted">Home</span>
+          </div>
+          <div class="flex flex-col items-center gap-2 p-3 rounded-savanna-md hover:bg-savanna-surface transition">
+            <svg class="w-6 h-6 text-savanna-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12a2.25 2.25 0 0 0-2.25-2.25H15a3 3 0 1 1-6 0H5.25A2.25 2.25 0 0 0 3 12m18 0v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 9m18 0V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v3"/></svg>
+            <span class="text-[10px] text-savanna-text-muted">Wallet</span>
+          </div>
+          <div class="flex flex-col items-center gap-2 p-3 rounded-savanna-md hover:bg-savanna-surface transition">
+            <svg class="w-6 h-6 text-savanna-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z"/></svg>
+            <span class="text-[10px] text-savanna-text-muted">Card</span>
+          </div>
+          <div class="flex flex-col items-center gap-2 p-3 rounded-savanna-md hover:bg-savanna-surface transition">
+            <svg class="w-6 h-6 text-savanna-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"/></svg>
+            <span class="text-[10px] text-savanna-text-muted">Send</span>
+          </div>
+          <div class="flex flex-col items-center gap-2 p-3 rounded-savanna-md hover:bg-savanna-surface transition">
+            <svg class="w-6 h-6 text-savanna-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 3.75 9.375v-4.5Z"/></svg>
+            <span class="text-[10px] text-savanna-text-muted">QR</span>
+          </div>
+          <div class="flex flex-col items-center gap-2 p-3 rounded-savanna-md hover:bg-savanna-surface transition">
+            <svg class="w-6 h-6 text-savanna-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"/></svg>
+            <span class="text-[10px] text-savanna-text-muted">Bell</span>
+          </div>
+          <div class="flex flex-col items-center gap-2 p-3 rounded-savanna-md hover:bg-savanna-surface transition">
+            <svg class="w-6 h-6 text-savanna-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z"/><path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg>
+            <span class="text-[10px] text-savanna-text-muted">Settings</span>
+          </div>
+          <div class="flex flex-col items-center gap-2 p-3 rounded-savanna-md hover:bg-savanna-surface transition">
+            <svg class="w-6 h-6 text-savanna-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z"/></svg>
+            <span class="text-[10px] text-savanna-text-muted">Shield</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <footer class="bg-savanna-primary-dark text-white py-12 mt-16">
+    <div class="max-w-7xl mx-auto px-6 text-center">
+      <div class="flex items-center justify-center gap-3 mb-4">
+        <div class="w-8 h-8 rounded-full bg-savanna-gold flex items-center justify-center">
+          <span class="text-savanna-primary-dark font-bold text-sm">N</span>
+        </div>
+        <span class="text-xl font-bold">NeoBank Design System</span>
+      </div>
+      <p class="text-savanna-primary-light/60 text-sm">
+        Qsoftwares Ltd &bull; April 2026 &bull; v1.0
+      </p>
+      <p class="text-savanna-primary-light/40 text-xs mt-2">
+        Savanna-inspired design language for next-gen digital banking
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>

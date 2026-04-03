@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collateral - LN-00042781 - Fineract</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex">
+
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white border-r border-gray-100 min-h-screen flex flex-col fixed left-0 top-0">
+    <div class="px-6 py-5 border-b border-gray-100">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+          <span class="text-white font-bold text-sm">F</span>
+        </div>
+        <span class="text-lg font-bold text-gray-900">Fineract</span>
+      </div>
+    </div>
+    <nav class="flex-1 px-3 py-4 space-y-1">
+      <a href="#" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 rounded-lg hover:bg-gray-50">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0h4"/></svg>
+        Dashboard
+      </a>
+      <a href="#" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 rounded-lg hover:bg-gray-50">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        Clients
+      </a>
+      <a href="#" class="flex items-center gap-3 px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        Loans
+      </a>
+      <a href="#" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 rounded-lg hover:bg-gray-50">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+        Savings
+      </a>
+      <a href="#" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 rounded-lg hover:bg-gray-50">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        Reports
+      </a>
+      <a href="#" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 rounded-lg hover:bg-gray-50">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        Administration
+      </a>
+    </nav>
+    <div class="px-4 py-4 border-t border-gray-100">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+          <span class="text-xs font-semibold text-blue-700">AW</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-medium text-gray-900 truncate">Amina Wanjiku</p>
+          <p class="text-xs text-gray-500 truncate">Westlands Branch</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 ml-64">
+    <!-- Top Bar -->
+    <header class="bg-white border-b border-gray-100 px-8 py-4">
+      <nav class="flex items-center text-sm text-gray-500 gap-2">
+        <a href="#" class="hover:text-blue-600">Home</a>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <a href="#" class="hover:text-blue-600">Loans</a>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <a href="#" class="hover:text-blue-600">LN-00042781</a>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <span class="text-gray-900 font-medium">Collateral</span>
+      </nav>
+    </header>
+
+    <!-- Loan Header Card -->
+    <div class="px-8 pt-6">
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <div class="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center">
+              <span class="text-green-700 font-semibold text-sm">GK</span>
+            </div>
+            <div>
+              <h2 class="text-base font-semibold text-gray-900">Grace Kemunto <span class="text-gray-400 font-normal">(MBR-001247)</span></h2>
+              <p class="text-sm text-gray-500">Kilimo Booster &middot; LN-00042781 &middot; <span class="text-green-600 font-medium">Active</span></p>
+            </div>
+          </div>
+          <div class="text-right">
+            <p class="text-sm text-gray-500">Outstanding Balance</p>
+            <p class="text-xl font-bold text-gray-900">KES 187,500</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="flex gap-1 border-b border-gray-200 mb-6">
+        <a href="#" class="px-4 py-2.5 text-sm text-gray-500 hover:text-gray-700">Summary</a>
+        <a href="#" class="px-4 py-2.5 text-sm text-gray-500 hover:text-gray-700">Repayment Schedule</a>
+        <a href="loan-transactions.html" class="px-4 py-2.5 text-sm text-gray-500 hover:text-gray-700">Transactions</a>
+        <a href="loan-charges.html" class="px-4 py-2.5 text-sm text-gray-500 hover:text-gray-700">Charges</a>
+        <a href="#" class="px-4 py-2.5 text-sm font-medium text-blue-600 border-b-2 border-blue-600">Collateral</a>
+        <a href="#" class="px-4 py-2.5 text-sm text-gray-500 hover:text-gray-700">Documents</a>
+        <a href="#" class="px-4 py-2.5 text-sm text-gray-500 hover:text-gray-700">Notes</a>
+      </div>
+    </div>
+
+    <div class="px-8 pb-8">
+      <!-- Title + Add Collateral -->
+      <div class="flex items-center justify-between mb-5">
+        <h1 class="text-2xl font-bold text-gray-900">Collateral</h1>
+        <button class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-xl hover:bg-blue-700 shadow-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          Add Collateral
+        </button>
+      </div>
+
+      <!-- Collateral Card -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mb-8">
+        <div class="flex">
+          <!-- Teal left accent -->
+          <div class="w-1.5 bg-teal-400 flex-shrink-0"></div>
+          <div class="flex-1 p-6">
+            <!-- Card Header -->
+            <div class="flex items-start justify-between mb-5">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-teal-50 rounded-xl flex items-center justify-center">
+                  <svg class="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                </div>
+                <div>
+                  <h3 class="text-base font-semibold text-gray-900">Title Deed - Plot LR/2341</h3>
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700 mt-1">Pledged</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <button class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                  Edit
+                </button>
+                <button class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-red-600 bg-white border border-gray-200 rounded-lg hover:bg-red-50 hover:border-red-200">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                  Remove
+                </button>
+              </div>
+            </div>
+
+            <!-- Details Grid -->
+            <div class="grid grid-cols-4 gap-6 mb-6">
+              <div>
+                <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Type</p>
+                <p class="text-sm font-medium text-gray-900">Land</p>
+              </div>
+              <div>
+                <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Value</p>
+                <p class="text-sm font-medium text-gray-900">KES 1,200,000</p>
+              </div>
+              <div>
+                <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Location</p>
+                <p class="text-sm font-medium text-gray-900">Murang'a County</p>
+              </div>
+              <div>
+                <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Description</p>
+                <p class="text-sm font-medium text-gray-900">Agricultural land, 2 acres</p>
+              </div>
+            </div>
+
+            <!-- Collateral vs Loan -->
+            <div class="bg-gray-50 rounded-xl p-4 mb-6">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Collateral Coverage</p>
+                  <p class="text-sm text-gray-700">Collateral value covers <span class="font-semibold text-gray-900">480%</span> of outstanding balance</p>
+                </div>
+                <div class="w-48">
+                  <div class="flex items-center justify-between text-xs text-gray-500 mb-1">
+                    <span>KES 187,500 owed</span>
+                    <span>KES 1,200,000</span>
+                  </div>
+                  <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div class="bg-teal-500 h-2 rounded-full" style="width: 15.6%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Documents -->
+            <div>
+              <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">Documents</p>
+              <div class="flex gap-3">
+                <a href="#" class="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl hover:bg-gray-100 transition-colors">
+                  <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                  <div>
+                    <p class="text-sm font-medium text-gray-700">title_deed_scan.pdf</p>
+                    <p class="text-xs text-gray-400">Uploaded 10 Nov 2025</p>
+                  </div>
+                </a>
+                <a href="#" class="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl hover:bg-gray-100 transition-colors">
+                  <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                  <div>
+                    <p class="text-sm font-medium text-gray-700">land_valuation_2025.pdf</p>
+                    <p class="text-xs text-gray-400">Uploaded 10 Nov 2025</p>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add Collateral Form (Empty State) -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
+        <h2 class="text-lg font-semibold text-gray-900 mb-6">Add Collateral</h2>
+        <div class="grid grid-cols-2 gap-x-8 gap-y-5">
+          <!-- Collateral Type -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Collateral Type <span class="text-red-500">*</span></label>
+            <select class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white appearance-none">
+              <option value="">-- Select Type --</option>
+              <option>Land</option>
+              <option>Vehicle</option>
+              <option>Building</option>
+              <option>Machinery</option>
+              <option>Livestock</option>
+              <option>Shares / Deposits</option>
+              <option>Household Items</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <!-- Value -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Value (KES) <span class="text-red-500">*</span></label>
+            <div class="relative">
+              <span class="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-400">KES</span>
+              <input type="text" placeholder="0.00" class="w-full pl-14 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+            </div>
+          </div>
+
+          <!-- Description (full width) -->
+          <div class="col-span-2">
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Description</label>
+            <textarea rows="3" placeholder="Describe the collateral item, including any identifying details such as registration numbers, title deed references, or serial numbers..." class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none"></textarea>
+          </div>
+
+          <!-- Upload Documents -->
+          <div class="col-span-2">
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Upload Documents</label>
+            <div class="border-2 border-dashed border-gray-200 rounded-xl p-8 text-center hover:border-blue-300 hover:bg-blue-50/30 transition-colors cursor-pointer">
+              <div class="flex flex-col items-center">
+                <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mb-3">
+                  <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                </div>
+                <p class="text-sm font-medium text-gray-700 mb-1">Drop files here or click to upload</p>
+                <p class="text-xs text-gray-400">PDF, JPG, PNG up to 10MB each</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="flex items-center justify-end gap-3 mt-6 pt-6 border-t border-gray-100">
+          <button class="px-5 py-2.5 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-xl hover:bg-gray-50">
+            Cancel
+          </button>
+          <button class="px-6 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-xl hover:bg-blue-700 shadow-sm">
+            Save Collateral
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>

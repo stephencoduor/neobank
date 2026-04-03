@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Working Days Configuration - Fineract</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>body{font-family:'Inter',sans-serif}</style>
+</head>
+<body class="bg-gray-50 flex h-screen overflow-hidden">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white border-r border-gray-100 flex flex-col flex-shrink-0">
+    <div class="h-16 flex items-center px-6 border-b border-gray-100">
+      <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">F</div>
+      <span class="ml-3 font-semibold text-gray-900">Fineract</span>
+    </div>
+    <nav class="flex-1 py-4 px-3 space-y-1 text-sm">
+      <a href="#" class="flex items-center px-3 py-2 rounded-lg text-gray-500 hover:bg-gray-50">Dashboard</a>
+      <a href="#" class="flex items-center px-3 py-2 rounded-lg text-gray-500 hover:bg-gray-50">Clients</a>
+      <a href="#" class="flex items-center px-3 py-2 rounded-lg text-gray-500 hover:bg-gray-50">Accounting</a>
+      <a href="#" class="flex items-center px-3 py-2 rounded-lg bg-blue-50 text-blue-600 font-medium">Organisation</a>
+      <a href="#" class="flex items-center px-3 py-2 rounded-lg text-gray-500 hover:bg-gray-50">System</a>
+      <a href="#" class="flex items-center px-3 py-2 rounded-lg text-gray-500 hover:bg-gray-50">Products</a>
+    </nav>
+    <div class="p-4 border-t border-gray-100">
+      <div class="flex items-center">
+        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-medium text-xs">AW</div>
+        <div class="ml-3"><p class="text-sm font-medium text-gray-900">Amina Wanjiku</p><p class="text-xs text-gray-500">Westlands Branch</p></div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="flex-1 flex flex-col overflow-hidden">
+    <!-- Header -->
+    <header class="sticky top-0 z-10 h-16 bg-white border-b border-gray-100 flex items-center justify-between px-8">
+      <div>
+        <h1 class="text-lg font-semibold text-gray-900">Working Days Configuration</h1>
+        <p class="text-xs text-gray-500">Organisation &gt; Working Days</p>
+      </div>
+      <div class="flex items-center space-x-3">
+        <span class="text-xs text-gray-400">Westlands Branch</span>
+        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-medium text-xs">AW</div>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <main class="flex-1 overflow-y-auto p-8">
+      <div class="max-w-2xl mx-auto space-y-6">
+        <!-- Working Days Card -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+          <h2 class="text-sm font-semibold text-gray-900 mb-4">Select Working Days</h2>
+          <div class="grid grid-cols-2 gap-3">
+            <label class="flex items-center p-3 rounded-xl border border-gray-100 hover:bg-blue-50/30 cursor-pointer">
+              <input type="checkbox" checked class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"><span class="ml-3 text-sm text-gray-700">Monday</span>
+            </label>
+            <label class="flex items-center p-3 rounded-xl border border-gray-100 hover:bg-blue-50/30 cursor-pointer">
+              <input type="checkbox" checked class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"><span class="ml-3 text-sm text-gray-700">Tuesday</span>
+            </label>
+            <label class="flex items-center p-3 rounded-xl border border-gray-100 hover:bg-blue-50/30 cursor-pointer">
+              <input type="checkbox" checked class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"><span class="ml-3 text-sm text-gray-700">Wednesday</span>
+            </label>
+            <label class="flex items-center p-3 rounded-xl border border-gray-100 hover:bg-blue-50/30 cursor-pointer">
+              <input type="checkbox" checked class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"><span class="ml-3 text-sm text-gray-700">Thursday</span>
+            </label>
+            <label class="flex items-center p-3 rounded-xl border border-gray-100 hover:bg-blue-50/30 cursor-pointer">
+              <input type="checkbox" checked class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"><span class="ml-3 text-sm text-gray-700">Friday</span>
+            </label>
+            <label class="flex items-center p-3 rounded-xl border border-gray-100 hover:bg-blue-50/30 cursor-pointer">
+              <input type="checkbox" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"><span class="ml-3 text-sm text-gray-700">Saturday</span>
+            </label>
+            <label class="flex items-center p-3 rounded-xl border border-gray-100 hover:bg-blue-50/30 cursor-pointer">
+              <input type="checkbox" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"><span class="ml-3 text-sm text-gray-700">Sunday</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Rescheduling Rule Card -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+          <h2 class="text-sm font-semibold text-gray-900 mb-4">Repayment Rescheduling</h2>
+          <div class="space-y-4">
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1.5">Rescheduling Rule</label>
+              <select class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                <option selected>Move to next repayment meeting day</option>
+                <option>Move to next working day</option>
+                <option>Move to previous working day</option>
+                <option>Do not reschedule</option>
+              </select>
+            </div>
+            <label class="flex items-center p-3 rounded-xl border border-gray-100 hover:bg-blue-50/30 cursor-pointer">
+              <input type="checkbox" checked class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+              <span class="ml-3 text-sm text-gray-700">Extend holiday treatment to non-working days</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="flex justify-end">
+          <button class="px-6 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-xl hover:bg-blue-700 transition">Save Changes</button>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

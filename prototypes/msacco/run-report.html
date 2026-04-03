@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio at Risk Report - Fineract</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white border-r border-gray-100 min-h-screen flex flex-col fixed left-0 top-0 z-30">
+        <div class="h-16 flex items-center px-6 border-b border-gray-100">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-sm">F</span>
+                </div>
+                <span class="text-lg font-bold text-gray-900">Fineract</span>
+            </div>
+        </div>
+        <nav class="flex-1 px-3 py-4 space-y-1">
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-gray-600 rounded-lg hover:bg-gray-50 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                <span class="text-sm font-medium">Dashboard</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-gray-600 rounded-lg hover:bg-gray-50 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                <span class="text-sm font-medium">Clients</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-gray-600 rounded-lg hover:bg-gray-50 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span class="text-sm font-medium">Loans</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-gray-600 rounded-lg hover:bg-gray-50 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                <span class="text-sm font-medium">Savings</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-blue-600 bg-blue-50 rounded-lg font-medium">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                <span class="text-sm">Reports</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-gray-600 rounded-lg hover:bg-gray-50 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+                <span class="text-sm font-medium">Accounting</span>
+            </a>
+            <div class="pt-2">
+                <div class="px-3 py-2">
+                    <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Tasks</span>
+                </div>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-gray-600 rounded-lg hover:bg-gray-50 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                    <span class="text-sm">Checker Inbox</span>
+                    <span class="ml-auto bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded-full">14</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-gray-600 rounded-lg hover:bg-gray-50 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                    <span class="text-sm">Notifications</span>
+                    <span class="ml-auto bg-red-500 text-white text-xs font-semibold px-2 py-0.5 rounded-full">5</span>
+                </a>
+            </div>
+        </nav>
+        <div class="p-4 border-t border-gray-100">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 bg-blue-600 rounded-full flex items-center justify-center">
+                    <span class="text-white text-sm font-semibold">AW</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-gray-900 truncate">Amina Wanjiku</p>
+                    <p class="text-xs text-gray-500 truncate">Westlands Branch</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 ml-64">
+        <!-- Top Bar -->
+        <header class="h-16 bg-white border-b border-gray-100 flex items-center justify-between px-8 sticky top-0 z-20">
+            <div class="flex items-center gap-2 text-sm text-gray-500">
+                <a href="#" class="hover:text-blue-600 transition">Home</a>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                <a href="#" class="hover:text-blue-600 transition">Reports</a>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                <span class="text-gray-900 font-medium">Run Report</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <button class="relative p-2 text-gray-400 hover:text-gray-600 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                    <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <div class="p-8">
+            <!-- Page Title -->
+            <div class="mb-6">
+                <div class="flex items-center gap-3 mb-1">
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">Loan Report</span>
+                </div>
+                <h1 class="text-2xl font-bold text-gray-900">Portfolio at Risk (PAR) Report</h1>
+                <p class="text-sm text-gray-500 mt-1">Analyzes the loan portfolio at risk by aging buckets. Shows PAR >1, >30, >60, >90 day breakdowns by product and branch.</p>
+            </div>
+
+            <!-- Parameters Form -->
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mb-6">
+                <h2 class="text-sm font-semibold text-gray-900 mb-4">Report Parameters</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-500 mb-1.5">Branch / Office</label>
+                        <select class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white">
+                            <option selected>All Offices</option>
+                            <option>Head Office - Nairobi</option>
+                            <option>Westlands Branch</option>
+                            <option>Mombasa Branch</option>
+                            <option>Kisumu Branch</option>
+                            <option>Nakuru Branch</option>
+                            <option>Eldoret Branch</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-500 mb-1.5">Currency</label>
+                        <select class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white">
+                            <option selected>KES - Kenyan Shilling</option>
+                            <option>USD - US Dollar</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-500 mb-1.5">As of Date</label>
+                        <input type="date" value="2026-03-30" class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-500 mb-1.5">Loan Product</label>
+                        <select class="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white">
+                            <option selected>All Products</option>
+                            <option>Kilimo Booster</option>
+                            <option>Biashara SME</option>
+                            <option>Salary Advance</option>
+                            <option>Chama Group</option>
+                            <option>Emergency</option>
+                        </select>
+                    </div>
+                    <div class="flex items-end">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                            <span class="text-sm text-gray-700">Include Closed Loans</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="mt-5 pt-5 border-t border-gray-100">
+                    <label class="block text-xs font-medium text-gray-500 mb-2">Output Format</label>
+                    <div class="flex items-center gap-0">
+                        <button class="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-l-lg">Table</button>
+                        <button class="px-4 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-200 hover:bg-gray-50 transition">CSV</button>
+                        <button class="px-4 py-2 text-sm font-medium text-gray-600 bg-white border-y border-gray-200 hover:bg-gray-50 transition">PDF</button>
+                        <button class="px-4 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-r-lg hover:bg-gray-50 transition">Excel</button>
+                    </div>
+                </div>
+
+                <div class="mt-5 pt-5 border-t border-gray-100 flex items-center gap-3">
+                    <button class="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Run Report
+                    </button>
+                    <button class="px-5 py-2.5 text-gray-700 text-sm font-medium border border-gray-200 rounded-lg hover:bg-gray-50 transition flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                        Export
+                    </button>
+                </div>
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+                    <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Total Active Portfolio</p>
+                    <p class="text-2xl font-bold text-gray-900 mt-1">KES 48.2M</p>
+                    <p class="text-xs text-gray-500 mt-1">342 active loans</p>
+                </div>
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+                    <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">PAR > 1 Day</p>
+                    <p class="text-2xl font-bold text-amber-600 mt-1">KES 5.1M</p>
+                    <p class="text-xs text-amber-600 font-medium mt-1">10.6% of portfolio</p>
+                </div>
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+                    <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">PAR > 30 Days</p>
+                    <p class="text-2xl font-bold text-amber-600 mt-1">KES 2.8M</p>
+                    <p class="text-xs text-amber-600 font-medium mt-1">5.8% of portfolio</p>
+                </div>
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+                    <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">PAR > 90 Days</p>
+                    <p class="text-2xl font-bold text-gray-900 mt-1">KES 890K</p>
+                    <p class="text-xs text-gray-500 mt-1">1.8% of portfolio</p>
+                </div>
+            </div>
+
+            <!-- Results Table -->
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                    <h2 class="text-sm font-semibold text-gray-900">PAR Breakdown by Product</h2>
+                    <p class="text-xs text-gray-500">As of 30 Mar 2026 | Currency: KES</p>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="bg-gray-50/80">
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Product</th>
+                                <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Active Loans</th>
+                                <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Outstanding Balance</th>
+                                <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">PAR >1d</th>
+                                <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">PAR >30d</th>
+                                <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">PAR >60d</th>
+                                <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">PAR >90d</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-50">
+                            <!-- Kilimo Booster -->
+                            <tr class="hover:bg-blue-50/30 transition">
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900">Kilimo Booster</td>
+                                <td class="px-6 py-4 text-sm text-gray-700 text-right">142</td>
+                                <td class="px-6 py-4 text-sm text-gray-700 text-right font-medium">KES 18,500,000</td>
+                                <td class="px-6 py-4 text-sm text-right">
+                                    <span class="text-amber-600 font-medium">KES 1,200,000</span>
+                                    <span class="text-amber-600 text-xs ml-1">(6.5%)</span>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-right">
+                                    <span class="text-gray-700">KES 620,000</span>
+                                    <span class="text-gray-500 text-xs ml-1">(3.4%)</span>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-right">
+                                    <span class="text-gray-700">KES 180,000</span>
+                                    <span class="text-gray-500 text-xs ml-1">(1.0%)</span>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-right">
+                                    <span class="text-gray-700">KES 45,000</span>
+                                    <span class="text-gray-500 text-xs ml-1">(0.2%)</span>
+                                </td>
+                            </tr>
+                            <!-- Biashara SME -->
+                            <tr class="hover:bg-blue-50/30 transition">
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900">Biashara SME</td>
+                                <td class="px-6 py-4 text-sm text-gray-700 text-right">98</td>
+                                <td class="px-6 py-4 text-sm text-gray-700 text-right font-medium">KES 24,300,000</td>
+                                <td class="px-6 py-4 text-sm text-right">
+                                    <span class="text-red-600 font-medium">KES 2,800,000</span>
+                                    <span class="text-red-600 text-xs ml-1">(11.5%)</span>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-right">
+                                    <span class="text-amber-600 font-medium">KES 1,650,000</span>
+                                    <span class="text-amber-600 text-xs ml-1">(6.8%)</span>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-right">
+                                    <span class="text-gray-700">KES 890,000</span>
+                                    <span class="text-gray-500 text-xs ml-1">(3.7%)</span>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-right">
+                                    <span class="text-gray-700">KES 520,000</span>
+                                    <span class="text-gray-500 text-xs ml-1">(2.1%)</span>
+                                </td>
+                            </tr>
+                            <!-- Salary Advance -->
+                            <tr class="hover:bg-blue-50/30 transition">
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900">Salary Advance</td>
+                                <td class="px-6 py-4 text-sm text-gray-700 text-right">67</td>
+                                <td class="px-6 py-4 text-sm text-gray-700 text-right font-medium">KES 3,200,000</td>
+                                <td class="px-6 py-4 text-sm text-right">
+                                    <span class="text-red-600 font-medium">KES 780,000</span>
+                                    <span class="text-red-600 text-xs ml-1">(24.4%)</span>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-right">
+                                    <span class="text-red-600 font-medium">KES 420,000</span>
+                                    <span class="text-red-600 text-xs ml-1">(13.1%)</span>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-right">
+                                    <span class="text-gray-700">KES 85,000</span>
+                                    <span class="text-gray-500 text-xs ml-1">(2.7%)</span>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-right">
+                                    <span class="text-gray-700">KES 0</span>
+                                    <span class="text-gray-500 text-xs ml-1">(0%)</span>
+                                </td>
+                            </tr>
+                            <!-- Chama Group -->
+                            <tr class="hover:bg-blue-50/30 transition">
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900">Chama Group</td>
+                                <td class="px-6 py-4 text-sm text-gray-700 text-right">24</td>
+                                <td class="px-6 py-4 text-sm text-gray-700 text-right font-medium">KES 1,400,000</td>
+                                <td class="px-6 py-4 text-sm text-right">
+                                    <span class="text-amber-600 font-medium">KES 120,000</span>
+                                    <span class="text-amber-600 text-xs ml-1">(8.6%)</span>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-right">
+                                    <span class="text-gray-700">KES 60,000</span>
+                                    <span class="text-gray-500 text-xs ml-1">(4.3%)</span>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-right">
+                                    <span class="text-gray-700">KES 0</span>
+                                    <span class="text-gray-500 text-xs ml-1">(0%)</span>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-right">
+                                    <span class="text-gray-700">KES 0</span>
+                                    <span class="text-gray-500 text-xs ml-1">(0%)</span>
+                                </td>
+                            </tr>
+                            <!-- Emergency -->
+                            <tr class="hover:bg-blue-50/30 transition">
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900">Emergency</td>
+                                <td class="px-6 py-4 text-sm text-gray-700 text-right">11</td>
+                                <td class="px-6 py-4 text-sm text-gray-700 text-right font-medium">KES 800,000</td>
+                                <td class="px-6 py-4 text-sm text-right">
+                                    <span class="text-red-600 font-medium">KES 200,000</span>
+                                    <span class="text-red-600 text-xs ml-1">(25.0%)</span>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-right">
+                                    <span class="text-amber-600 font-medium">KES 50,000</span>
+                                    <span class="text-amber-600 text-xs ml-1">(6.3%)</span>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-right">
+                                    <span class="text-gray-700">KES 0</span>
+                                    <span class="text-gray-500 text-xs ml-1">(0%)</span>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-right">
+                                    <span class="text-gray-700">KES 0</span>
+                                    <span class="text-gray-500 text-xs ml-1">(0%)</span>
+                                </td>
+                            </tr>
+                            <!-- Totals -->
+                            <tr class="bg-gray-50/60 font-bold">
+                                <td class="px-6 py-4 text-sm text-gray-900">Totals</td>
+                                <td class="px-6 py-4 text-sm text-gray-900 text-right">342</td>
+                                <td class="px-6 py-4 text-sm text-gray-900 text-right">KES 48,200,000</td>
+                                <td class="px-6 py-4 text-sm text-right">
+                                    <span class="text-red-600">KES 5,100,000</span>
+                                    <span class="text-red-600 text-xs ml-1">(10.6%)</span>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-right">
+                                    <span class="text-amber-600">KES 2,800,000</span>
+                                    <span class="text-amber-600 text-xs ml-1">(5.8%)</span>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-right">
+                                    <span class="text-gray-900">KES 1,155,000</span>
+                                    <span class="text-gray-500 text-xs ml-1">(2.4%)</span>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-right">
+                                    <span class="text-gray-900">KES 565,000</span>
+                                    <span class="text-gray-500 text-xs ml-1">(1.2%)</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="px-6 py-3 border-t border-gray-100 text-xs text-gray-400">
+                    Report generated on 30 Mar 2026 at 12:45 by Amina Wanjiku | Westlands Branch
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

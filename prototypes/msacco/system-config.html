@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Global Configuration - Fineract</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>body{font-family:'Inter',sans-serif}</style>
+</head>
+<body class="bg-gray-50 flex h-screen overflow-hidden">
+  <aside class="w-64 bg-white border-r border-gray-100 flex flex-col flex-shrink-0">
+    <div class="h-16 flex items-center px-6 border-b border-gray-100">
+      <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">F</div>
+      <span class="ml-3 font-semibold text-gray-900">Fineract</span>
+    </div>
+    <nav class="flex-1 py-4 px-3 space-y-1 text-sm">
+      <a href="#" class="flex items-center px-3 py-2 rounded-lg text-gray-500 hover:bg-gray-50">Dashboard</a>
+      <a href="#" class="flex items-center px-3 py-2 rounded-lg text-gray-500 hover:bg-gray-50">Clients</a>
+      <a href="#" class="flex items-center px-3 py-2 rounded-lg text-gray-500 hover:bg-gray-50">Accounting</a>
+      <a href="#" class="flex items-center px-3 py-2 rounded-lg text-gray-500 hover:bg-gray-50">Organisation</a>
+      <a href="#" class="flex items-center px-3 py-2 rounded-lg bg-blue-50 text-blue-600 font-medium">System</a>
+      <a href="#" class="flex items-center px-3 py-2 rounded-lg text-gray-500 hover:bg-gray-50">Products</a>
+    </nav>
+    <div class="p-4 border-t border-gray-100">
+      <div class="flex items-center">
+        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-medium text-xs">AW</div>
+        <div class="ml-3"><p class="text-sm font-medium text-gray-900">Amina Wanjiku</p><p class="text-xs text-gray-500">Westlands Branch</p></div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="flex-1 flex flex-col overflow-hidden">
+    <header class="sticky top-0 z-10 h-16 bg-white border-b border-gray-100 flex items-center justify-between px-8">
+      <div>
+        <h1 class="text-lg font-semibold text-gray-900">Global Configuration</h1>
+        <p class="text-xs text-gray-500">System &gt; Configuration</p>
+      </div>
+      <div class="flex items-center space-x-3">
+        <span class="text-xs text-gray-400">Westlands Branch</span>
+        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-medium text-xs">AW</div>
+      </div>
+    </header>
+
+    <main class="flex-1 overflow-y-auto p-8">
+      <div class="max-w-3xl mx-auto space-y-6">
+        <!-- Loan Settings -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+          <h2 class="text-sm font-semibold text-gray-900 mb-4">Loan Settings</h2>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between p-3 rounded-xl border border-gray-100 hover:bg-blue-50/30">
+              <div><p class="text-sm font-medium text-gray-900">Allow multiple disbursals</p><p class="text-xs text-gray-500">Enable tranche-based loan disbursement</p></div>
+              <button class="relative w-11 h-6 bg-blue-600 rounded-full transition">
+                <span class="absolute right-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transition"></span>
+              </button>
+            </div>
+            <div class="flex items-center justify-between p-3 rounded-xl border border-gray-100 hover:bg-blue-50/30">
+              <div><p class="text-sm font-medium text-gray-900">Linked savings account for loans</p><p class="text-xs text-gray-500">Require savings account linkage</p></div>
+              <button class="relative w-11 h-6 bg-gray-200 rounded-full transition">
+                <span class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transition"></span>
+              </button>
+            </div>
+            <div class="flex items-center justify-between p-3 rounded-xl border border-gray-100 hover:bg-blue-50/30">
+              <div><p class="text-sm font-medium text-gray-900">Enable loan rescheduling</p><p class="text-xs text-gray-500">Allow rescheduling of active loans</p></div>
+              <button class="relative w-11 h-6 bg-blue-600 rounded-full transition">
+                <span class="absolute right-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transition"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Savings Settings -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+          <h2 class="text-sm font-semibold text-gray-900 mb-4">Savings Settings</h2>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between p-3 rounded-xl border border-gray-100 hover:bg-blue-50/30">
+              <div class="flex-1">
+                <p class="text-sm font-medium text-gray-900">Enforce minimum opening balance</p>
+                <p class="text-xs text-gray-500">Minimum: KES 1,000</p>
+              </div>
+              <div class="flex items-center space-x-3">
+                <input type="text" value="1,000" class="w-24 text-right rounded-xl border border-gray-200 px-3 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                <button class="relative w-11 h-6 bg-blue-600 rounded-full transition">
+                  <span class="absolute right-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transition"></span>
+                </button>
+              </div>
+            </div>
+            <div class="flex items-center justify-between p-3 rounded-xl border border-gray-100 hover:bg-blue-50/30">
+              <div><p class="text-sm font-medium text-gray-900">Allow overdraft on savings</p><p class="text-xs text-gray-500">Permit negative savings balance</p></div>
+              <button class="relative w-11 h-6 bg-gray-200 rounded-full transition">
+                <span class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transition"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- General Settings -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+          <h2 class="text-sm font-semibold text-gray-900 mb-4">General Settings</h2>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between p-3 rounded-xl border border-gray-100 hover:bg-blue-50/30">
+              <div><p class="text-sm font-medium text-gray-900">Maker-checker enabled</p><p class="text-xs text-gray-500">Require approval for critical operations</p></div>
+              <button class="relative w-11 h-6 bg-blue-600 rounded-full transition">
+                <span class="absolute right-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transition"></span>
+              </button>
+            </div>
+            <div class="flex items-center justify-between p-3 rounded-xl border border-gray-100 hover:bg-blue-50/30">
+              <div><p class="text-sm font-medium text-gray-900">Enable address module</p><p class="text-xs text-gray-500">Capture client address information</p></div>
+              <button class="relative w-11 h-6 bg-blue-600 rounded-full transition">
+                <span class="absolute right-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transition"></span>
+              </button>
+            </div>
+            <div class="flex items-center justify-between p-3 rounded-xl border border-gray-100 hover:bg-blue-50/30">
+              <div class="flex-1">
+                <p class="text-sm font-medium text-gray-900">Default pagination limit</p>
+                <p class="text-xs text-gray-500">Records per page in list views</p>
+              </div>
+              <input type="number" value="200" class="w-24 text-right rounded-xl border border-gray-200 px-3 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+            </div>
+            <div class="flex items-center justify-between p-3 rounded-xl border border-gray-100 hover:bg-blue-50/30">
+              <div><p class="text-sm font-medium text-gray-900">Enable business date</p><p class="text-xs text-gray-500">Use business date instead of system date</p></div>
+              <button class="relative w-11 h-6 bg-blue-600 rounded-full transition">
+                <span class="absolute right-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transition"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

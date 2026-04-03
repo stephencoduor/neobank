@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>New Client Registration - Fineract</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex">
+
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white border-r border-gray-100 flex flex-col min-h-screen fixed left-0 top-0">
+    <!-- Logo -->
+    <div class="px-6 py-5 border-b border-gray-100">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+          <span class="text-white font-bold text-sm">F</span>
+        </div>
+        <span class="text-blue-600 font-bold text-lg">Fineract</span>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="flex-1 px-3 py-4 space-y-1">
+      <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-sm text-gray-600 rounded-xl hover:bg-gray-50">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z"/></svg>
+        Dashboard
+      </a>
+      <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-blue-600 bg-blue-50 rounded-xl">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        Clients
+      </a>
+      <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-sm text-gray-600 rounded-xl hover:bg-gray-50">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2z"/></svg>
+        Accounts
+      </a>
+      <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-sm text-gray-600 rounded-xl hover:bg-gray-50">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+        Loans
+      </a>
+      <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-sm text-gray-600 rounded-xl hover:bg-gray-50">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        Savings
+      </a>
+      <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-sm text-gray-600 rounded-xl hover:bg-gray-50">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        Reports
+      </a>
+    </nav>
+
+    <!-- User -->
+    <div class="px-4 py-4 border-t border-gray-100">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 bg-blue-600 rounded-full flex items-center justify-center">
+          <span class="text-white text-sm font-semibold">AW</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-medium text-gray-900 truncate">Amina Wanjiku</p>
+          <p class="text-xs text-gray-500 truncate">Westlands Branch</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 ml-64">
+    <!-- Top Bar -->
+    <header class="bg-white border-b border-gray-100 px-8 py-4">
+      <div class="flex items-center justify-between">
+        <nav class="flex items-center gap-2 text-sm text-gray-500">
+          <a href="#" class="hover:text-blue-600">Home</a>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          <a href="#" class="hover:text-blue-600">Clients</a>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          <span class="text-gray-900 font-medium">New Client</span>
+        </nav>
+        <div class="flex items-center gap-3">
+          <span class="text-xs text-gray-400">KES</span>
+          <button class="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-50">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="px-8 py-6">
+      <!-- Page Title -->
+      <h1 class="text-2xl font-bold text-gray-900 mb-6">New Client Registration</h1>
+
+      <!-- Step Indicator -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mb-6">
+        <div class="flex items-center justify-between">
+          <!-- Step 1 -->
+          <div class="flex items-center gap-3 flex-1">
+            <div class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-semibold">1</div>
+            <div>
+              <p class="text-sm font-semibold text-blue-600">Personal Info</p>
+              <p class="text-xs text-gray-400">Basic details</p>
+            </div>
+          </div>
+          <div class="w-12 h-px bg-gray-200 mx-2"></div>
+          <!-- Step 2 -->
+          <div class="flex items-center gap-3 flex-1">
+            <div class="w-10 h-10 bg-gray-100 text-gray-400 rounded-full flex items-center justify-center text-sm font-semibold">2</div>
+            <div>
+              <p class="text-sm font-medium text-gray-400">Address</p>
+              <p class="text-xs text-gray-300">Location info</p>
+            </div>
+          </div>
+          <div class="w-12 h-px bg-gray-200 mx-2"></div>
+          <!-- Step 3 -->
+          <div class="flex items-center gap-3 flex-1">
+            <div class="w-10 h-10 bg-gray-100 text-gray-400 rounded-full flex items-center justify-center text-sm font-semibold">3</div>
+            <div>
+              <p class="text-sm font-medium text-gray-400">Family</p>
+              <p class="text-xs text-gray-300">Family members</p>
+            </div>
+          </div>
+          <div class="w-12 h-px bg-gray-200 mx-2"></div>
+          <!-- Step 4 -->
+          <div class="flex items-center gap-3 flex-1">
+            <div class="w-10 h-10 bg-gray-100 text-gray-400 rounded-full flex items-center justify-center text-sm font-semibold">4</div>
+            <div>
+              <p class="text-sm font-medium text-gray-400">Review</p>
+              <p class="text-xs text-gray-300">Confirm & submit</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Card -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
+        <h2 class="text-lg font-semibold text-gray-900 mb-6">Step 1: Personal Information</h2>
+
+        <form>
+          <div class="grid grid-cols-2 gap-x-8 gap-y-5">
+            <!-- Left Column -->
+            <div class="space-y-5">
+              <!-- Office -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Office <span class="text-red-500">*</span></label>
+                <select class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none bg-white">
+                  <option>Westlands Branch</option>
+                  <option>Kilimani Branch</option>
+                  <option>Mombasa Road Branch</option>
+                  <option>Kisumu Branch</option>
+                  <option>Nakuru Branch</option>
+                </select>
+              </div>
+
+              <!-- Staff -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Staff</label>
+                <select class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none bg-white">
+                  <option>Ochieng Barasa</option>
+                  <option>Amina Wanjiku</option>
+                  <option>Peter Njoroge</option>
+                  <option>Fatma Hassan</option>
+                </select>
+              </div>
+
+              <!-- Legal Form -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Legal Form <span class="text-red-500">*</span></label>
+                <div class="flex items-center gap-6 mt-2">
+                  <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="radio" name="legalForm" value="person" checked class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500" />
+                    <span class="text-sm text-gray-700">Person</span>
+                  </label>
+                  <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="radio" name="legalForm" value="entity" class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500" />
+                    <span class="text-sm text-gray-700">Entity</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- First Name -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">First Name <span class="text-red-500">*</span></label>
+                <input type="text" placeholder="Enter first name" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none" />
+              </div>
+
+              <!-- Middle Name -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Middle Name</label>
+                <input type="text" placeholder="Enter middle name" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none" />
+              </div>
+
+              <!-- Last Name -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Last Name <span class="text-red-500">*</span></label>
+                <input type="text" placeholder="Enter last name" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none" />
+              </div>
+
+              <!-- Date of Birth -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Date of Birth</label>
+                <input type="date" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none" />
+              </div>
+
+              <!-- Gender -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Gender</label>
+                <select class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none bg-white">
+                  <option value="">Select gender</option>
+                  <option>Male</option>
+                  <option>Female</option>
+                </select>
+              </div>
+
+              <!-- Mobile Number -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Mobile Number</label>
+                <div class="flex">
+                  <span class="inline-flex items-center px-4 py-2.5 border border-r-0 border-gray-200 rounded-l-xl bg-gray-50 text-sm text-gray-500 font-medium">+254</span>
+                  <input type="tel" placeholder="7XX XXX XXX" class="w-full px-4 py-2.5 border border-gray-200 rounded-r-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none" />
+                </div>
+              </div>
+
+              <!-- Email -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Email Address</label>
+                <input type="email" placeholder="name@example.com" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none" />
+              </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="space-y-5">
+              <!-- External ID -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">External ID</label>
+                <input type="text" placeholder="Enter external ID" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none" />
+              </div>
+
+              <!-- Client Type -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Client Type</label>
+                <select class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none bg-white">
+                  <option value="">Select client type</option>
+                  <option>Individual</option>
+                  <option>Corporate</option>
+                  <option>Small Business</option>
+                  <option>Group Member</option>
+                </select>
+              </div>
+
+              <!-- Client Classification -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Client Classification</label>
+                <select class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none bg-white">
+                  <option value="">Select classification</option>
+                  <option>Regular Member</option>
+                  <option>Premium Member</option>
+                  <option>Junior Saver</option>
+                  <option>Diaspora Member</option>
+                </select>
+              </div>
+
+              <!-- Submitted Date -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Submitted Date <span class="text-red-500">*</span></label>
+                <input type="date" value="2026-03-30" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none bg-gray-50" readonly />
+              </div>
+
+              <!-- Activation Date -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Activation Date</label>
+                <input type="date" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none" />
+              </div>
+
+              <!-- Is Staff -->
+              <div>
+                <label class="flex items-center gap-3 cursor-pointer mt-4">
+                  <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" />
+                  <span class="text-sm font-medium text-gray-700">Is Staff Member</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Default Savings - full width -->
+          <div class="mt-8 pt-6 border-t border-gray-100">
+            <h3 class="text-sm font-semibold text-gray-900 mb-4">Default Savings Product</h3>
+            <div class="max-w-md">
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Savings Product</label>
+              <select class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none bg-white">
+                <option selected>Ordinary Savings - KES</option>
+                <option>Fixed Deposit - KES</option>
+                <option>Holiday Savings - KES</option>
+                <option>Junior Savings - KES</option>
+                <option>Chama Savings - KES</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div class="flex items-center justify-end gap-3 mt-8 pt-6 border-t border-gray-100">
+            <button type="button" class="px-6 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+              Cancel
+            </button>
+            <button type="button" class="px-6 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-medium hover:bg-blue-700 transition-colors flex items-center gap-2">
+              Next: Address
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>

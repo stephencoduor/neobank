@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charges - Grace Kemunto | Fineract</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Inter', sans-serif; }</style>
+</head>
+<body class="bg-gray-50 min-h-screen flex">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white border-r border-gray-100 fixed h-full z-30 flex flex-col">
+        <div class="h-16 flex items-center px-6 border-b border-gray-100">
+            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                <span class="text-white font-bold text-sm">F</span>
+            </div>
+            <span class="ml-3 font-semibold text-gray-900 text-lg">Fineract</span>
+        </div>
+        <nav class="flex-1 px-3 py-4 space-y-1 text-sm">
+            <a href="#" class="flex items-center px-3 py-2.5 text-gray-600 rounded-lg hover:bg-gray-50">
+                <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z"/></svg>
+                Dashboard
+            </a>
+            <a href="#" class="flex items-center px-3 py-2.5 text-blue-600 bg-blue-50 rounded-lg font-medium">
+                <svg class="w-5 h-5 mr-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                Clients
+            </a>
+            <a href="#" class="flex items-center px-3 py-2.5 text-gray-600 rounded-lg hover:bg-gray-50">
+                <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                Loans
+            </a>
+            <a href="#" class="flex items-center px-3 py-2.5 text-gray-600 rounded-lg hover:bg-gray-50">
+                <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                Savings
+            </a>
+            <a href="#" class="flex items-center px-3 py-2.5 text-gray-600 rounded-lg hover:bg-gray-50">
+                <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                Reports
+            </a>
+            <a href="#" class="flex items-center px-3 py-2.5 text-gray-600 rounded-lg hover:bg-gray-50">
+                <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                Settings
+            </a>
+        </nav>
+        <div class="px-4 py-3 border-t border-gray-100">
+            <div class="flex items-center">
+                <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span class="text-blue-700 font-semibold text-xs">AW</span>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm font-medium text-gray-900">Amina Wanjiku</p>
+                    <p class="text-xs text-gray-500">Westlands Branch</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="ml-64 flex-1">
+        <!-- Sticky Header -->
+        <header class="h-16 bg-white border-b border-gray-100 sticky top-0 z-20 flex items-center justify-between px-8">
+            <div class="flex items-center space-x-3 text-sm text-gray-500">
+                <a href="#" class="hover:text-blue-600">Home</a>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                <a href="#" class="hover:text-blue-600">Clients</a>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                <a href="#" class="hover:text-blue-600">Grace Kemunto</a>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                <span class="text-gray-900 font-medium">Charges</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button class="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-50">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                </button>
+                <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span class="text-blue-700 font-semibold text-xs">AW</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <main class="p-8">
+            <!-- Title -->
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h1 class="text-2xl font-semibold text-gray-900">Client Charges</h1>
+                    <p class="text-sm text-gray-500 mt-1">Client: Grace Kemunto</p>
+                </div>
+                <button class="inline-flex items-center px-4 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-xl hover:bg-blue-700 transition-colors shadow-sm">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    Add Charge
+                </button>
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mb-8">
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+                    <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Total Charges</p>
+                    <p class="text-2xl font-semibold text-gray-900 mt-1">3</p>
+                </div>
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+                    <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Paid</p>
+                    <p class="text-2xl font-semibold text-green-600 mt-1">KES 6,250</p>
+                </div>
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+                    <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Pending</p>
+                    <p class="text-2xl font-semibold text-amber-600 mt-1">KES 500</p>
+                </div>
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+                    <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Waived</p>
+                    <p class="text-2xl font-semibold text-gray-400 mt-1">KES 0</p>
+                </div>
+            </div>
+
+            <!-- Charges Table -->
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-gray-100">
+                                <th class="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Charge Name</th>
+                                <th class="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Type</th>
+                                <th class="text-right px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Amount</th>
+                                <th class="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Due Date</th>
+                                <th class="text-right px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Paid</th>
+                                <th class="text-right px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Waived</th>
+                                <th class="text-right px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Outstanding</th>
+                                <th class="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+                                <th class="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-50">
+                            <!-- Row 1: Processing Fee -->
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-6 py-4">
+                                    <span class="text-sm font-medium text-gray-900">Processing Fee</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700">Specified Due Date</span>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <span class="text-sm font-medium text-gray-900">KES 2,500</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="text-sm text-gray-600">15 Nov 2025</span>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <span class="text-sm text-gray-600">2,500</span>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <span class="text-sm text-gray-400">0</span>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <span class="text-sm text-gray-400">0</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700">Paid</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="text-xs text-gray-400">&mdash;</span>
+                                </td>
+                            </tr>
+
+                            <!-- Row 2: Insurance Premium -->
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-6 py-4">
+                                    <span class="text-sm font-medium text-gray-900">Insurance Premium</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-purple-50 text-purple-700">Disbursement</span>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <span class="text-sm font-medium text-gray-900">KES 3,750</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="text-sm text-gray-600">15 Nov 2025</span>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <span class="text-sm text-gray-600">3,750</span>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <span class="text-sm text-gray-400">0</span>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <span class="text-sm text-gray-400">0</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700">Paid</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="text-xs text-gray-400">&mdash;</span>
+                                </td>
+                            </tr>
+
+                            <!-- Row 3: Annual Service Fee -->
+                            <tr class="hover:bg-gray-50 transition-colors bg-amber-50/30">
+                                <td class="px-6 py-4">
+                                    <span class="text-sm font-medium text-gray-900">Annual Service Fee</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-orange-50 text-orange-700">Annual</span>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <span class="text-sm font-medium text-gray-900">KES 500</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="text-sm text-gray-600">12 Apr 2026</span>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <span class="text-sm text-gray-400">0</span>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <span class="text-sm text-gray-400">0</span>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <span class="text-sm font-semibold text-amber-700">500</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-700">Pending</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <button class="inline-flex items-center px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                                        Pay Charge
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
