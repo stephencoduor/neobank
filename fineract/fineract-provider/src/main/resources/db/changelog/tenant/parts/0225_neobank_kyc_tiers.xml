@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    NeoBank - Tiered KYC Schema (F-19)
+    Copyright (c) 2026 Qsoftwares Ltd. All rights reserved.
+
+    Introduces the KYC tier model used to gate transaction limits:
+      - LITE:     minimal onboarding (phone + name),     low limits
+      - STANDARD: Smile ID document + selfie verified,   medium limits
+      - ENHANCED: STANDARD + proof of address + source,  high limits
+
+    All limits are stored in minor units (cents) — KES 1 = 100 minor.
+-->
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <!-- 1. Per-client KYC tier assignment -->
+    <changeSet author="neobank" id="neobank-kyc-tier-1-create-tier-table">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="m_neobank_kyc_tier"/>
+            </not>
+        </preConditions>
+        <createTable tableName="m_neobank_kyc_tier">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_neobank_kyc_tier"/>
+            </column>
+            <column name="client_id" type="BIGINT">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uq_neobank_kyc_tier_client"/>
+            </column>
+            <column name="tier" type="VARCHAR(20)" defaultValue="LITE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="verified_at" type="TIMESTAMP"/>
+            <column name="verification_method" type="VARCHAR(50)"/>
+            <column name="created_date" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_date" type="TIMESTAMP"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="m_neobank_kyc_tier"
+                                 baseColumnNames="client_id"
+                                 constraintName="fk_neobank_kyc_tier_client"
+                                 referencedTableName="m_client"
+                                 referencedColumnNames="id"/>
+        <sql>ALTER TABLE m_neobank_kyc_tier ADD CONSTRAINT ck_neobank_kyc_tier_tier CHECK (tier IN ('LITE','STANDARD','ENHANCED'))</sql>
+    </changeSet>
+
+    <!-- 2. Tier -> limit matrix -->
+    <changeSet author="neobank" id="neobank-kyc-tier-2-create-limit-table">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="m_neobank_kyc_tier_limit"/>
+            </not>
+        </preConditions>
+        <createTable tableName="m_neobank_kyc_tier_limit">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_neobank_kyc_tier_limit"/>
+            </column>
+            <column name="tier" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="limit_type" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount_minor" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="currency_code" type="VARCHAR(3)" defaultValue="KES">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <sql>ALTER TABLE m_neobank_kyc_tier_limit ADD CONSTRAINT ck_neobank_kyc_tier_limit_tier CHECK (tier IN ('LITE','STANDARD','ENHANCED'))</sql>
+        <sql>ALTER TABLE m_neobank_kyc_tier_limit ADD CONSTRAINT ck_neobank_kyc_tier_limit_type CHECK (limit_type IN ('DAILY_SEND','DAILY_RECEIVE','MONTHLY_BALANCE','SINGLE_TXN'))</sql>
+    </changeSet>
+
+    <!-- 3. Seed the tier -> limit matrix (amounts in minor units, KES 1 = 100) -->
+    <changeSet author="neobank" id="neobank-kyc-tier-3-seed-limits">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM m_neobank_kyc_tier_limit</sqlCheck>
+        </preConditions>
+
+        <!-- LITE: minimal onboarding. KES 50k daily send, 20k single, 100k monthly balance cap -->
+        <insert tableName="m_neobank_kyc_tier_limit">
+            <column name="tier" value="LITE"/>
+            <column name="limit_type" value="DAILY_SEND"/>
+            <column name="amount_minor" valueNumeric="5000000"/>
+            <column name="currency_code" value="KES"/>
+        </insert>
+        <insert tableName="m_neobank_kyc_tier_limit">
+            <column name="tier" value="LITE"/>
+            <column name="limit_type" value="DAILY_RECEIVE"/>
+            <column name="amount_minor" valueNumeric="5000000"/>
+            <column name="currency_code" value="KES"/>
+        </insert>
+        <insert tableName="m_neobank_kyc_tier_limit">
+            <column name="tier" value="LITE"/>
+            <column name="limit_type" value="MONTHLY_BALANCE"/>
+            <column name="amount_minor" valueNumeric="10000000"/>
+            <column name="currency_code" value="KES"/>
+        </insert>
+        <insert tableName="m_neobank_kyc_tier_limit">
+            <column name="tier" value="LITE"/>
+            <column name="limit_type" value="SINGLE_TXN"/>
+            <column name="amount_minor" valueNumeric="2000000"/>
+            <column name="currency_code" value="KES"/>
+        </insert>
+
+        <!-- STANDARD: Smile ID verified. KES 500k daily send, 250k single, 5M balance cap -->
+        <insert tableName="m_neobank_kyc_tier_limit">
+            <column name="tier" value="STANDARD"/>
+            <column name="limit_type" value="DAILY_SEND"/>
+            <column name="amount_minor" valueNumeric="50000000"/>
+            <column name="currency_code" value="KES"/>
+        </insert>
+        <insert tableName="m_neobank_kyc_tier_limit">
+            <column name="tier" value="STANDARD"/>
+            <column name="limit_type" value="DAILY_RECEIVE"/>
+            <column name="amount_minor" valueNumeric="50000000"/>
+            <column name="currency_code" value="KES"/>
+        </insert>
+        <insert tableName="m_neobank_kyc_tier_limit">
+            <column name="tier" value="STANDARD"/>
+            <column name="limit_type" value="MONTHLY_BALANCE"/>
+            <column name="amount_minor" valueNumeric="500000000"/>
+            <column name="currency_code" value="KES"/>
+        </insert>
+        <insert tableName="m_neobank_kyc_tier_limit">
+            <column name="tier" value="STANDARD"/>
+            <column name="limit_type" value="SINGLE_TXN"/>
+            <column name="amount_minor" valueNumeric="25000000"/>
+            <column name="currency_code" value="KES"/>
+        </insert>
+
+        <!-- ENHANCED: full KYC + source of funds. KES 5M daily send, 2M single, 50M balance cap -->
+        <insert tableName="m_neobank_kyc_tier_limit">
+            <column name="tier" value="ENHANCED"/>
+            <column name="limit_type" value="DAILY_SEND"/>
+            <column name="amount_minor" valueNumeric="500000000"/>
+            <column name="currency_code" value="KES"/>
+        </insert>
+        <insert tableName="m_neobank_kyc_tier_limit">
+            <column name="tier" value="ENHANCED"/>
+            <column name="limit_type" value="DAILY_RECEIVE"/>
+            <column name="amount_minor" valueNumeric="500000000"/>
+            <column name="currency_code" value="KES"/>
+        </insert>
+        <insert tableName="m_neobank_kyc_tier_limit">
+            <column name="tier" value="ENHANCED"/>
+            <column name="limit_type" value="MONTHLY_BALANCE"/>
+            <column name="amount_minor" valueNumeric="5000000000"/>
+            <column name="currency_code" value="KES"/>
+        </insert>
+        <insert tableName="m_neobank_kyc_tier_limit">
+            <column name="tier" value="ENHANCED"/>
+            <column name="limit_type" value="SINGLE_TXN"/>
+            <column name="amount_minor" valueNumeric="200000000"/>
+            <column name="currency_code" value="KES"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

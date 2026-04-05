@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    NeoBank - Strong Customer Authentication Schema (F-27)
+    Copyright (c) 2026 Qsoftwares Ltd. All rights reserved.
+
+    Supports the NeoBank Auth module:
+      - m_neobank_device_binding: registered mobile/web devices per client
+      - m_neobank_stepup_challenge: OTP / biometric / PIN challenges for
+        high-risk actions (large transfers, profile changes, device pairing).
+-->
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <!-- 1. Registered client devices -->
+    <changeSet author="neobank" id="neobank-auth-1-create-device-binding-table">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="m_neobank_device_binding"/>
+            </not>
+        </preConditions>
+        <createTable tableName="m_neobank_device_binding">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_neobank_device_binding"/>
+            </column>
+            <column name="client_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="device_id" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="device_name" type="VARCHAR(128)"/>
+            <column name="platform" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="public_key" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bound_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_seen_at" type="TIMESTAMP"/>
+            <column name="revoked_at" type="TIMESTAMP"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="m_neobank_device_binding"
+                                 baseColumnNames="client_id"
+                                 constraintName="fk_neobank_device_binding_client"
+                                 referencedTableName="m_client"
+                                 referencedColumnNames="id"/>
+        <sql>ALTER TABLE m_neobank_device_binding ADD CONSTRAINT uq_neobank_device_binding_client_device UNIQUE (client_id, device_id)</sql>
+        <sql>ALTER TABLE m_neobank_device_binding ADD CONSTRAINT ck_neobank_device_binding_platform CHECK (platform IN ('ANDROID','IOS','WEB'))</sql>
+    </changeSet>
+
+    <!-- 2. Step-up auth challenges -->
+    <changeSet author="neobank" id="neobank-auth-2-create-stepup-challenge-table">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="m_neobank_stepup_challenge"/>
+            </not>
+        </preConditions>
+        <createTable tableName="m_neobank_stepup_challenge">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_neobank_stepup_challenge"/>
+            </column>
+            <column name="client_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="challenge_type" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(20)" defaultValue="PENDING">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="resolved_at" type="TIMESTAMP"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="m_neobank_stepup_challenge"
+                                 baseColumnNames="client_id"
+                                 constraintName="fk_neobank_stepup_challenge_client"
+                                 referencedTableName="m_client"
+                                 referencedColumnNames="id"/>
+        <sql>ALTER TABLE m_neobank_stepup_challenge ADD CONSTRAINT ck_neobank_stepup_challenge_type CHECK (challenge_type IN ('OTP','BIOMETRIC','PIN'))</sql>
+        <sql>ALTER TABLE m_neobank_stepup_challenge ADD CONSTRAINT ck_neobank_stepup_challenge_status CHECK (status IN ('PENDING','VERIFIED','FAILED','EXPIRED'))</sql>
+    </changeSet>
+
+</databaseChangeLog>
