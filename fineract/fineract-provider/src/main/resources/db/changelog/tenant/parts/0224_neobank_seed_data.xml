@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    NeoBank - Tenant Seed Data
+    Copyright (c) 2026 Qsoftwares Ltd. All rights reserved.
+
+    Populates the default tenant with NeoBank-specific reference data:
+    - Head Office renamed to "NeoBank Kenya - Nairobi HQ"
+    - KES (Kenyan Shilling) enabled as an organisation currency
+    - USD + EUR retained for correspondent banking / USD accounts
+    - NeoBank global configurations (app name, platform fee, MFA hint)
+-->
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <!-- 1. Rename Head Office for NeoBank Kenya -->
+    <changeSet author="neobank" id="neobank-seed-1-office">
+        <update tableName="m_office">
+            <column name="name" value="NeoBank Kenya - Nairobi HQ"/>
+            <column name="external_id" value="NB-KE-HQ"/>
+            <column name="opening_date" valueDate="2026-01-01"/>
+            <where>id = 1</where>
+        </update>
+    </changeSet>
+
+    <!-- 2. Enable KES (Kenyan Shilling) -->
+    <changeSet author="neobank" id="neobank-seed-2-kes-currency">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM m_organisation_currency WHERE code = 'KES'</sqlCheck>
+        </preConditions>
+        <insert tableName="m_organisation_currency">
+            <column name="code" value="KES"/>
+            <column name="decimal_places" valueNumeric="2"/>
+            <column name="currency_multiplesof"/>
+            <column name="name" value="Kenyan Shilling"/>
+            <column name="display_symbol" value="KSh"/>
+            <column name="internationalized_name_code" value="currency.KES"/>
+        </insert>
+    </changeSet>
+
+    <!-- 3. NeoBank global configurations -->
+    <changeSet author="neobank" id="neobank-seed-3-configurations">
+        <insert tableName="c_configuration">
+            <column name="name" value="neobank-platform-name"/>
+            <column name="value"/>
+            <column name="string_value" value="NeoBank Digital Banking"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="is_trap_door" valueBoolean="false"/>
+            <column name="description" value="Display name shown in mobile and web clients"/>
+        </insert>
+        <insert tableName="c_configuration">
+            <column name="name" value="neobank-default-currency"/>
+            <column name="value"/>
+            <column name="string_value" value="KES"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="is_trap_door" valueBoolean="false"/>
+            <column name="description" value="Default currency for new accounts and products"/>
+        </insert>
+        <insert tableName="c_configuration">
+            <column name="name" value="neobank-country-code"/>
+            <column name="value"/>
+            <column name="string_value" value="KE"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="is_trap_door" valueBoolean="false"/>
+            <column name="description" value="ISO 3166-1 alpha-2 country code for tenant"/>
+        </insert>
+        <insert tableName="c_configuration">
+            <column name="name" value="neobank-phone-country-prefix"/>
+            <column name="value"/>
+            <column name="string_value" value="+254"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="is_trap_door" valueBoolean="false"/>
+            <column name="description" value="Default E.164 phone prefix for client registration"/>
+        </insert>
+        <insert tableName="c_configuration">
+            <column name="name" value="neobank-platform-fee-bps"/>
+            <column name="value" valueNumeric="100"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="is_trap_door" valueBoolean="false"/>
+            <column name="description" value="Platform fee in basis points (100 bps = 1%) for P2P transfers"/>
+        </insert>
+        <insert tableName="c_configuration">
+            <column name="name" value="neobank-kyc-required"/>
+            <column name="value" valueNumeric="1"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="is_trap_door" valueBoolean="false"/>
+            <column name="description" value="When enabled, clients must complete Smile ID KYC before activation"/>
+        </insert>
+        <insert tableName="c_configuration">
+            <column name="name" value="neobank-mpesa-enabled"/>
+            <column name="value" valueNumeric="1"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="is_trap_door" valueBoolean="false"/>
+            <column name="description" value="Enable M-Pesa mobile money integration"/>
+        </insert>
+        <insert tableName="c_configuration">
+            <column name="name" value="neobank-airtel-money-enabled"/>
+            <column name="value" valueNumeric="1"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="is_trap_door" valueBoolean="false"/>
+            <column name="description" value="Enable Airtel Money Kenya integration"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
