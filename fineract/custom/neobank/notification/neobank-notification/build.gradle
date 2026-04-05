@@ -1,0 +1,22 @@
+/**
+ * NeoBank Custom Module — Notification Services
+ * Firebase Cloud Messaging, SMS & Email Notifications
+ * Copyright (c) 2026 Qsoftwares Ltd. All rights reserved.
+ */
+description = 'NeoBank Notification Services'
+
+apply plugin: 'java'
+apply from: "${rootDir}/buildSrc/src/main/groovy/org.apache.fineract.dependencies.gradle"
+
+dependencies {
+    implementation project(':fineract-core')
+    implementation project(':fineract-provider')
+
+    implementation 'org.springframework.boot:spring-boot-autoconfigure'
+    implementation 'org.springframework:spring-context'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.springframework.boot:spring-boot-autoconfigure-processor'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+}

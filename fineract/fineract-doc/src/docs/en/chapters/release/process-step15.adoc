@@ -1,0 +1,26 @@
+= Step 15: Announcement Email
+
+== Description
+
+Manually draft an email using your Apache ID. This works best if you use plain text since the Apache announcements list rejects HTML. Use `format=flowed` for readability, following instructions at https://useplaintext.email. Follow a https://lists.apache.org/thread/0xrtf2tgbcgczx1w6rlt9lxqvx68bfg3[recent example], substituting:
+
+****
+* [ ] version number in subject
+* [ ] version number in intro paragraph
+* [ ] number of issues addressed (get this number from the release page on confluence -- the github release page includes unresolved issues since issues can span multiple PRs)
+* [ ] version number in release page link
+* [ ] version number (aka git tag) in link to "Contributors, changelog, and pull requests" (github release page)
+* [ ] use your own email signature, or omit the email signature altogether
+****
+
+Send the email to dev@fineract.apache.org and announce@apache.org.
+
+== Gradle Task
+
+.Command
+[source,bash,subs="attributes+,+macros"]
+----
+./gradlew fineractReleaseStep15
+----
+
+NOTE: Do this task manually.

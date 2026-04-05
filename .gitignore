@@ -22,3 +22,14 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Fineract build artifacts
+fineract/build/
+fineract/*/build/
+fineract/.gradle/
+fineract/**/build/
+fineract/**/*.jar
+fineract/**/*.war
+fineract/**/*.zip
+fineract/fineract-client/build/
+fineract/build/fineract/logs/

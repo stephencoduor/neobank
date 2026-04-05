@@ -1,0 +1,18 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "fineract-react",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "D:/fineract/fineract-react"],
+      "port": 5173
+    },
+    {
+      "name": "neobank-app",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["--yes", "vite", "--host", "--port", "5174"],
+      "cwd": "D:/fineract/neobank-app",
+      "port": 5174
+    }
+  ]
+}
