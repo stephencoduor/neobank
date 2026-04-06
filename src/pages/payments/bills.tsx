@@ -13,6 +13,7 @@ import {
   ChevronRight,
   CheckCircle2,
   Receipt,
+  Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -34,6 +35,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { accounts } from "@/data/mock";
+import { billsService } from "@/services/bills-service";
 import { cn } from "@/lib/utils";
 
 function formatKES(amount: number) {
