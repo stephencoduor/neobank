@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   Target,
   Plane,
@@ -11,6 +11,9 @@ import {
   CheckCircle2,
   TrendingUp,
   Calendar,
+  Loader2,
+  RefreshCcw,
+  Milestone,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -44,6 +47,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
+import { useSavingsGoals, useCreateGoal, useLockGoal, useSweepGoal } from "@/hooks/use-savings-goals";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 function fmtKES(amount: number) {
@@ -107,45 +111,17 @@ function ProgressRing({
   );
 }
 
-// ── Mock data ────────────────────────────────────────────────────────────────
-const savingsGoals = [
-  {
-    id: 1,
-    name: "Emergency Fund",
-    icon: Target,
-    target: 500000,
-    saved: 325000,
-    percentage: 65,
-    color: "stroke-primary",
-    autoSave: true,
-    autoSaveAmount: 15000,
-    note: "Monthly auto-save KES 15,000",
-  },
-  {
-    id: 2,
-    name: "Nairobi Trip",
-    icon: Plane,
-    target: 80000,
-    saved: 72000,
-    percentage: 90,
-    color: "stroke-gold",
-    autoSave: false,
-    autoSaveAmount: 0,
-    note: "Deadline: June 2026",
-  },
-  {
-    id: 3,
-    name: "New Laptop",
-    icon: Laptop,
-    target: 120000,
-    saved: 28000,
-    percentage: 23,
-    color: "stroke-chart-3",
-    autoSave: false,
-    autoSaveAmount: 0,
-    note: "Just started saving",
-  },
-];
+// ── Goal icon mapping ────────────────────────────────────────────────────────
+const goalIcons: Record<string, typeof Target> = {
+  "Nyumba Fund": Target,
+  "Emergency Fund": Target,
+  "School Fees": Milestone,
+  "Safari ya Mombasa": Plane,
+  "Biashara Capital": TrendingUp,
+  "New Laptop": Laptop,
+  "Nairobi Trip": Plane,
+};
+const goalColors = ["stroke-primary", "stroke-gold", "stroke-chart-3", "stroke-chart-4"];
 
 const activeDeposits = [
   {
@@ -196,6 +172,59 @@ export default function SavingsPage() {
   const [depositDialogOpen, setDepositDialogOpen] = useState(false);
   const [selectedTenure, setSelectedTenure] = useState("12");
   const [depositAmount, setDepositAmount] = useState("");
+
+  // New goal form state
+  const [newGoalName, setNewGoalName] = useState("");
+  const [newGoalTarget, setNewGoalTarget] = useState("");
+  const [newGoalAutoSave, setNewGoalAutoSave] = useState(false);
+  const [newGoalAutoAmount, setNewGoalAutoAmount] = useState("");
+
+  // API hooks — falls back to mock data when backend is unavailable
+  const { data: apiGoals, loading: goalsLoading, error: goalsError, refetch: refetchGoals } = useSavingsGoals();
+  const { mutate: createGoal, loading: creating } = useCreateGoal();
+
+  // Transform API goals into display format
+  const savingsGoals = useMemo(() => {
+    if (!apiGoals) return [];
+    return apiGoals.map((g, i) => {
+      const iconKey = Object.keys(goalIcons).find((k) => g.name.includes(k));
+      return {
+        id: g.id,
+        name: g.name,
+        icon: iconKey ? goalIcons[iconKey] : Target,
+        target: g.targetAmountMinor / 100,
+        saved: g.currentAmountMinor / 100,
+        percentage: g.percentComplete,
+        color: goalColors[i % goalColors.length],
+        autoSave: g.sweepFrequency !== "NONE",
+        autoSaveAmount: g.sweepAmountMinor / 100,
+        note: g.locked
+          ? `Locked until ${g.lockUntilDate ?? "maturity"}`
+          : g.sweepFrequency !== "NONE"
+            ? `${g.sweepFrequency.toLowerCase()} auto-save KES ${(g.sweepAmountMinor / 100).toLocaleString()}`
+            : `${g.percentComplete}% complete`,
+        locked: g.locked,
+        milestones: g.milestones,
+      };
+    });
+  }, [apiGoals]);
+
+  async function handleCreateGoal() {
+    if (!newGoalName || !newGoalTarget) return;
+    await createGoal({
+      clientId: 1,
+      name: newGoalName,
+      targetAmountMinor: Number(newGoalTarget) * 100,
+      sweepFrequency: newGoalAutoSave ? "MONTHLY" : "NONE",
+      sweepAmountMinor: newGoalAutoSave ? Number(newGoalAutoAmount) * 100 : 0,
+    });
+    setGoalDialogOpen(false);
+    setNewGoalName("");
+    setNewGoalTarget("");
+    setNewGoalAutoSave(false);
+    setNewGoalAutoAmount("");
+    refetchGoals();
+  }
 
   const tenureMonths = parseInt(selectedTenure, 10);
   const rate = interestRates.find(
@@ -251,6 +280,21 @@ export default function SavingsPage() {
         {/* ── Savings Goals Tab ─────────────────────────────────────────── */}
         <TabsContent value="goals">
           <div className="flex flex-col gap-4">
+            {/* Loading / error states */}
+            {goalsLoading && savingsGoals.length === 0 && (
+              <div className="flex items-center justify-center gap-2 py-12 text-muted-foreground">
+                <Loader2 className="h-5 w-5 animate-spin" />
+                <span>Loading savings goals...</span>
+              </div>
+            )}
+            {goalsError && (
+              <div className="flex items-center gap-2 rounded-lg border border-amber-500/30 bg-amber-500/10 px-4 py-2.5 text-sm text-amber-600">
+                <span>Using offline data — backend unavailable</span>
+                <Button variant="ghost" size="sm" onClick={refetchGoals}>
+                  <RefreshCcw className="h-3.5 w-3.5" />
+                </Button>
+              </div>
+            )}
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {savingsGoals.map((goal) => (
                 <Card key={goal.id} className="relative overflow-hidden">
@@ -293,16 +337,27 @@ export default function SavingsPage() {
                       </div>
                     </div>
 
-                    {/* Auto-save badge */}
-                    {goal.autoSave && (
-                      <Badge
-                        variant="secondary"
-                        className="w-fit gap-1 text-xs"
-                      >
-                        <TrendingUp className="h-3 w-3" />
-                        Auto-save {fmtKES(goal.autoSaveAmount)}/mo
-                      </Badge>
-                    )}
+                    {/* Auto-save badge & Lock badge */}
+                    <div className="flex flex-wrap gap-1.5">
+                      {goal.autoSave && (
+                        <Badge
+                          variant="secondary"
+                          className="w-fit gap-1 text-xs"
+                        >
+                          <TrendingUp className="h-3 w-3" />
+                          Auto-save {fmtKES(goal.autoSaveAmount)}/mo
+                        </Badge>
+                      )}
+                      {goal.locked && (
+                        <Badge
+                          variant="secondary"
+                          className="w-fit gap-1 text-xs bg-amber-500/10 text-amber-600"
+                        >
+                          <Lock className="h-3 w-3" />
+                          Locked
+                        </Badge>
+                      )}
+                    </div>
 
                     {/* Actions */}
                     <div className="flex gap-2">
@@ -346,7 +401,9 @@ export default function SavingsPage() {
                     <Label htmlFor="goal-name">Goal Name</Label>
                     <Input
                       id="goal-name"
-                      placeholder="e.g. Wedding Fund"
+                      placeholder="e.g. Nyumba Fund, School Fees"
+                      value={newGoalName}
+                      onChange={(e) => setNewGoalName(e.target.value)}
                     />
                   </div>
                   <div className="flex flex-col gap-1.5">
@@ -355,6 +412,8 @@ export default function SavingsPage() {
                       id="goal-target"
                       type="number"
                       placeholder="e.g. 250,000"
+                      value={newGoalTarget}
+                      onChange={(e) => setNewGoalTarget(e.target.value)}
                     />
                   </div>
                   <div className="flex flex-col gap-1.5">
@@ -368,26 +427,38 @@ export default function SavingsPage() {
                         Automatically save each month
                       </p>
                     </div>
-                    <Switch />
-                  </div>
-                  <div className="flex flex-col gap-1.5">
-                    <Label htmlFor="auto-amount">
-                      Monthly Auto-Save Amount (KES)
-                    </Label>
-                    <Input
-                      id="auto-amount"
-                      type="number"
-                      placeholder="e.g. 10,000"
+                    <Switch
+                      checked={newGoalAutoSave}
+                      onCheckedChange={setNewGoalAutoSave}
                     />
                   </div>
+                  {newGoalAutoSave && (
+                    <div className="flex flex-col gap-1.5">
+                      <Label htmlFor="auto-amount">
+                        Monthly Auto-Save Amount (KES)
+                      </Label>
+                      <Input
+                        id="auto-amount"
+                        type="number"
+                        placeholder="e.g. 10,000"
+                        value={newGoalAutoAmount}
+                        onChange={(e) => setNewGoalAutoAmount(e.target.value)}
+                      />
+                    </div>
+                  )}
                 </div>
                 <DialogFooter>
                   <Button
                     className="w-full gap-2"
-                    onClick={() => setGoalDialogOpen(false)}
+                    onClick={handleCreateGoal}
+                    disabled={creating || !newGoalName || !newGoalTarget}
                   >
-                    <Target className="h-4 w-4" />
-                    Create Goal
+                    {creating ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Target className="h-4 w-4" />
+                    )}
+                    {creating ? "Creating..." : "Create Goal"}
                   </Button>
                 </DialogFooter>
               </DialogContent>

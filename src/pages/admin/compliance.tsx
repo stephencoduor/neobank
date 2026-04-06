@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import {
   Card,
   CardContent,
@@ -28,16 +29,11 @@ import {
   UserCheck,
   Scan,
   TrendingUp,
+  Loader2,
+  RefreshCcw,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const amlAlerts = [
-  { id: "AML-001", severity: "high", description: "Structuring pattern detected — multiple deposits just below KES 100K threshold", user: "Hassan Mohamed", date: "2026-04-03", status: "open" },
-  { id: "AML-002", severity: "medium", description: "Unusual cross-border transfer pattern to Tanzania", user: "David Kamau", date: "2026-04-02", status: "investigating" },
-  { id: "AML-003", severity: "high", description: "Rapid movement of funds through multiple accounts within 24 hours", user: "Unknown Entity", date: "2026-04-01", status: "open" },
-  { id: "AML-004", severity: "low", description: "First-time international wire transfer exceeding KES 500K", user: "Grace Akinyi", date: "2026-03-31", status: "resolved" },
-  { id: "AML-005", severity: "medium", description: "Transaction with blacklisted merchant category code", user: "Peter Mwangi", date: "2026-03-30", status: "investigating" },
-];
+import { useAmlCases, useAmlRules, useStrExport } from "@/hooks/use-aml";
 
 const sarsReports = [
   { id: "SAR-2026-001", subject: "Hassan Mohamed", type: "Structuring", filedDate: "2026-04-03", status: "filed", regulator: "FRC Kenya" },
@@ -73,6 +69,24 @@ const sarStatusStyles: Record<string, string> = {
 };
 
 export default function Compliance() {
+  // API hooks — fall back to mock data when backend is unavailable
+  const { data: amlCases, loading: casesLoading, error: casesError, refetch: refetchCases } = useAmlCases();
+  const { data: rules } = useAmlRules();
+  const { mutate: exportStr, loading: exporting } = useStrExport();
+
+  // Transform API AML cases into display format
+  const amlAlerts = useMemo(() => {
+    if (!amlCases) return [];
+    return amlCases.map((c) => ({
+      id: c.id,
+      severity: c.severity.toLowerCase(),
+      description: c.ruleDescription,
+      user: c.clientName,
+      date: c.createdAt.split("T")[0],
+      status: c.status === "OPEN" ? "open" : c.status === "INVESTIGATING" ? "investigating" : "resolved",
+    }));
+  }, [amlCases]);
+
   const complianceScore = 94;
 
   return (
@@ -85,9 +99,17 @@ export default function Compliance() {
             AML monitoring, regulatory compliance, and reporting
           </p>
         </div>
-        <Button className="gap-2">
-          <Download className="h-4 w-4" />
-          Export Compliance Report
+        <Button
+          className="gap-2"
+          onClick={() => exportStr({})}
+          disabled={exporting}
+        >
+          {exporting ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <Download className="h-4 w-4" />
+          )}
+          {exporting ? "Exporting..." : "Export Compliance Report"}
         </Button>
       </div>
 
@@ -181,11 +203,28 @@ export default function Compliance() {
       {/* AML Alerts */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Shield className="h-5 w-5 text-red-500" />
-            AML Alerts
-          </CardTitle>
-          <CardDescription>Anti-money laundering alerts and investigations</CardDescription>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="flex items-center gap-2">
+                <Shield className="h-5 w-5 text-red-500" />
+                AML Alerts
+                {rules && (
+                  <Badge variant="secondary" className="ml-2 text-[10px]">
+                    {rules.filter((r) => r.enabled).length} rules active
+                  </Badge>
+                )}
+              </CardTitle>
+              <CardDescription>Anti-money laundering alerts and investigations</CardDescription>
+            </div>
+            <Button variant="ghost" size="sm" onClick={refetchCases} disabled={casesLoading}>
+              <RefreshCcw className={cn("h-4 w-4", casesLoading && "animate-spin")} />
+            </Button>
+          </div>
+          {casesError && (
+            <div className="mt-2 flex items-center gap-2 rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-600">
+              Using offline data — backend unavailable
+            </div>
+          )}
         </CardHeader>
         <CardContent>
           <div className="space-y-2">
