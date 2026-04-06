@@ -1,0 +1,23 @@
+/**
+ * NeoBank Custom Module - Goal-Based Savings
+ * Copyright (c) 2026 Qsoftwares Ltd. All rights reserved.
+ */
+description = 'NeoBank Goal-Based Savings with Lock and Auto-Sweep'
+
+apply plugin: 'java'
+apply from: "${rootDir}/buildSrc/src/main/groovy/org.apache.fineract.dependencies.gradle"
+
+dependencies {
+    implementation project(':fineract-core')
+    implementation project(':fineract-provider')
+
+    implementation 'jakarta.ws.rs:jakarta.ws.rs-api'
+    implementation 'org.glassfish.jersey.containers:jersey-container-servlet'
+    implementation 'org.springframework.boot:spring-boot-autoconfigure'
+    implementation 'org.springframework:spring-context'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.springframework.boot:spring-boot-autoconfigure-processor'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+}

@@ -245,4 +245,7 @@
     <include file="parts/0224_neobank_seed_data.xml" relativeToChangelogFile="true" />
     <include file="parts/0225_neobank_kyc_tiers.xml" relativeToChangelogFile="true" />
     <include file="parts/0226_neobank_auth_device_binding.xml" relativeToChangelogFile="true" />
+    <include file="parts/0227_neobank_kyc_verification_audit.xml" relativeToChangelogFile="true" />
+    <include file="parts/0228_neobank_savings_goals.xml" relativeToChangelogFile="true" />
+    <include file="parts/0229_neobank_aml.xml" relativeToChangelogFile="true" />
 </databaseChangeLog>

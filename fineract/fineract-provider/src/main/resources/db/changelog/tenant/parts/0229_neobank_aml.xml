@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet author="neobank" id="neobank-aml-1-rules">
+        <preConditions onFail="MARK_RAN"><not><tableExists tableName="m_neobank_aml_rule"/></not></preConditions>
+        <createTable tableName="m_neobank_aml_rule">
+            <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true" nullable="false"/></column>
+            <column name="rule_code" type="VARCHAR(50)"><constraints nullable="false" unique="true"/></column>
+            <column name="description" type="VARCHAR(255)"><constraints nullable="false"/></column>
+            <column name="severity_default" type="VARCHAR(10)"><constraints nullable="false"/></column>
+            <column name="enabled" type="BOOLEAN" defaultValueBoolean="true"/>
+            <column name="threshold_json" type="TEXT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="neobank" id="neobank-aml-2-cases">
+        <preConditions onFail="MARK_RAN"><not><tableExists tableName="m_neobank_aml_case"/></not></preConditions>
+        <createTable tableName="m_neobank_aml_case">
+            <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true" nullable="false"/></column>
+            <column name="client_id" type="BIGINT"><constraints nullable="false"/></column>
+            <column name="rule_code" type="VARCHAR(50)"><constraints nullable="false"/></column>
+            <column name="severity" type="VARCHAR(10)"><constraints nullable="false"/></column>
+            <column name="status" type="VARCHAR(20)" defaultValue="OPEN"><constraints nullable="false"/></column>
+            <column name="triggered_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"><constraints nullable="false"/></column>
+            <column name="resolved_at" type="TIMESTAMP"/>
+            <column name="resolved_by" type="VARCHAR(100)"/>
+            <column name="notes" type="TEXT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="neobank" id="neobank-aml-3-sanctions">
+        <preConditions onFail="MARK_RAN"><not><tableExists tableName="m_neobank_aml_sanction_hit"/></not></preConditions>
+        <createTable tableName="m_neobank_aml_sanction_hit">
+            <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true" nullable="false"/></column>
+            <column name="client_id" type="BIGINT"><constraints nullable="false"/></column>
+            <column name="matched_name" type="VARCHAR(255)"><constraints nullable="false"/></column>
+            <column name="list_source" type="VARCHAR(30)"><constraints nullable="false"/></column>
+            <column name="confidence_pct" type="INT"/>
+            <column name="screened_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"><constraints nullable="false"/></column>
+            <column name="cleared" type="BOOLEAN" defaultValueBoolean="false"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="neobank" id="neobank-aml-4-seed-rules">
+        <preConditions onFail="MARK_RAN"><sqlCheck expectedResult="0">SELECT COUNT(*) FROM m_neobank_aml_rule</sqlCheck></preConditions>
+        <insert tableName="m_neobank_aml_rule"><column name="rule_code" value="VELOCITY_5_IN_1H"/><column name="description" value="More than 5 transactions within 1 hour window"/><column name="severity_default" value="MEDIUM"/></insert>
+        <insert tableName="m_neobank_aml_rule"><column name="rule_code" value="STRUCTURING_BELOW_50K"/><column name="description" value="Multiple transactions just below KES 50,000 reporting threshold"/><column name="severity_default" value="HIGH"/></insert>
+        <insert tableName="m_neobank_aml_rule"><column name="rule_code" value="LARGE_SINGLE_1M"/><column name="description" value="Single transaction exceeding KES 1,000,000"/><column name="severity_default" value="HIGH"/></insert>
+        <insert tableName="m_neobank_aml_rule"><column name="rule_code" value="MULE_PATTERN"/><column name="description" value="Funds received then immediately sent to different account within 30 minutes"/><column name="severity_default" value="CRITICAL"/></insert>
+        <insert tableName="m_neobank_aml_rule"><column name="rule_code" value="DORMANT_REACTIVATION"/><column name="description" value="Account dormant over 90 days followed by large transaction"/><column name="severity_default" value="MEDIUM"/></insert>
+    </changeSet>
+
+</databaseChangeLog>

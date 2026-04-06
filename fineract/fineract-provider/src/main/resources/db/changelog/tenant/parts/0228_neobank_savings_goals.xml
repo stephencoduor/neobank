@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet author="neobank" id="neobank-savings-goal-1">
+        <preConditions onFail="MARK_RAN"><not><tableExists tableName="m_neobank_savings_goal"/></not></preConditions>
+        <createTable tableName="m_neobank_savings_goal">
+            <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true" nullable="false"/></column>
+            <column name="client_id" type="BIGINT"><constraints nullable="false"/></column>
+            <column name="name" type="VARCHAR(100)"><constraints nullable="false"/></column>
+            <column name="target_amount_minor" type="BIGINT"><constraints nullable="false"/></column>
+            <column name="current_amount_minor" type="BIGINT" defaultValueNumeric="0"><constraints nullable="false"/></column>
+            <column name="currency_code" type="VARCHAR(3)" defaultValue="KES"><constraints nullable="false"/></column>
+            <column name="linked_savings_account_id" type="BIGINT"/>
+            <column name="auto_sweep_enabled" type="BOOLEAN" defaultValueBoolean="false"/>
+            <column name="sweep_frequency" type="VARCHAR(10)"/>
+            <column name="sweep_amount_minor" type="BIGINT"/>
+            <column name="lock_until_date" type="DATE"/>
+            <column name="status" type="VARCHAR(20)" defaultValue="ACTIVE"><constraints nullable="false"/></column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"><constraints nullable="false"/></column>
+            <column name="updated_at" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="neobank" id="neobank-savings-goal-2-sweep">
+        <preConditions onFail="MARK_RAN"><not><tableExists tableName="m_neobank_savings_goal_sweep"/></not></preConditions>
+        <createTable tableName="m_neobank_savings_goal_sweep">
+            <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true" nullable="false"/></column>
+            <column name="goal_id" type="BIGINT"><constraints nullable="false" foreignKeyName="fk_sweep_goal" references="m_neobank_savings_goal(id)"/></column>
+            <column name="amount_minor" type="BIGINT"><constraints nullable="false"/></column>
+            <column name="sweep_date" type="TIMESTAMP"><constraints nullable="false"/></column>
+            <column name="status" type="VARCHAR(10)" defaultValue="SUCCESS"><constraints nullable="false"/></column>
+            <column name="source_account_id" type="BIGINT"/>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"><constraints nullable="false"/></column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="neobank" id="neobank-savings-goal-3-milestone">
+        <preConditions onFail="MARK_RAN"><not><tableExists tableName="m_neobank_savings_goal_milestone"/></not></preConditions>
+        <createTable tableName="m_neobank_savings_goal_milestone">
+            <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true" nullable="false"/></column>
+            <column name="goal_id" type="BIGINT"><constraints nullable="false" foreignKeyName="fk_milestone_goal" references="m_neobank_savings_goal(id)"/></column>
+            <column name="milestone_pct" type="INT"><constraints nullable="false"/></column>
+            <column name="reached_at" type="TIMESTAMP"/>
+            <column name="notified" type="BOOLEAN" defaultValueBoolean="false"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
