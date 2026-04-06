@@ -25,6 +25,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { accounts, recentContacts } from "@/data/mock";
 import { interopService } from "@/services/interop-service";
+import { useBankDirectory, usePesaLinkSend } from "@/hooks/use-pesalink";
 import { cn } from "@/lib/utils";
 
 function formatKES(amount: number) {
@@ -32,9 +33,11 @@ function formatKES(amount: number) {
 }
 
 type Step = "input" | "review" | "success";
+type SendMethod = "mobile" | "bank";
 
 export default function SendMoneyPage() {
   const [step, setStep] = useState<Step>("input");
+  const [sendMethod, setSendMethod] = useState<SendMethod>("mobile");
   const [phone, setPhone] = useState("");
   const [recipientName, setRecipientName] = useState("");
   const [amount, setAmount] = useState("");
@@ -45,13 +48,21 @@ export default function SendMoneyPage() {
   const [sendError, setSendError] = useState<string | null>(null);
   const [routingInfo, setRoutingInfo] = useState<{ carrier: string; feeMinor: number; failover: boolean } | null>(null);
 
+  // PesaLink bank transfer state
+  const [bankCode, setBankCode] = useState("");
+  const [accountNumber, setAccountNumber] = useState("");
+  const { data: bankDirectory } = useBankDirectory();
+  const pesaLinkSend = usePesaLinkSend();
+
   const parsedAmount = parseFloat(amount.replace(/,/g, "")) || 0;
   const fee = parsedAmount > 0 && parsedAmount <= 100_000 ? 0 : 35;
   const total = parsedAmount + fee;
   const source = accounts.find((a) => a.id === sourceAccount) ?? accounts[0];
   const txnRef = `P2P-${Date.now().toString(36).toUpperCase()}`;
 
-  const canProceed = phone.length >= 9 && parsedAmount >= 10;
+  const canProceedMobile = phone.length >= 9 && parsedAmount >= 10;
+  const canProceedBank = bankCode !== "" && accountNumber.length >= 5 && parsedAmount >= 10;
+  const canProceed = sendMethod === "mobile" ? canProceedMobile : canProceedBank;
 
   const handleContactSelect = (contact: (typeof recentContacts)[0]) => {
     setSelectedContact(contact.id);
@@ -67,14 +78,34 @@ export default function SendMoneyPage() {
     setSending(true);
     setSendError(null);
     try {
-      const result = await interopService.sendMoney({
-        msisdn: `254${phone}`,
-        amountMinor: parsedAmount * 100,
-        accountRef: sourceAccount,
-        description: note || "P2P Transfer",
-      });
-      setRoutingInfo(result.routing);
-      setStep("success");
+      if (sendMethod === "bank") {
+        // PesaLink bank transfer
+        const selectedBank = bankDirectory?.find((b) => b.bankCode === bankCode);
+        try {
+          await pesaLinkSend.mutate({
+            bankCode,
+            accountNumber,
+            amountKes: parsedAmount,
+            senderName: "Amina Wanjiku",
+            reference: note || "Bank Transfer",
+          });
+          setRoutingInfo({ carrier: `PesaLink → ${selectedBank?.shortName ?? bankCode}`, feeMinor: 5000, failover: false });
+        } catch {
+          console.info("[NeoBank] PesaLink backend unavailable, using demo");
+          setRoutingInfo({ carrier: `PesaLink → ${selectedBank?.shortName ?? "KCB"}`, feeMinor: 5000, failover: false });
+        }
+        setStep("success");
+      } else {
+        // Mobile money transfer
+        const result = await interopService.sendMoney({
+          msisdn: `254${phone}`,
+          amountMinor: parsedAmount * 100,
+          accountRef: sourceAccount,
+          description: note || "P2P Transfer",
+        });
+        setRoutingInfo(result.routing);
+        setStep("success");
+      }
     } catch {
       // Backend unavailable — demo mode
       console.info("[NeoBank] Backend unavailable, using demo send");
@@ -176,7 +207,9 @@ export default function SendMoneyPage() {
                   {recipientName || "Recipient"}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  +254 {phone}
+                  {sendMethod === "bank"
+                    ? `${bankDirectory?.find(b => b.bankCode === bankCode)?.shortName ?? "Bank"} • ${accountNumber}`
+                    : `+254 ${phone}`}
                 </p>
               </div>
             </div>
@@ -248,12 +281,78 @@ export default function SendMoneyPage() {
         <div>
           <h1 className="text-xl font-bold">Send Money</h1>
           <p className="text-sm text-muted-foreground">
-            Transfer to any mobile number
+            Transfer via mobile money or bank
           </p>
         </div>
       </div>
 
-      {/* Recent contacts */}
+      {/* Send method toggle */}
+      <div className="flex gap-2 p-1 bg-muted rounded-lg">
+        <button
+          onClick={() => setSendMethod("mobile")}
+          className={cn(
+            "flex-1 py-2 px-3 rounded-md text-sm font-medium transition-colors",
+            sendMethod === "mobile" ? "bg-background shadow-sm text-foreground" : "text-muted-foreground hover:text-foreground"
+          )}
+        >
+          📱 Mobile Money
+        </button>
+        <button
+          onClick={() => setSendMethod("bank")}
+          className={cn(
+            "flex-1 py-2 px-3 rounded-md text-sm font-medium transition-colors",
+            sendMethod === "bank" ? "bg-background shadow-sm text-foreground" : "text-muted-foreground hover:text-foreground"
+          )}
+        >
+          🏦 Bank (PesaLink)
+        </button>
+      </div>
+
+      {/* Bank transfer fields — PesaLink */}
+      {sendMethod === "bank" && (
+        <Card>
+          <CardContent className="pt-4 space-y-4">
+            <div className="space-y-2">
+              <Label>Destination Bank</Label>
+              <Select value={bankCode} onValueChange={(val) => setBankCode(val ?? "")}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select bank..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {(bankDirectory ?? []).map((bank) => (
+                    <SelectItem key={bank.bankCode} value={bank.bankCode}>
+                      {bank.shortName}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>Account Number</Label>
+              <Input
+                placeholder="Enter account number"
+                value={accountNumber}
+                onChange={(e) => setAccountNumber(e.target.value)}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Recipient Name</Label>
+              <Input
+                placeholder="Account holder name"
+                value={recipientName}
+                onChange={(e) => setRecipientName(e.target.value)}
+              />
+            </div>
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <ArrowRightLeft className="h-3 w-3" />
+              <span>PesaLink transfers: KES 50 fee, instant to most banks</span>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Recent contacts + phone — mobile only */}
+      {sendMethod === "mobile" && (<>
       <div>
         <Label className="text-sm text-muted-foreground mb-3 block">
           Recent Contacts
@@ -325,6 +424,8 @@ export default function SendMoneyPage() {
           />
         </div>
       </div>
+      </>
+      )}
 
       {/* Amount */}
       <div className="space-y-2">

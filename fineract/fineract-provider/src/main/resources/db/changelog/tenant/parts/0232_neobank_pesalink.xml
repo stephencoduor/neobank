@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="0232-01-pesalink-txn" author="neobank">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="m_neobank_pesalink_txn"/></not>
+        </preConditions>
+        <createTable tableName="m_neobank_pesalink_txn">
+            <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true"/></column>
+            <column name="transaction_id" type="VARCHAR(50)"><constraints nullable="false" unique="true"/></column>
+            <column name="client_id" type="BIGINT"><constraints nullable="false"/></column>
+            <column name="destination_bank_code" type="VARCHAR(10)"><constraints nullable="false"/></column>
+            <column name="destination_bic" type="VARCHAR(20)"/>
+            <column name="account_number" type="VARCHAR(50)"><constraints nullable="false"/></column>
+            <column name="amount_minor" type="BIGINT"><constraints nullable="false"/></column>
+            <column name="fee_minor" type="BIGINT" defaultValueNumeric="0"/>
+            <column name="status" type="VARCHAR(20)" defaultValue="PENDING"/>
+            <column name="ipsl_ref" type="VARCHAR(100)"/>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="completed_at" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

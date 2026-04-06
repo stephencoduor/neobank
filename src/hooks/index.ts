@@ -3,3 +3,4 @@ export { useKycTier, useRiskScore, useSubmitVerification, useManualUpgrade, useS
 export { useSavingsGoals, useSavingsGoal, useCreateGoal, useLockGoal, useSweepGoal } from "./use-savings-goals";
 export { useAmlCases, useAmlCase, useAmlRules, useDispositionCase, useSanctionsScreen, useStrExport } from "./use-aml";
 export { useCarrierCosts, useCarrierHealth, useSendMoney } from "./use-interop";
+export { useBankDirectory, useValidateAccount, usePesaLinkSend } from "./use-pesalink";

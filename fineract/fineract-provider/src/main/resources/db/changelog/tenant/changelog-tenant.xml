@@ -250,4 +250,6 @@
     <include file="parts/0229_neobank_aml.xml" relativeToChangelogFile="true" />
     <include file="parts/0230_neobank_interop_routing.xml" relativeToChangelogFile="true" />
     <include file="parts/0231_neobank_bill_payments.xml" relativeToChangelogFile="true" />
+    <include file="parts/0232_neobank_pesalink.xml" relativeToChangelogFile="true" />
+    <include file="parts/0233_neobank_aml_v2.xml" relativeToChangelogFile="true" />
 </databaseChangeLog>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <!-- Sanctions list cache -->
+    <changeSet id="0233-01-sanctions-cache" author="neobank">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="m_neobank_sanctions_list"/></not>
+        </preConditions>
+        <createTable tableName="m_neobank_sanctions_list">
+            <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true"/></column>
+            <column name="sanction_id" type="VARCHAR(50)"><constraints nullable="false" unique="true"/></column>
+            <column name="list_name" type="VARCHAR(30)"><constraints nullable="false"/></column>
+            <column name="entity_name" type="VARCHAR(300)"><constraints nullable="false"/></column>
+            <column name="entity_type" type="VARCHAR(20)"/>
+            <column name="country" type="VARCHAR(5)"/>
+            <column name="notes" type="VARCHAR(500)"/>
+            <column name="is_pep" type="BOOLEAN" defaultValueBoolean="false"/>
+            <column name="added_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="last_verified_at" type="TIMESTAMP"/>
+        </createTable>
+        <createIndex tableName="m_neobank_sanctions_list" indexName="idx_sanctions_entity_name">
+            <column name="entity_name"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- STR drafts -->
+    <changeSet id="0233-02-str-drafts" author="neobank">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="m_neobank_str_draft"/></not>
+        </preConditions>
+        <createTable tableName="m_neobank_str_draft">
+            <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true"/></column>
+            <column name="str_id" type="VARCHAR(50)"><constraints nullable="false" unique="true"/></column>
+            <column name="case_id" type="VARCHAR(50)"><constraints nullable="false"/></column>
+            <column name="subject_name" type="VARCHAR(200)"/>
+            <column name="subject_id_number" type="VARCHAR(50)"/>
+            <column name="narrative" type="TEXT"/>
+            <column name="transaction_count" type="INT"/>
+            <column name="total_amount_minor" type="BIGINT"/>
+            <column name="status" type="VARCHAR(20)" defaultValue="DRAFT"/>
+            <column name="filed_at" type="TIMESTAMP"/>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
