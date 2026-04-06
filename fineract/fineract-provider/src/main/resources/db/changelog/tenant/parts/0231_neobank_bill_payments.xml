@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <!-- Bill catalog (cached from Gava Connect) -->
+    <changeSet id="0231-01-bill-catalog" author="neobank">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="m_neobank_bill_catalog"/></not>
+        </preConditions>
+        <createTable tableName="m_neobank_bill_catalog">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="biller_code" type="VARCHAR(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="biller_name" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="category" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(500)"/>
+            <column name="account_label" type="VARCHAR(100)"/>
+            <column name="min_amount_kes" type="INT" defaultValueNumeric="10"/>
+            <column name="max_amount_kes" type="INT" defaultValueNumeric="500000"/>
+            <column name="active" type="BOOLEAN" defaultValueBoolean="true"/>
+            <column name="last_synced_at" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <!-- Bill payment records -->
+    <changeSet id="0231-02-bill-payment" author="neobank">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="m_neobank_bill_payment"/></not>
+        </preConditions>
+        <createTable tableName="m_neobank_bill_payment">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="transaction_id" type="VARCHAR(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="client_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="biller_code" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="account_number" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount_minor" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fee_minor" type="BIGINT" defaultValueNumeric="0"/>
+            <column name="status" type="VARCHAR(30)" defaultValue="PENDING"/>
+            <column name="receipt_number" type="VARCHAR(50)"/>
+            <column name="carrier_ref" type="VARCHAR(100)"/>
+            <column name="paid_at" type="TIMESTAMP"/>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+        <createIndex tableName="m_neobank_bill_payment" indexName="idx_bill_payment_client">
+            <column name="client_id"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

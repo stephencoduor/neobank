@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <!-- Carrier health tracking -->
+    <changeSet id="0230-01-carrier-health" author="neobank">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="m_neobank_carrier_health"/></not>
+        </preConditions>
+        <createTable tableName="m_neobank_carrier_health">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="carrier" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="health_score" type="INT" defaultValueNumeric="100"/>
+            <column name="success_rate" type="DECIMAL(5,2)"/>
+            <column name="p95_latency_ms" type="BIGINT"/>
+            <column name="sample_count" type="INT"/>
+            <column name="recorded_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <!-- Routing audit log -->
+    <changeSet id="0230-02-routing-audit" author="neobank">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="m_neobank_routing_audit"/></not>
+        </preConditions>
+        <createTable tableName="m_neobank_routing_audit">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="msisdn" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount_minor" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="native_carrier" type="VARCHAR(20)"/>
+            <column name="routed_carrier" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="failover" type="BOOLEAN" defaultValueBoolean="false"/>
+            <column name="fee_minor" type="BIGINT"/>
+            <column name="health_score" type="INT"/>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+        <createIndex tableName="m_neobank_routing_audit" indexName="idx_routing_audit_created">
+            <column name="created_at"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- Seed carriers -->
+    <changeSet id="0230-03-seed-carriers" author="neobank">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM m_neobank_carrier_health</sqlCheck>
+        </preConditions>
+        <insert tableName="m_neobank_carrier_health">
+            <column name="carrier" value="MPESA"/>
+            <column name="health_score" valueNumeric="100"/>
+            <column name="success_rate" valueNumeric="99.50"/>
+            <column name="p95_latency_ms" valueNumeric="1200"/>
+            <column name="sample_count" valueNumeric="0"/>
+        </insert>
+        <insert tableName="m_neobank_carrier_health">
+            <column name="carrier" value="AIRTEL"/>
+            <column name="health_score" valueNumeric="100"/>
+            <column name="success_rate" valueNumeric="98.00"/>
+            <column name="p95_latency_ms" valueNumeric="1800"/>
+            <column name="sample_count" valueNumeric="0"/>
+        </insert>
+        <insert tableName="m_neobank_carrier_health">
+            <column name="carrier" value="TELKOM"/>
+            <column name="health_score" valueNumeric="100"/>
+            <column name="success_rate" valueNumeric="95.00"/>
+            <column name="p95_latency_ms" valueNumeric="2500"/>
+            <column name="sample_count" valueNumeric="0"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
