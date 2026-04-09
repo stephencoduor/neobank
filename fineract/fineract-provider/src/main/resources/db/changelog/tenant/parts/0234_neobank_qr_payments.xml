@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet id="neobank-qr-payments" author="qsoftwares">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="m_neobank_qr_payment"/></not>
+        </preConditions>
+        <createTable tableName="m_neobank_qr_payment">
+            <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true"/></column>
+            <column name="qr_id" type="VARCHAR(20)"><constraints unique="true" nullable="false"/></column>
+            <column name="transaction_id" type="VARCHAR(30)"/>
+            <column name="sender_account" type="VARCHAR(20)"/>
+            <column name="recipient_account" type="VARCHAR(20)"><constraints nullable="false"/></column>
+            <column name="merchant_name" type="VARCHAR(100)"/>
+            <column name="amount" type="DECIMAL(19,4)"><constraints nullable="false"/></column>
+            <column name="currency" type="VARCHAR(3)" defaultValue="KES"/>
+            <column name="qr_type" type="VARCHAR(20)" defaultValue="NEOBANK_QR"/>
+            <column name="status" type="VARCHAR(20)"><constraints nullable="false"/></column>
+            <column name="expires_at" type="TIMESTAMP"/>
+            <column name="processed_at" type="TIMESTAMP"/>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="NOW()"/>
+        </createTable>
+        <createIndex tableName="m_neobank_qr_payment" indexName="idx_qr_qr_id">
+            <column name="qr_id"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

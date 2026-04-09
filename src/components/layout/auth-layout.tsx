@@ -5,7 +5,7 @@ export default function AuthLayout() {
   return (
     <div className="flex min-h-screen">
       {/* Left brand panel — hidden on mobile */}
-      <div className="relative hidden flex-col justify-between overflow-hidden bg-primary p-10 lg:flex lg:w-[480px] xl:w-[520px]">
+      <div className="relative hidden flex-col justify-between overflow-hidden bg-primary p-10 lg:flex lg:w-[320px] xl:w-[360px]">
         {/* Decorative circles */}
         <div className="absolute -right-24 -top-24 h-80 w-80 rounded-full bg-white/5" />
         <div className="absolute -bottom-16 -left-16 h-64 w-64 rounded-full bg-white/5" />
@@ -87,8 +87,8 @@ export default function AuthLayout() {
       </div>
 
       {/* Right content area */}
-      <div className="flex flex-1 items-center justify-center px-4 py-10">
-        <div className="w-full max-w-md">
+      <div className="flex flex-1 items-center justify-center px-6 py-10">
+        <div className="w-full max-w-lg">
           {/* Mobile logo */}
           <div className="mb-8 flex items-center gap-2.5 lg:hidden">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary">

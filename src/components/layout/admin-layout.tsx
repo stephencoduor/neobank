@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { currentUser } from "@/data/mock";
+import { authService } from "@/services/auth-service";
 import { Search, User, Settings, LogOut, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
@@ -116,7 +117,7 @@ export default function AdminLayout() {
                 Settings
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => navigate("/login")}>
+              <DropdownMenuItem onClick={() => { authService.logout(); navigate("/login"); }}>
                 <LogOut className="mr-2 h-4 w-4" />
                 Logout
               </DropdownMenuItem>

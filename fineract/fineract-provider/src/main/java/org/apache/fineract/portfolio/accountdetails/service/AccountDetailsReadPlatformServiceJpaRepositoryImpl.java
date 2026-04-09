@@ -33,7 +33,7 @@ import org.apache.fineract.portfolio.accountdetails.data.AccountSummaryCollectio
 import org.apache.fineract.portfolio.accountdetails.data.GuarantorAccountSummaryData;
 import org.apache.fineract.portfolio.accountdetails.data.LoanAccountSummaryData;
 import org.apache.fineract.portfolio.accountdetails.data.SavingsAccountSummaryData;
-import org.apache.fineract.portfolio.accountdetails.data.ShareAccountSummaryData;
+// NeoBank: removed — shares module stripped (ShareAccountSummaryData import)
 import org.apache.fineract.portfolio.accountdetails.data.WorkingCapitalLoanAccountSummaryData;
 import org.apache.fineract.portfolio.client.service.ClientReadPlatformService;
 import org.apache.fineract.portfolio.group.service.GroupReadPlatformService;
@@ -44,10 +44,6 @@ import org.apache.fineract.portfolio.savings.data.SavingsAccountApplicationTimel
 import org.apache.fineract.portfolio.savings.data.SavingsAccountStatusEnumData;
 import org.apache.fineract.portfolio.savings.data.SavingsAccountSubStatusEnumData;
 import org.apache.fineract.portfolio.savings.service.SavingsEnumerations;
-import org.apache.fineract.portfolio.shareaccounts.data.ShareAccountApplicationTimelineData;
-import org.apache.fineract.portfolio.shareaccounts.data.ShareAccountStatusEnumData;
-import org.apache.fineract.portfolio.shareaccounts.service.SharesEnumerations;
-import org.apache.fineract.portfolio.workingcapitalloan.service.WorkingCapitalLoanApplicationReadPlatformService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
@@ -60,7 +56,7 @@ public class AccountDetailsReadPlatformServiceJpaRepositoryImpl implements Accou
     private final ClientReadPlatformService clientReadPlatformService;
     private final GroupReadPlatformService groupReadPlatformService;
     private final ColumnValidator columnValidator;
-    private final WorkingCapitalLoanApplicationReadPlatformService workingCapitalLoanApplicationReadPlatformService;
+    // NeoBank: removed — working-capital-loan module stripped (WorkingCapitalLoanApplicationReadPlatformService)
 
     @Override
     public AccountSummaryCollectionData retrieveClientAccountDetails(final Long clientId) {
@@ -78,10 +74,10 @@ public class AccountDetailsReadPlatformServiceJpaRepositoryImpl implements Accou
 
         final List<LoanAccountSummaryData> glimAccounts = retrieveLoanAccountDetails(glimLoanClause, new Object[] { clientId });
         final List<LoanAccountSummaryData> loanAccounts = retrieveLoanAccountDetails(loanwhereClause, new Object[] { clientId });
-        final List<WorkingCapitalLoanAccountSummaryData> workingCapitalLoanAccounts = workingCapitalLoanApplicationReadPlatformService
-                .retrieveLoanSummaryData(clientId);
+        // NeoBank: removed — working-capital-loan module stripped
+        final List<WorkingCapitalLoanAccountSummaryData> workingCapitalLoanAccounts = java.util.Collections.emptyList();
         final List<SavingsAccountSummaryData> savingsAccounts = retrieveAccountDetails(savingswhereClause, new Object[] { clientId });
-        final List<ShareAccountSummaryData> shareAccounts = retrieveShareAccountDetails(clientId);
+        final List<Object> shareAccounts = retrieveShareAccountDetails(clientId);
         final List<GuarantorAccountSummaryData> guarantorloanAccounts = retrieveGuarantorLoanAccountDetails(guarantorWhereClause,
                 new Object[] { clientId });
         return new AccountSummaryCollectionData(loanAccounts, glimAccounts, savingsAccounts, shareAccounts, guarantorloanAccounts,
@@ -200,8 +196,8 @@ public class AccountDetailsReadPlatformServiceJpaRepositoryImpl implements Accou
         return this.jdbcTemplate.query(savingsSql, savingsAccountSummaryDataMapper, inputs); // NOSONAR
     }
 
-    private List<ShareAccountSummaryData> retrieveShareAccountDetails(final Long clientId) {
-        final ShareAccountSummaryDataMapper mapper = new ShareAccountSummaryDataMapper();
+    private List<Object> retrieveShareAccountDetails(final Long clientId) {
+        final ObjectMapper mapper = new ObjectMapper();
         final String query = "select " + mapper.schema() + " where sa.client_id = ?";
         return this.jdbcTemplate.query(query, mapper, new Object[] { clientId }); // NOSONAR
     }
@@ -212,11 +208,11 @@ public class AccountDetailsReadPlatformServiceJpaRepositoryImpl implements Accou
         return this.jdbcTemplate.query(sql, rm, inputs); // NOSONAR
     }
 
-    private static final class ShareAccountSummaryDataMapper implements RowMapper<ShareAccountSummaryData> {
+    private static final class ObjectMapper implements RowMapper<Object> {
 
         private final String schema;
 
-        ShareAccountSummaryDataMapper() {
+        ObjectMapper() {
             final StringBuilder buff = new StringBuilder()
                     .append("sa.id as id, sa.external_id as externalId, sa.status_enum as statusEnum, ")
                     .append("sa.account_no as accountNo, sa.total_approved_shares as approvedShares, sa.total_pending_shares as pendingShares, ")
@@ -246,61 +242,10 @@ public class AccountDetailsReadPlatformServiceJpaRepositoryImpl implements Accou
             schema = buff.toString();
         }
 
+        // NeoBank: removed — shares module stripped (ShareAccountSummaryData mapping)
         @Override
-        public ShareAccountSummaryData mapRow(ResultSet rs, int rowNum) throws SQLException {
-
-            final Long id = JdbcSupport.getLong(rs, "id");
-            final String accountNo = rs.getString("accountNo");
-            final Long approvedShares = JdbcSupport.getLong(rs, "approvedShares");
-            final Long pendingShares = JdbcSupport.getLong(rs, "pendingShares");
-            final String externalId = rs.getString("externalId");
-            final Long productId = JdbcSupport.getLong(rs, "productId");
-            final String productName = rs.getString("productName");
-            final String shortProductName = rs.getString("shortProductName");
-            final Integer statusId = JdbcSupport.getInteger(rs, "statusEnum");
-            final ShareAccountStatusEnumData status = SharesEnumerations.status(statusId);
-            final String currencyCode = rs.getString("currencyCode");
-            final String currencyName = rs.getString("currencyName");
-            final String currencyNameCode = rs.getString("currencyNameCode");
-            final String currencyDisplaySymbol = rs.getString("currencyDisplaySymbol");
-            final Integer currencyDigits = JdbcSupport.getInteger(rs, "currencyDigits");
-            final Integer inMultiplesOf = JdbcSupport.getInteger(rs, "inMultiplesOf");
-            final CurrencyData currency = new CurrencyData(currencyCode, currencyName, currencyDigits, inMultiplesOf, currencyDisplaySymbol,
-                    currencyNameCode);
-
-            final LocalDate submittedOnDate = JdbcSupport.getLocalDate(rs, "submittedDate");
-            final String submittedByUsername = rs.getString("submittedByUsername");
-            final String submittedByFirstname = rs.getString("submittedByFirstname");
-            final String submittedByLastname = rs.getString("submittedByLastname");
-
-            final LocalDate rejectedOnDate = JdbcSupport.getLocalDate(rs, "rejectedDate");
-            final String rejectedByUsername = rs.getString("rejectedByUsername");
-            final String rejectedByFirstname = rs.getString("rejectedByFirstname");
-            final String rejectedByLastname = rs.getString("rejectedByLastname");
-
-            final LocalDate approvedOnDate = JdbcSupport.getLocalDate(rs, "approvedDate");
-            final String approvedByUsername = rs.getString("approvedByUsername");
-            final String approvedByFirstname = rs.getString("approvedByFirstname");
-            final String approvedByLastname = rs.getString("approvedByLastname");
-
-            final LocalDate activatedOnDate = JdbcSupport.getLocalDate(rs, "activatedDate");
-            final String activatedByUsername = rs.getString("activatedByUsername");
-            final String activatedByFirstname = rs.getString("activatedByFirstname");
-            final String activatedByLastname = rs.getString("activatedByLastname");
-
-            final LocalDate closedOnDate = JdbcSupport.getLocalDate(rs, "closedDate");
-            final String closedByUsername = rs.getString("closedByUsername");
-            final String closedByFirstname = rs.getString("closedByFirstname");
-            final String closedByLastname = rs.getString("closedByLastname");
-
-            final ShareAccountApplicationTimelineData timeline = new ShareAccountApplicationTimelineData(submittedOnDate,
-                    submittedByUsername, submittedByFirstname, submittedByLastname, rejectedOnDate, rejectedByUsername, rejectedByFirstname,
-                    rejectedByLastname, approvedOnDate, approvedByUsername, approvedByFirstname, approvedByLastname, activatedOnDate,
-                    activatedByUsername, activatedByFirstname, activatedByLastname, closedOnDate, closedByUsername, closedByFirstname,
-                    closedByLastname);
-
-            return new ShareAccountSummaryData(id, accountNo, externalId, productId, productName, shortProductName, status, currency,
-                    approvedShares, pendingShares, timeline);
+        public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return null;
         }
 
         public String schema() {

@@ -20,8 +20,6 @@ package org.apache.fineract.portfolio.loanaccount.service;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.fineract.accounting.journalentry.service.JournalEntryWritePlatformService;
-import org.apache.fineract.investor.domain.ExternalAssetOwner;
-import org.apache.fineract.investor.domain.ExternalAssetOwnerTransfer;
 import org.apache.fineract.portfolio.loanaccount.domain.Loan;
 import org.apache.fineract.portfolio.loanaccount.domain.LoanTransaction;
 import org.springframework.stereotype.Component;
@@ -39,12 +37,10 @@ public class LoanJournalEntryPosterImpl implements LoanJournalEntryPoster {
                 isLoanToLoanTransfer);
     }
 
+    // NeoBank: removed — investor module stripped (postJournalEntriesForExternalOwnerTransfer)
     @Override
     public void postJournalEntriesForExternalOwnerTransfer(final Loan loan, final Object externalAssetOwnerTransfer,
             final Object previousOwner) {
-        // Cast to proper types
-        final ExternalAssetOwnerTransfer transfer = (ExternalAssetOwnerTransfer) externalAssetOwnerTransfer;
-        final ExternalAssetOwner prevOwner = (ExternalAssetOwner) previousOwner;
-        this.journalEntryWritePlatformService.createJournalEntriesForExternalOwnerTransfer(loan, transfer, prevOwner);
+        // No-op: investor module has been removed
     }
 }

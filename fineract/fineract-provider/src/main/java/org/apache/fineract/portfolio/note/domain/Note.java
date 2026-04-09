@@ -33,7 +33,6 @@ import org.apache.fineract.portfolio.loanaccount.domain.Loan;
 import org.apache.fineract.portfolio.loanaccount.domain.LoanTransaction;
 import org.apache.fineract.portfolio.savings.domain.SavingsAccount;
 import org.apache.fineract.portfolio.savings.domain.SavingsAccountTransaction;
-import org.apache.fineract.portfolio.shareaccounts.domain.ShareAccount;
 
 @Entity
 @Table(name = "m_note")
@@ -69,9 +68,8 @@ public class Note extends AbstractAuditableWithUTCDateTimeCustom<Long> {
     @JoinColumn(name = "savings_account_transaction_id", nullable = true)
     private SavingsAccountTransaction savingsTransaction;
 
-    @ManyToOne
-    @JoinColumn(name = "share_account_id", nullable = true)
-    private ShareAccount shareAccount;
+    @Column(name = "share_account_id")
+    private Long shareAccountId;
 
     public static Note clientNote(final Client client, final String note) {
         return new Note(client, note);
@@ -106,9 +104,7 @@ public class Note extends AbstractAuditableWithUTCDateTimeCustom<Long> {
         this.noteTypeId = NoteType.SAVINGS_TRANSACTION.getValue();
     }
 
-    public static Note shareNote(final ShareAccount account, final String note) {
-        return new Note(account, note);
-    }
+    // NeoBank: share note creation removed
 
     public Note(final Client client, final String note) {
         this.client = client;
@@ -154,12 +150,7 @@ public class Note extends AbstractAuditableWithUTCDateTimeCustom<Long> {
         this.noteTypeId = NoteType.SAVING_ACCOUNT.getValue();
     }
 
-    public Note(final ShareAccount account, final String note) {
-        this.shareAccount = account;
-        this.client = account.getClient();
-        this.note = note;
-        this.noteTypeId = NoteType.SHARE_ACCOUNT.getValue();
-    }
+    // NeoBank: share note constructor removed
 
     public Map<String, Object> update(final String note) {
         if (!Strings.CI.equals(note, this.note)) {

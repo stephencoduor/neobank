@@ -26,7 +26,6 @@ import org.apache.fineract.accounting.journalentry.domain.JournalEntryRepository
 import org.apache.fineract.accounting.journalentry.serialization.JournalEntryCommandFromApiJsonDeserializer;
 import org.apache.fineract.accounting.journalentry.service.AccountingProcessorForLoanFactory;
 import org.apache.fineract.accounting.journalentry.service.AccountingProcessorForSavingsFactory;
-import org.apache.fineract.accounting.journalentry.service.AccountingProcessorForSharesFactory;
 import org.apache.fineract.accounting.journalentry.service.AccountingProcessorHelper;
 import org.apache.fineract.accounting.journalentry.service.CashBasedAccountingProcessorForClientTransactions;
 import org.apache.fineract.accounting.journalentry.service.JournalEntryReadPlatformService;
@@ -41,8 +40,6 @@ import org.apache.fineract.infrastructure.core.service.database.DatabaseSpecific
 import org.apache.fineract.infrastructure.event.business.service.BusinessEventNotifierService;
 import org.apache.fineract.infrastructure.security.service.PlatformSecurityContext;
 import org.apache.fineract.infrastructure.security.utils.ColumnValidator;
-import org.apache.fineract.investor.domain.ExternalAssetOwnerRepository;
-import org.apache.fineract.investor.service.AccountingService;
 import org.apache.fineract.organisation.monetary.domain.OrganisationCurrencyRepositoryWrapper;
 import org.apache.fineract.organisation.office.domain.OfficeRepository;
 import org.apache.fineract.organisation.office.domain.OfficeRepositoryWrapper;
@@ -89,21 +86,22 @@ public class AccountingJournalEntryConfiguration {
             GLAccountRepository glAccountRepository, JournalEntryRepository glJournalEntryRepository,
             OfficeRepositoryWrapper officeRepositoryWrapper, AccountingProcessorForLoanFactory accountingProcessorForLoanFactory,
             AccountingProcessorForSavingsFactory accountingProcessorForSavingsFactory,
-            AccountingProcessorForSharesFactory accountingProcessorForSharesFactory, AccountingProcessorHelper helper,
+            // NeoBank: removed — shares module stripped (AccountingProcessorForSharesFactory)
+            // NeoBank: removed — investor module stripped (ExternalAssetOwnerRepository)
+            AccountingProcessorHelper helper,
             JournalEntryCommandFromApiJsonDeserializer fromApiJsonDeserializer, AccountingRuleRepository accountingRuleRepository,
             GLAccountReadPlatformService glAccountReadPlatformService, OrganisationCurrencyRepositoryWrapper organisationCurrencyRepository,
             PlatformSecurityContext context, PaymentDetailWritePlatformService paymentDetailWritePlatformService,
             FinancialActivityAccountRepositoryWrapper financialActivityAccountRepositoryWrapper,
             CashBasedAccountingProcessorForClientTransactions accountingProcessorForClientTransactions,
-            ConfigurationReadPlatformService configurationReadPlatformService, AccountingService accountingService,
-            ExternalAssetOwnerRepository externalAssetOwnerRepository,
+            ConfigurationReadPlatformService configurationReadPlatformService, Object accountingService,
             LoanAmortizationAllocationMappingRepository loanAmortizationAllocationMappingRepository,
             LoanTransactionRepository loanTransactionRepository) {
         return new JournalEntryWritePlatformServiceJpaRepositoryImpl(glClosureRepository, glAccountRepository, glJournalEntryRepository,
                 officeRepositoryWrapper, accountingProcessorForLoanFactory, accountingProcessorForSavingsFactory,
-                accountingProcessorForSharesFactory, helper, fromApiJsonDeserializer, accountingRuleRepository,
+                helper, fromApiJsonDeserializer, accountingRuleRepository,
                 glAccountReadPlatformService, organisationCurrencyRepository, context, paymentDetailWritePlatformService,
                 financialActivityAccountRepositoryWrapper, accountingProcessorForClientTransactions, configurationReadPlatformService,
-                accountingService, externalAssetOwnerRepository, loanAmortizationAllocationMappingRepository, loanTransactionRepository);
+                accountingService, null /* NeoBank: externalAssetOwnerRepository removed */, loanAmortizationAllocationMappingRepository, loanTransactionRepository);
     }
 }

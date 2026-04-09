@@ -112,7 +112,6 @@ import org.apache.fineract.organisation.holiday.service.HolidayUtil;
 import org.apache.fineract.organisation.monetary.domain.Money;
 import org.apache.fineract.organisation.office.domain.Office;
 import org.apache.fineract.organisation.staff.domain.Staff;
-import org.apache.fineract.organisation.teller.data.CashierTransactionDataValidator;
 import org.apache.fineract.organisation.workingdays.domain.WorkingDays;
 import org.apache.fineract.organisation.workingdays.domain.WorkingDaysRepositoryWrapper;
 import org.apache.fineract.portfolio.account.PortfolioAccountType;
@@ -218,9 +217,6 @@ import org.apache.fineract.portfolio.note.domain.Note;
 import org.apache.fineract.portfolio.note.domain.NoteRepository;
 import org.apache.fineract.portfolio.paymentdetail.domain.PaymentDetail;
 import org.apache.fineract.portfolio.paymentdetail.service.PaymentDetailWritePlatformService;
-import org.apache.fineract.portfolio.repaymentwithpostdatedchecks.domain.PostDatedChecks;
-import org.apache.fineract.portfolio.repaymentwithpostdatedchecks.domain.PostDatedChecksRepository;
-import org.apache.fineract.portfolio.repaymentwithpostdatedchecks.service.RepaymentWithPostDatedChecksAssembler;
 import org.apache.fineract.portfolio.savings.domain.SavingsAccount;
 import org.apache.fineract.portfolio.transfer.api.TransferApiConstants;
 import org.apache.fineract.useradministration.domain.AppUser;
@@ -261,11 +257,13 @@ public class LoanWritePlatformServiceJpaRepositoryImpl implements LoanWritePlatf
     private final LoanUtilService loanUtilService;
     private final EntityDatatableChecksWritePlatformService entityDatatableChecksWritePlatformService;
     private final CodeValueRepositoryWrapper codeValueRepository;
-    private final CashierTransactionDataValidator cashierTransactionDataValidator;
+    // NeoBank: removed — teller module stripped (CashierTransactionDataValidator)
+    private final Object cashierTransactionDataValidator;
     private final GLIMAccountInfoRepository glimRepository;
     private final LoanRepository loanRepository;
-    private final RepaymentWithPostDatedChecksAssembler repaymentWithPostDatedChecksAssembler;
-    private final PostDatedChecksRepository postDatedChecksRepository;
+    // NeoBank: removed — repaymentwithpostdatedchecks module stripped
+    private final Object repaymentWithObjectAssembler;
+    private final Object postDatedChecksRepository;
     private final LoanRepaymentScheduleInstallmentRepository loanRepaymentScheduleInstallmentRepository;
     private final LoanLifecycleStateMachine loanLifecycleStateMachine;
     private final AccountLockService loanAccountLockService;
@@ -359,7 +357,7 @@ public class LoanWritePlatformServiceJpaRepositoryImpl implements LoanWritePlatf
         final PaymentDetail paymentDetail = this.paymentDetailWritePlatformService.createAndPersistPaymentDetail(command, changes);
         if (paymentDetail != null && paymentDetail.getPaymentType() != null && paymentDetail.getPaymentType().getIsCashPayment()) {
             BigDecimal transactionAmount = command.bigDecimalValueOfParameterNamed("transactionAmount");
-            this.cashierTransactionDataValidator.validateOnLoanDisbursal(currentUser, loan.getCurrencyCode(), transactionAmount);
+            // NeoBank: removed — teller module stripped (cashierTransactionDataValidator)
         }
         final boolean isPaymentTypeApplicableForDisbursementCharge = configurationDomainService
                 .isPaymentTypeApplicableForDisbursementCharge();
@@ -497,12 +495,8 @@ public class LoanWritePlatformServiceJpaRepositoryImpl implements LoanWritePlatf
                 true);
         this.loanAccountDomainService.setLoanDelinquencyTag(loan, DateUtils.getBusinessLocalDate());
 
-        // Post Dated Checks
-        if (command.parameterExists("postDatedChecks")) {
-            // get repayment with post dates checks to update
-            Set<PostDatedChecks> postDatedChecks = this.repaymentWithPostDatedChecksAssembler.fromParsedJson(command.json(), loan);
-            updatePostDatedChecks(postDatedChecks);
-        }
+        // NeoBank: removed — repaymentwithpostdatedchecks module stripped
+        // Post Dated Checks handling removed
 
         businessEventNotifierService.notifyPostBusinessEvent(new LoanDisbursalBusinessEvent(loan));
 
@@ -604,9 +598,7 @@ public class LoanWritePlatformServiceJpaRepositoryImpl implements LoanWritePlatf
         changes.put(PARAM_STATUS, LoanEnumerations.status(loan.getLoanStatus()));
     }
 
-    private void updatePostDatedChecks(Set<PostDatedChecks> postDatedChecks) {
-        this.postDatedChecksRepository.saveAll(postDatedChecks);
-    }
+    // NeoBank: removed — repaymentwithpostdatedchecks module stripped (updatePostDatedChecks)
 
     private void createAndSaveLoanScheduleArchive(final Loan loan, ScheduleGeneratorDTO scheduleGeneratorDTO) {
         LoanRescheduleRequest loanRescheduleRequest = null;

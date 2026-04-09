@@ -68,12 +68,7 @@ include ':fineract-rates'
 include ':fineract-charge'
 include ':fineract-tax'
 include ':fineract-report'
-// ── Extended modules ──
 include ':fineract-progressive-loan'
-include ':fineract-investor'
-include ':fineract-working-capital-loan'
-include ':fineract-loan-origination'
-include ':fineract-mix'
 // ── Application ──
 include ':fineract-provider'
 include ':fineract-war'

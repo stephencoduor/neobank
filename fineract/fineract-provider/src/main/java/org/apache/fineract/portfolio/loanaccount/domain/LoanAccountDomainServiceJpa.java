@@ -115,9 +115,6 @@ import org.apache.fineract.portfolio.loanproduct.domain.LoanSupportedInterestRef
 import org.apache.fineract.portfolio.note.domain.Note;
 import org.apache.fineract.portfolio.note.domain.NoteRepository;
 import org.apache.fineract.portfolio.paymentdetail.domain.PaymentDetail;
-import org.apache.fineract.portfolio.repaymentwithpostdatedchecks.data.PostDatedChecksStatus;
-import org.apache.fineract.portfolio.repaymentwithpostdatedchecks.domain.PostDatedChecks;
-import org.apache.fineract.portfolio.repaymentwithpostdatedchecks.domain.PostDatedChecksRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -136,7 +133,7 @@ public class LoanAccountDomainServiceJpa implements LoanAccountDomainService {
     private final BusinessEventNotifierService businessEventNotifierService;
     private final LoanUtilService loanUtilService;
     private final StandingInstructionRepository standingInstructionRepository;
-    private final PostDatedChecksRepository postDatedChecksRepository;
+    private final Object postDatedChecksRepository;
     private final LoanCollateralManagementRepository loanCollateralManagementRepository;
     private final DelinquencyWritePlatformService delinquencyWritePlatformService;
     private final LoanLifecycleStateMachine loanLifecycleStateMachine;
@@ -303,28 +300,7 @@ public class LoanAccountDomainServiceJpa implements LoanAccountDomainService {
             final Set<LoanTransactionToRepaymentScheduleMapping> loanTransactionToRepaymentScheduleMappings = newRepaymentTransaction
                     .getLoanTransactionToRepaymentScheduleMappings();
 
-            if (loanTransactionToRepaymentScheduleMappings != null) {
-                for (LoanTransactionToRepaymentScheduleMapping loanTransactionToRepaymentScheduleMapping : loanTransactionToRepaymentScheduleMappings) {
-                    LoanRepaymentScheduleInstallment loanRepaymentScheduleInstallment = loanTransactionToRepaymentScheduleMapping
-                            .getLoanRepaymentScheduleInstallment();
-                    if (loanRepaymentScheduleInstallment != null) {
-                        final boolean isPaid = loanRepaymentScheduleInstallment.isNotFullyPaidOff();
-                        PostDatedChecks postDatedChecks = this.postDatedChecksRepository
-                                .getPendingPostDatedCheck(loanRepaymentScheduleInstallment);
-
-                        if (postDatedChecks != null) {
-                            if (!isPaid) {
-                                postDatedChecks.setStatus(PostDatedChecksStatus.POST_DATED_CHECKS_PAID);
-                            } else {
-                                postDatedChecks.setStatus(PostDatedChecksStatus.POST_DATED_CHECKS_PENDING);
-                            }
-                            this.postDatedChecksRepository.saveAndFlush(postDatedChecks);
-                        } else {
-                            break;
-                        }
-                    }
-                }
-            }
+            // NeoBank: removed — repaymentwithpostdatedchecks module stripped
         }
 
         return newRepaymentTransaction;
@@ -894,36 +870,10 @@ public class LoanAccountDomainServiceJpa implements LoanAccountDomainService {
         return Pair.of(refundTransaction, interestRefundTransaction);
     }
 
+    // NeoBank: removed — repaymentwithpostdatedchecks module stripped
     @Override
     public void updateAndSavePostDatedChecksForIndividualAccount(final Loan loan, final LoanTransaction transaction) {
-        if (loan.getLoanType().isIndividualAccount()) {
-            // Mark Post Dated Check as paid.
-            final Set<LoanTransactionToRepaymentScheduleMapping> loanTransactionToRepaymentScheduleMappings = transaction
-                    .getLoanTransactionToRepaymentScheduleMappings();
-
-            if (loanTransactionToRepaymentScheduleMappings != null) {
-                for (LoanTransactionToRepaymentScheduleMapping loanTransactionToRepaymentScheduleMapping : loanTransactionToRepaymentScheduleMappings) {
-                    LoanRepaymentScheduleInstallment loanRepaymentScheduleInstallment = loanTransactionToRepaymentScheduleMapping
-                            .getLoanRepaymentScheduleInstallment();
-                    if (loanRepaymentScheduleInstallment != null) {
-                        final boolean isPaid = loanRepaymentScheduleInstallment.isNotFullyPaidOff();
-                        PostDatedChecks postDatedChecks = this.postDatedChecksRepository
-                                .getPendingPostDatedCheck(loanRepaymentScheduleInstallment);
-
-                        if (postDatedChecks != null) {
-                            if (!isPaid) {
-                                postDatedChecks.setStatus(PostDatedChecksStatus.POST_DATED_CHECKS_PAID);
-                            } else {
-                                postDatedChecks.setStatus(PostDatedChecksStatus.POST_DATED_CHECKS_PENDING);
-                            }
-                            this.postDatedChecksRepository.saveAndFlush(postDatedChecks);
-                        } else {
-                            break;
-                        }
-                    }
-                }
-            }
-        }
+        // No-op: post dated checks module has been removed
     }
 
     @Override

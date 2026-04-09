@@ -24,13 +24,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.apache.fineract.infrastructure.campaigns.sms.data.MessageGatewayConfigurationData;
 import org.apache.fineract.infrastructure.configuration.data.ExternalServicesPropertiesData;
 import org.apache.fineract.infrastructure.configuration.data.S3CredentialsData;
 import org.apache.fineract.infrastructure.configuration.data.SMTPCredentialsData;
 import org.apache.fineract.infrastructure.configuration.exception.ExternalServiceConfigurationNotFoundException;
 import org.apache.fineract.infrastructure.core.service.StringUtil;
-import org.apache.fineract.infrastructure.gcm.domain.NotificationConfigurationData;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -123,10 +121,10 @@ public class ExternalServicesPropertiesReadPlatformServiceImpl implements Extern
 
     }
 
-    private static final class MessageGatewayDataExtractor implements ResultSetExtractor<MessageGatewayConfigurationData> {
+    private static final class MessageGatewayDataExtractor implements ResultSetExtractor<Object> {
 
         @Override
-        public MessageGatewayConfigurationData extractData(final ResultSet rs) throws SQLException, DataAccessException {
+        public Object extractData(final ResultSet rs) throws SQLException, DataAccessException {
             String host = null;
             int port = 9191;
             String endPoint = null;
@@ -143,7 +141,8 @@ public class ExternalServicesPropertiesReadPlatformServiceImpl implements Extern
                     tenantAppKey = rs.getString("value");
                 }
             }
-            return new MessageGatewayConfigurationData(null, null, host, port, endPoint, null, null, false, tenantAppKey);
+            // NeoBank: removed — SMS bridge module stripped
+            return null;
         }
     }
 
@@ -167,11 +166,11 @@ public class ExternalServicesPropertiesReadPlatformServiceImpl implements Extern
     }
 
     @Override
-    public MessageGatewayConfigurationData getSMSGateway() {
-        final ResultSetExtractor<MessageGatewayConfigurationData> resultSetExtractor = new MessageGatewayDataExtractor();
+    public Object getSMSGateway() {
+        final ResultSetExtractor<Object> resultSetExtractor = new MessageGatewayDataExtractor();
         final String sql = "SELECT esp.name, esp.value FROM c_external_service_properties esp inner join c_external_service es on esp.external_service_id = es.id where es.name = '"
                 + ExternalServicesConstants.SMS_SERVICE_NAME + "'";
-        final MessageGatewayConfigurationData messageGatewayConfigurationData = this.jdbcTemplate.query(sql, resultSetExtractor,
+        final Object messageGatewayConfigurationData = this.jdbcTemplate.query(sql, resultSetExtractor,
                 new Object[] {});
         return messageGatewayConfigurationData;
     }
@@ -206,10 +205,10 @@ public class ExternalServicesPropertiesReadPlatformServiceImpl implements Extern
 
     }
 
-    private static final class NotificationDataExtractor implements ResultSetExtractor<NotificationConfigurationData> {
+    private static final class NotificationDataExtractor implements ResultSetExtractor<Object> {
 
         @Override
-        public NotificationConfigurationData extractData(final ResultSet rs) throws SQLException, DataAccessException {
+        public Object extractData(final ResultSet rs) throws SQLException, DataAccessException {
             String serverKey = null;
             String gcmEndPoint = null;
             String fcmEndPoint = null;
@@ -222,16 +221,17 @@ public class ExternalServicesPropertiesReadPlatformServiceImpl implements Extern
                     fcmEndPoint = rs.getString("value");
                 }
             }
-            return new NotificationConfigurationData().setServerKey(serverKey).setGcmEndPoint(gcmEndPoint).setFcmEndPoint(fcmEndPoint);
+            // NeoBank: removed — notification module stripped
+            return null;
         }
     }
 
     @Override
-    public NotificationConfigurationData getNotificationConfiguration() {
-        final ResultSetExtractor<NotificationConfigurationData> resultSetExtractor = new NotificationDataExtractor();
+    public Object getNotificationConfiguration() {
+        final ResultSetExtractor<Object> resultSetExtractor = new NotificationDataExtractor();
         final String sql = "SELECT esp.name, esp.value FROM c_external_service_properties esp inner join c_external_service es on esp.external_service_id = es.id where es.name = '"
                 + ExternalServicesConstants.NOTIFICATION_SERVICE_NAME + "'";
-        final NotificationConfigurationData notificationConfigurationData = this.jdbcTemplate.query(sql, resultSetExtractor,
+        final Object notificationConfigurationData = this.jdbcTemplate.query(sql, resultSetExtractor,
                 new Object[] {});
         return notificationConfigurationData;
     }

@@ -48,7 +48,7 @@ import org.apache.fineract.accounting.journalentry.data.AdvancedMappingtDTO;
 import org.apache.fineract.accounting.journalentry.data.ClientTransactionDTO;
 import org.apache.fineract.accounting.journalentry.data.LoanDTO;
 import org.apache.fineract.accounting.journalentry.data.SavingsDTO;
-import org.apache.fineract.accounting.journalentry.data.SharesDTO;
+// NeoBank: removed — shares module stripped (SharesDTO import)
 import org.apache.fineract.accounting.journalentry.domain.JournalEntry;
 import org.apache.fineract.accounting.journalentry.domain.JournalEntryRepository;
 import org.apache.fineract.accounting.journalentry.domain.JournalEntryType;
@@ -78,11 +78,6 @@ import org.apache.fineract.infrastructure.core.exception.PlatformDataIntegrityEx
 import org.apache.fineract.infrastructure.core.service.DateUtils;
 import org.apache.fineract.infrastructure.core.service.ExternalIdFactory;
 import org.apache.fineract.infrastructure.security.service.PlatformSecurityContext;
-import org.apache.fineract.investor.domain.ExternalAssetOwner;
-import org.apache.fineract.investor.domain.ExternalAssetOwnerRepository;
-import org.apache.fineract.investor.domain.ExternalAssetOwnerTransfer;
-import org.apache.fineract.investor.exception.ExternalAssetOwnerNotFoundException;
-import org.apache.fineract.investor.service.AccountingService;
 import org.apache.fineract.organisation.monetary.domain.MonetaryCurrency;
 import org.apache.fineract.organisation.monetary.domain.OrganisationCurrencyRepositoryWrapper;
 import org.apache.fineract.organisation.office.domain.Office;
@@ -121,7 +116,7 @@ public class JournalEntryWritePlatformServiceJpaRepositoryImpl implements Journa
     private final OfficeRepositoryWrapper officeRepositoryWrapper;
     private final AccountingProcessorForLoanFactory accountingProcessorForLoanFactory;
     private final AccountingProcessorForSavingsFactory accountingProcessorForSavingsFactory;
-    private final AccountingProcessorForSharesFactory accountingProcessorForSharesFactory;
+    // NeoBank: removed — shares module stripped (AccountingProcessorForSharesFactory)
     private final AccountingProcessorHelper helper;
     private final JournalEntryCommandFromApiJsonDeserializer fromApiJsonDeserializer;
     private final AccountingRuleRepository accountingRuleRepository;
@@ -132,8 +127,8 @@ public class JournalEntryWritePlatformServiceJpaRepositoryImpl implements Journa
     private final FinancialActivityAccountRepositoryWrapper financialActivityAccountRepositoryWrapper;
     private final CashBasedAccountingProcessorForClientTransactions accountingProcessorForClientTransactions;
     private final ConfigurationReadPlatformService configurationReadPlatformService;
-    private final AccountingService accountingService;
-    private final ExternalAssetOwnerRepository externalAssetOwnerRepository;
+    private final Object accountingService;
+    private final Object externalAssetOwnerRepository;
     private final LoanAmortizationAllocationMappingRepository loanAmortizationAllocationMappingRepository;
     private final LoanTransactionRepository loanTransactionRepository;
 
@@ -162,21 +157,8 @@ public class JournalEntryWritePlatformServiceJpaRepositoryImpl implements Journa
             final String transactionId = generateTransactionId(officeId);
             final String referenceNumber = command.stringValueOfParameterNamed(JournalEntryJsonInputParams.REFERENCE_NUMBER.getValue());
 
-            ExternalAssetOwner externalAssetOwner = null;
-            final ExternalId externalId = ExternalIdFactory
-                    .produce(command.stringValueOfParameterNamed(JournalEntryJsonInputParams.EXTERNAL_ASSET_OWNER.getValue()));
-            if (!externalId.isEmpty()) {
-                if (!configurationReadPlatformService
-                        .retrieveGlobalConfiguration(GlobalConfigurationConstants.ASSET_EXTERNALIZATION_OF_NON_ACTIVE_LOANS).isEnabled()) {
-                    throw new JournalEntryRuntimeException("error.msg.glJournalEntry.asset.externalization.not.enabled",
-                            "GL Journal Entry with Asset Externalization not enabled");
-                }
-                final Optional<ExternalAssetOwner> optExternalAssetOwner = externalAssetOwnerRepository.findByExternalId(externalId);
-                if (!optExternalAssetOwner.isPresent()) {
-                    throw new ExternalAssetOwnerNotFoundException(externalId);
-                }
-                externalAssetOwner = optExternalAssetOwner.get();
-            }
+            // NeoBank: removed — investor module stripped (ExternalAssetOwner lookup)
+            Object externalAssetOwner = null;
 
             if (accountRuleId != null) {
 
@@ -562,24 +544,8 @@ public class JournalEntryWritePlatformServiceJpaRepositoryImpl implements Journa
         }
     }
 
-    @Transactional
-    @Override
-    public void createJournalEntriesForShares(final Map<String, Object> accountingBridgeData) {
+    // NeoBank: removed — shares module stripped (createJournalEntriesForShares, revertShareAccountJournalEntries)
 
-        final boolean cashBasedAccountingEnabled = (Boolean) accountingBridgeData.get("cashBasedAccountingEnabled");
-        final boolean accrualBasedAccountingEnabled = (Boolean) accountingBridgeData.get("accrualBasedAccountingEnabled");
-
-        if (cashBasedAccountingEnabled) {
-            final SharesDTO sharesDTO = this.helper.populateSharesDtoFromMap(accountingBridgeData, cashBasedAccountingEnabled,
-                    accrualBasedAccountingEnabled);
-            final AccountingProcessorForShares accountingProcessorForShares = this.accountingProcessorForSharesFactory
-                    .determineProcessor(sharesDTO);
-            accountingProcessorForShares.createJournalEntriesForShares(sharesDTO);
-        }
-
-    }
-
-    @Override
     public void revertShareAccountJournalEntries(final ArrayList<Long> transactionIds, final LocalDate transactionDate) {
         for (Long shareTransactionId : transactionIds) {
             String transactionId = AccountingProcessorHelper.SHARE_TRANSACTION_IDENTIFIER + shareTransactionId;
@@ -650,7 +616,7 @@ public class JournalEntryWritePlatformServiceJpaRepositoryImpl implements Journa
     private void saveAllDebitOrCreditEntries(final JournalEntryCommand command, final Office office, final PaymentDetail paymentDetail,
             final String currencyCode, final LocalDate transactionDate,
             final SingleDebitOrCreditEntryCommand[] singleDebitOrCreditEntryCommands, final String transactionId,
-            final JournalEntryType type, final String referenceNumber, final ExternalAssetOwner externalAssetOwner) {
+            final JournalEntryType type, final String referenceNumber, final Object externalAssetOwner) {
         final boolean manualEntry = true;
         for (final SingleDebitOrCreditEntryCommand singleDebitOrCreditEntryCommand : singleDebitOrCreditEntryCommands) {
             final GLAccount glAccount = this.glAccountRepository.findById(singleDebitOrCreditEntryCommand.getGlAccountId())
@@ -671,7 +637,7 @@ public class JournalEntryWritePlatformServiceJpaRepositoryImpl implements Journa
                     null, null, null, null);
             helper.persistJournalEntry(glJournalEntry);
 
-            accountingService.createMappingToOwner(externalAssetOwner, glJournalEntry);
+            // NeoBank: removed — investor module stripped (accountingService.createMappingToOwner)
         }
     }
 
@@ -838,18 +804,7 @@ public class JournalEntryWritePlatformServiceJpaRepositoryImpl implements Journa
         this.createJournalEntriesForLoan(accountingBridgeData);
     }
 
-    @Transactional
-    @Override
-    public void createJournalEntriesForExternalOwnerTransfer(final Loan loan, final ExternalAssetOwnerTransfer externalAssetOwnerTransfer,
-            final ExternalAssetOwner previousOwner) {
-        final boolean isBuyback = externalAssetOwnerTransfer.getStatus().name().contains("BUYBACK");
-
-        if (isBuyback) {
-            this.accountingService.createJournalEntriesForBuybackAssetTransfer(loan, externalAssetOwnerTransfer);
-        } else {
-            this.accountingService.createJournalEntriesForSaleAssetTransfer(loan, externalAssetOwnerTransfer, previousOwner);
-        }
-    }
+    // NeoBank: removed — investor module stripped (createJournalEntriesForExternalOwnerTransfer)
 
     /**
      * Create AccountingBridgeDataDTO for a single loan transaction This converts a single LoanTransaction to the format

@@ -40,9 +40,6 @@ import org.apache.fineract.infrastructure.event.business.domain.savings.SavingsC
 import org.apache.fineract.infrastructure.event.business.domain.savings.SavingsCreateBusinessEvent;
 import org.apache.fineract.infrastructure.event.business.domain.savings.SavingsPostInterestBusinessEvent;
 import org.apache.fineract.infrastructure.event.business.domain.savings.transaction.SavingsDepositBusinessEvent;
-import org.apache.fineract.infrastructure.event.business.domain.share.ShareAccountApproveBusinessEvent;
-import org.apache.fineract.infrastructure.event.business.domain.share.ShareAccountCreateBusinessEvent;
-import org.apache.fineract.infrastructure.event.business.domain.share.ShareProductDividentsCreateBusinessEvent;
 import org.apache.fineract.infrastructure.event.business.service.BusinessEventNotifierService;
 import org.apache.fineract.infrastructure.security.service.PlatformSecurityContext;
 import org.apache.fineract.portfolio.client.domain.Client;
@@ -54,7 +51,6 @@ import org.apache.fineract.portfolio.savings.domain.FixedDepositAccount;
 import org.apache.fineract.portfolio.savings.domain.RecurringDepositAccount;
 import org.apache.fineract.portfolio.savings.domain.SavingsAccount;
 import org.apache.fineract.portfolio.savings.domain.SavingsAccountTransaction;
-import org.apache.fineract.portfolio.shareaccounts.domain.ShareAccount;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -71,8 +67,7 @@ public class NotificationDomainServiceImpl implements NotificationDomainService 
         businessEventNotifierService.addPostBusinessEventListener(CentersCreateBusinessEvent.class, new CenterCreatedListener());
         businessEventNotifierService.addPostBusinessEventListener(GroupsCreateBusinessEvent.class, new GroupCreatedListener());
         businessEventNotifierService.addPostBusinessEventListener(SavingsDepositBusinessEvent.class, new SavingsAccountDepositListener());
-        businessEventNotifierService.addPostBusinessEventListener(ShareProductDividentsCreateBusinessEvent.class,
-                new ShareProductDividendCreatedListener());
+        // NeoBank: removed — shares module stripped (ShareProductDividendCreatedListener)
         businessEventNotifierService.addPostBusinessEventListener(FixedDepositAccountCreateBusinessEvent.class,
                 new FixedDepositAccountCreatedListener());
         businessEventNotifierService.addPostBusinessEventListener(RecurringDepositAccountCreateBusinessEvent.class,
@@ -91,9 +86,7 @@ public class NotificationDomainServiceImpl implements NotificationDomainService 
         businessEventNotifierService.addPostBusinessEventListener(LoanProductCreateBusinessEvent.class, new LoanProductCreatedListener());
         businessEventNotifierService.addPostBusinessEventListener(SavingsCreateBusinessEvent.class, new SavingsAccountCreatedListener());
         businessEventNotifierService.addPostBusinessEventListener(SavingsCloseBusinessEvent.class, new SavingsAccountClosedListener());
-        businessEventNotifierService.addPostBusinessEventListener(ShareAccountCreateBusinessEvent.class, new ShareAccountCreatedListener());
-        businessEventNotifierService.addPostBusinessEventListener(ShareAccountApproveBusinessEvent.class,
-                new ShareAccountApprovedListener());
+        // NeoBank: removed — shares module stripped (ShareAccountCreatedListener, ShareAccountApprovedListener)
     }
 
     private final class ClientCreatedListener implements BusinessEventListener<ClientCreateBusinessEvent> {
@@ -137,15 +130,7 @@ public class NotificationDomainServiceImpl implements NotificationDomainService 
         }
     }
 
-    private final class ShareProductDividendCreatedListener implements BusinessEventListener<ShareProductDividentsCreateBusinessEvent> {
-
-        @Override
-        public void onBusinessEvent(ShareProductDividentsCreateBusinessEvent event) {
-            Long shareProductId = event.get();
-            buildNotification("READ_DIVIDEND_SHAREPRODUCT", "shareProduct", shareProductId, "Dividend posted to account", "dividendPosted",
-                    context.authenticatedUser().getId(), context.authenticatedUser().getOffice().getId());
-        }
-    }
+    // NeoBank: removed — shares module stripped (ShareProductDividendCreatedListener)
 
     private final class FixedDepositAccountCreatedListener implements BusinessEventListener<FixedDepositAccountCreateBusinessEvent> {
 
@@ -293,25 +278,7 @@ public class NotificationDomainServiceImpl implements NotificationDomainService 
         }
     }
 
-    private final class ShareAccountCreatedListener implements BusinessEventListener<ShareAccountCreateBusinessEvent> {
-
-        @Override
-        public void onBusinessEvent(ShareAccountCreateBusinessEvent event) {
-            ShareAccount shareAccount = event.get();
-            buildNotification("APPROVE_SHAREACCOUNT", "shareAccount", shareAccount.getId(), "New share account created", "created",
-                    context.authenticatedUser().getId(), shareAccount.getOfficeId());
-        }
-    }
-
-    private final class ShareAccountApprovedListener implements BusinessEventListener<ShareAccountApproveBusinessEvent> {
-
-        @Override
-        public void onBusinessEvent(ShareAccountApproveBusinessEvent event) {
-            ShareAccount shareAccount = event.get();
-            buildNotification("ACTIVATE_SHAREACCOUNT", "shareAccount", shareAccount.getId(), "Share account approved", "approved",
-                    context.authenticatedUser().getId(), shareAccount.getOfficeId());
-        }
-    }
+    // NeoBank: removed — shares module stripped (ShareAccountCreatedListener, ShareAccountApprovedListener)
 
     private void buildNotification(String permission, String objectType, Long objectIdentifier, String notificationContent,
             String eventType, Long appUserId, Long officeId) {

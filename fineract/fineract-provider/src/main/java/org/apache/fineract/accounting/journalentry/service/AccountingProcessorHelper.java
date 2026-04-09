@@ -47,8 +47,7 @@ import org.apache.fineract.accounting.journalentry.data.LoanDTO;
 import org.apache.fineract.accounting.journalentry.data.LoanTransactionDTO;
 import org.apache.fineract.accounting.journalentry.data.SavingsDTO;
 import org.apache.fineract.accounting.journalentry.data.SavingsTransactionDTO;
-import org.apache.fineract.accounting.journalentry.data.SharesDTO;
-import org.apache.fineract.accounting.journalentry.data.SharesTransactionDTO;
+// NeoBank: removed — shares module stripped (SharesDTO, SharesTransactionDTO)
 import org.apache.fineract.accounting.journalentry.data.TaxPaymentDTO;
 import org.apache.fineract.accounting.journalentry.domain.JournalEntry;
 import org.apache.fineract.accounting.journalentry.domain.JournalEntryRepository;
@@ -75,7 +74,6 @@ import org.apache.fineract.portfolio.loanaccount.data.LoanChargeData;
 import org.apache.fineract.portfolio.loanaccount.data.LoanChargePaidByDTO;
 import org.apache.fineract.portfolio.loanaccount.data.LoanTransactionEnumData;
 import org.apache.fineract.portfolio.savings.data.SavingsAccountTransactionEnumData;
-import org.apache.fineract.portfolio.shareaccounts.data.ShareAccountTransactionEnumData;
 import org.springframework.dao.DataAccessException;
 
 @RequiredArgsConstructor
@@ -267,49 +265,10 @@ public class AccountingProcessorHelper {
                 newSavingsTransactions);
     }
 
-    public SharesDTO populateSharesDtoFromMap(final Map<String, Object> accountingBridgeData, final boolean cashBasedAccountingEnabled,
+    // NeoBank: removed — shares module stripped (populateSharesDtoFromMap)
+    public Object populateSharesDtoFromMap(final Map<String, Object> accountingBridgeData, final boolean cashBasedAccountingEnabled,
             final boolean accrualBasedAccountingEnabled) {
-        final Long shareAccountId = (Long) accountingBridgeData.get("shareAccountId");
-        final Long shareProductId = (Long) accountingBridgeData.get("shareProductId");
-        final Long officeId = (Long) accountingBridgeData.get("officeId");
-        final String currencyCode = (String) accountingBridgeData.get("currencyCode");
-        final List<SharesTransactionDTO> newTransactions = new ArrayList<>();
-
-        @SuppressWarnings("unchecked")
-        final List<Map<String, Object>> newTransactionsMap = (List<Map<String, Object>>) accountingBridgeData.get("newTransactions");
-
-        for (final Map<String, Object> map : newTransactionsMap) {
-            final Long transactionOfficeId = (Long) map.get("officeId");
-            final String transactionId = ((Long) map.get("id")).toString();
-            final LocalDate transactionDate = ((LocalDate) map.get("date"));
-            final ShareAccountTransactionEnumData transactionType = (ShareAccountTransactionEnumData) map.get("type");
-            final ShareAccountTransactionEnumData transactionStatus = (ShareAccountTransactionEnumData) map.get("status");
-            final BigDecimal amount = (BigDecimal) map.get("amount");
-            final BigDecimal chargeAmount = (BigDecimal) map.get("chargeAmount");
-            final Long paymentTypeId = (Long) map.get("paymentTypeId");
-
-            final List<ChargePaymentDTO> feePayments = new ArrayList<>();
-            // extract charge payment details (if exists)
-            if (map.containsKey("chargesPaid")) {
-                @SuppressWarnings("unchecked")
-                final List<Map<String, Object>> chargesPaidData = (List<Map<String, Object>>) map.get("chargesPaid");
-                for (final Map<String, Object> chargePaid : chargesPaidData) {
-                    final Long chargeId = (Long) chargePaid.get("chargeId");
-                    final Long loanChargeId = (Long) chargePaid.get("sharesChargeId");
-                    final BigDecimal chargeAmountPaid = (BigDecimal) chargePaid.get("amount");
-                    final ChargePaymentDTO chargePaymentDTO = new ChargePaymentDTO(chargeId, chargeAmountPaid, loanChargeId);
-                    feePayments.add(chargePaymentDTO);
-                }
-            }
-            final SharesTransactionDTO transaction = new SharesTransactionDTO(transactionOfficeId, paymentTypeId, transactionId,
-                    transactionDate, transactionType, transactionStatus, amount, chargeAmount, feePayments);
-
-            newTransactions.add(transaction);
-
-        }
-
-        return new SharesDTO(shareAccountId, shareProductId, officeId, currencyCode, cashBasedAccountingEnabled,
-                accrualBasedAccountingEnabled, newTransactions);
+        return null;
     }
 
     public ClientTransactionDTO populateClientTransactionDtoFromMap(final Map<String, Object> accountingBridgeData) {

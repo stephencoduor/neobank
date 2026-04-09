@@ -81,14 +81,10 @@ import org.apache.fineract.portfolio.accountdetails.service.AccountDetailsReadPl
 import org.apache.fineract.portfolio.calendar.data.CalendarData;
 import org.apache.fineract.portfolio.calendar.domain.CalendarEntityType;
 import org.apache.fineract.portfolio.calendar.service.CalendarReadPlatformService;
-import org.apache.fineract.portfolio.collectionsheet.data.JLGCollectionSheetData;
-import org.apache.fineract.portfolio.collectionsheet.service.CollectionSheetReadPlatformService;
 import org.apache.fineract.portfolio.group.data.CenterData;
 import org.apache.fineract.portfolio.group.data.GroupGeneralData;
 import org.apache.fineract.portfolio.group.data.StaffCenterData;
 import org.apache.fineract.portfolio.group.service.CenterReadPlatformService;
-import org.apache.fineract.portfolio.meeting.data.MeetingData;
-import org.apache.fineract.portfolio.meeting.service.MeetingReadService;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.stereotype.Component;
@@ -106,11 +102,11 @@ public class CentersApiResource {
     private final ToApiJsonSerializer<AccountSummaryCollectionData> groupSummaryToApiJsonSerializer;
     private final ApiRequestParameterHelper apiRequestParameterHelper;
     private final PortfolioCommandSourceWritePlatformService commandsSourceWritePlatformService;
-    private final CollectionSheetReadPlatformService collectionSheetReadPlatformService;
+    private final Object collectionSheetReadPlatformService;
     private final FromJsonHelper fromJsonHelper;
     private final AccountDetailsReadPlatformService accountDetailsReadPlatformService;
     private final CalendarReadPlatformService calendarReadPlatformService;
-    private final MeetingReadService meetingReadPlatformService;
+    private final Object meetingReadPlatformService;
     private final EntityDatatableChecksReadService entityDatatableChecksReadService;
     private final BulkImportWorkbookService bulkImportWorkbookService;
     private final BulkImportWorkbookPopulatorService bulkImportWorkbookPopulatorService;
@@ -272,10 +268,9 @@ public class CentersApiResource {
                             .generateRecurringDates(collectionMeetingCalendar, withHistory, tillDate);
                     final Collection<LocalDate> nextTenRecurringDates = this.calendarReadPlatformService
                             .generateNextTenRecurringDates(collectionMeetingCalendar);
-                    final MeetingData lastMeeting = this.meetingReadPlatformService
-                            .retrieveLastMeeting(collectionMeetingCalendar.getCalendarInstanceId());
+                    // NeoBank: removed — meeting/collectionsheet module stripped
                     final LocalDate recentEligibleMeetingDate = this.calendarReadPlatformService
-                            .generateNextEligibleMeetingDateForCollection(collectionMeetingCalendar, lastMeeting);
+                            .generateNextEligibleMeetingDateForCollection(collectionMeetingCalendar, null);
                     collectionMeetingCalendar = CalendarData.withRecurringDates(collectionMeetingCalendar, recurringDates,
                             nextTenRecurringDates, recentEligibleMeetingDate);
                 }
@@ -390,12 +385,8 @@ public class CentersApiResource {
             result = this.commandsSourceWritePlatformService.logCommandSource(commandRequest);
             return this.toApiJsonSerializer.serialize(result);
         } else if (is(commandParam, "generateCollectionSheet")) {
-            final JsonElement parsedQuery = this.fromJsonHelper.parse(apiRequestBodyAsJson);
-            final JsonQuery query = JsonQuery.from(apiRequestBodyAsJson, parsedQuery, this.fromJsonHelper);
-            final JLGCollectionSheetData collectionSheet = this.collectionSheetReadPlatformService.generateCenterCollectionSheet(centerId,
-                    query);
-            final ApiRequestJsonSerializationSettings settings = this.apiRequestParameterHelper.process(uriInfo.getQueryParameters());
-            return this.toApiJsonSerializer.serialize(settings, collectionSheet, GroupingTypesApiConstants.COLLECTIONSHEET_DATA_PARAMETERS);
+            // NeoBank: removed — collectionsheet module stripped
+            throw new UnsupportedOperationException("Collection sheet module has been removed");
         } else if (is(commandParam, "saveCollectionSheet")) {
             final CommandWrapper commandRequest = builder.saveCenterCollectionSheet(centerId).build();
             result = this.commandsSourceWritePlatformService.logCommandSource(commandRequest);

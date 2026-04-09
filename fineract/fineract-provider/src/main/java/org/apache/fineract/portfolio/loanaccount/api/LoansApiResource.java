@@ -167,8 +167,6 @@ import org.apache.fineract.portfolio.loanaccount.service.LoanChargeReadPlatformS
 import org.apache.fineract.portfolio.loanaccount.service.LoanReadPlatformService;
 import org.apache.fineract.portfolio.loanaccount.service.LoanSummaryDataProvider;
 import org.apache.fineract.portfolio.loanaccount.service.LoanSummaryProviderDelegate;
-import org.apache.fineract.portfolio.loanorigination.data.LoanOriginatorData;
-import org.apache.fineract.portfolio.loanorigination.service.LoanOriginatorReadPlatformService;
 import org.apache.fineract.portfolio.loanproduct.LoanProductConstants;
 import org.apache.fineract.portfolio.loanproduct.data.LoanProductData;
 import org.apache.fineract.portfolio.loanproduct.data.TransactionProcessingStrategyData;
@@ -314,7 +312,7 @@ public class LoansApiResource {
     private final LoanSummaryProviderDelegate loanSummaryProviderDelegate;
     private final LoanCapitalizedIncomeBalanceRepository loanCapitalizedIncomeBalanceRepository;
     private final LoanApprovedAmountHistoryRepository loanApprovedAmountHistoryRepository;
-    private final Optional<LoanOriginatorReadPlatformService> loanOriginatorReadPlatformService;
+    private final Optional<Object> loanOriginatorReadPlatformService;
 
     /*
      * This template API is used for loan approval, ideally this should be invoked on loan that are pending for
@@ -1165,13 +1163,10 @@ public class LoansApiResource {
                 linkedAccount = this.accountAssociationsReadPlatformService.retriveLoanLinkedAssociation(resolvedLoanId);
             }
 
-            if (associationParameters.contains(DataTableApiConstant.originatorsAssociateParamName)) {
-                mandatoryResponseParameters.add(DataTableApiConstant.originatorsAssociateParamName);
-                if (loanOriginatorReadPlatformService.isPresent()) {
-                    List<LoanOriginatorData> originatorList = loanOriginatorReadPlatformService.get().retrieveByLoanId(resolvedLoanId);
-                    loanBasicDetails.setOriginators(originatorList.isEmpty() ? Collections.emptyList() : originatorList);
-                }
-            }
+            // NeoBank: removed — loan originator module stripped
+            // if (associationParameters.contains(DataTableApiConstant.originatorsAssociateParamName)) {
+            //     mandatoryResponseParameters.add(DataTableApiConstant.originatorsAssociateParamName);
+            // }
         }
 
         Collection<LoanProductData> productOptions = null;

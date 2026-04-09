@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet id="neobank-cards" author="qsoftwares">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="m_neobank_card"/></not>
+        </preConditions>
+        <createTable tableName="m_neobank_card">
+            <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true"/></column>
+            <column name="card_id" type="VARCHAR(20)"><constraints unique="true" nullable="false"/></column>
+            <column name="client_id" type="BIGINT"><constraints nullable="false"/></column>
+            <column name="account_ref" type="VARCHAR(20)"/>
+            <column name="cardholder_name" type="VARCHAR(100)"/>
+            <column name="card_type" type="VARCHAR(10)"><constraints nullable="false"/></column>
+            <column name="network" type="VARCHAR(20)"/>
+            <column name="last4" type="VARCHAR(4)"/>
+            <column name="expiry_date" type="VARCHAR(7)"/>
+            <column name="status" type="VARCHAR(20)"><constraints nullable="false"/></column>
+            <column name="frozen" type="BOOLEAN" defaultValueBoolean="false"/>
+            <column name="daily_limit" type="DECIMAL(19,4)" defaultValueNumeric="50000"/>
+            <column name="monthly_limit" type="DECIMAL(19,4)" defaultValueNumeric="500000"/>
+            <column name="issued_at" type="TIMESTAMP"/>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="NOW()"/>
+        </createTable>
+        <createIndex tableName="m_neobank_card" indexName="idx_card_client">
+            <column name="client_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="neobank-merchants" author="qsoftwares">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="m_neobank_merchant"/></not>
+        </preConditions>
+        <createTable tableName="m_neobank_merchant">
+            <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true"/></column>
+            <column name="merchant_id" type="VARCHAR(20)"><constraints unique="true" nullable="false"/></column>
+            <column name="business_name" type="VARCHAR(200)"><constraints nullable="false"/></column>
+            <column name="business_type" type="VARCHAR(50)"/>
+            <column name="owner_name" type="VARCHAR(100)"/>
+            <column name="phone" type="VARCHAR(20)"/>
+            <column name="email" type="VARCHAR(100)"/>
+            <column name="location" type="VARCHAR(200)"/>
+            <column name="till_number" type="VARCHAR(10)"/>
+            <column name="status" type="VARCHAR(20)"><constraints nullable="false"/></column>
+            <column name="kyb_status" type="VARCHAR(20)" defaultValue="NOT_STARTED"/>
+            <column name="settlement_frequency" type="VARCHAR(20)" defaultValue="DAILY"/>
+            <column name="settlement_bank_code" type="VARCHAR(10)"/>
+            <column name="settlement_account" type="VARCHAR(30)"/>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="NOW()"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

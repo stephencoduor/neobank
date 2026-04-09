@@ -36,7 +36,7 @@ import org.apache.fineract.portfolio.loanaccount.loanschedule.domain.ScheduledDa
 import org.apache.fineract.portfolio.loanaccount.serialization.LoanChargeValidator;
 import org.apache.fineract.portfolio.loanaccount.service.LoanBalanceService;
 import org.apache.fineract.portfolio.loanaccount.service.LoanChargeService;
-import org.apache.fineract.portfolio.loanaccount.service.ProgressiveLoanInterestRefundServiceImpl;
+import org.apache.fineract.portfolio.loanaccount.service.InterestRefundService;
 import org.apache.fineract.portfolio.loanaccount.service.schedule.LoanScheduleComponent;
 import org.apache.fineract.portfolio.loanproduct.calc.EMICalculator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -135,7 +135,7 @@ public class LoanAccountAutoStarter {
     @Bean
     @Conditional(AdvancedPaymentScheduleTransactionProcessorCondition.class)
     public AdvancedPaymentScheduleTransactionProcessor advancedPaymentScheduleTransactionProcessor(final EMICalculator emiCalculator,
-            final @Lazy ProgressiveLoanInterestRefundServiceImpl progressiveLoanInterestRefundService,
+            final @Lazy InterestRefundService progressiveLoanInterestRefundService,
             final ExternalIdFactory externalIdFactory, final LoanScheduleComponent loanSchedule,
             final LoanChargeValidator loanChargeValidator, final LoanBalanceService loanBalanceService,
             @Lazy final LoanChargeService loanChargeService, final ScheduledDateGenerator scheduledDateGenerator) {

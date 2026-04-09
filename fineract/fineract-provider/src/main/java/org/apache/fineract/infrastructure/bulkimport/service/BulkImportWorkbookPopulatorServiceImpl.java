@@ -42,7 +42,7 @@ import org.apache.fineract.infrastructure.bulkimport.populator.RecurringDepositP
 import org.apache.fineract.infrastructure.bulkimport.populator.RoleSheetPopulator;
 import org.apache.fineract.infrastructure.bulkimport.populator.SavingsAccountSheetPopulator;
 import org.apache.fineract.infrastructure.bulkimport.populator.SavingsProductSheetPopulator;
-import org.apache.fineract.infrastructure.bulkimport.populator.SharedProductsSheetPopulator;
+// NeoBank: removed — shares module stripped (ShareProductSheetPopulator import)
 import org.apache.fineract.infrastructure.bulkimport.populator.WorkbookPopulator;
 import org.apache.fineract.infrastructure.bulkimport.populator.centers.CentersWorkbookPopulator;
 import org.apache.fineract.infrastructure.bulkimport.populator.chartofaccounts.ChartOfAccountsWorkbook;
@@ -60,7 +60,6 @@ import org.apache.fineract.infrastructure.bulkimport.populator.recurringdeposit.
 import org.apache.fineract.infrastructure.bulkimport.populator.recurringdeposit.RecurringDepositWorkbookPopulator;
 import org.apache.fineract.infrastructure.bulkimport.populator.savings.SavingsTransactionsWorkbookPopulator;
 import org.apache.fineract.infrastructure.bulkimport.populator.savings.SavingsWorkbookPopulator;
-import org.apache.fineract.infrastructure.bulkimport.populator.shareaccount.SharedAccountWorkBookPopulator;
 import org.apache.fineract.infrastructure.bulkimport.populator.staff.StaffWorkbookPopulator;
 import org.apache.fineract.infrastructure.bulkimport.populator.users.UserWorkbookPopulator;
 import org.apache.fineract.infrastructure.codes.data.CodeValueData;
@@ -103,7 +102,6 @@ import org.apache.fineract.portfolio.savings.data.SavingsProductData;
 import org.apache.fineract.portfolio.savings.service.DepositProductReadPlatformService;
 import org.apache.fineract.portfolio.savings.service.SavingsAccountReadPlatformService;
 import org.apache.fineract.portfolio.savings.service.SavingsProductReadPlatformService;
-import org.apache.fineract.portfolio.shareproducts.data.ShareProductData;
 import org.apache.fineract.useradministration.data.RoleData;
 import org.apache.fineract.useradministration.service.RoleReadPlatformService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -510,32 +508,9 @@ public class BulkImportWorkbookPopulatorServiceImpl implements BulkImportWorkboo
         return new StaffWorkbookPopulator(new OfficeSheetPopulator(offices));
     }
 
+    // NeoBank: removed — shares module stripped (populateSharedAccountsWorkbook, fetchChargesForShares, fetchSharedProducts)
     private WorkbookPopulator populateSharedAccountsWorkbook(Long officeId) {
-        this.context.authenticatedUser().validateHasReadPermission(TemplatePopulateImportConstants.CLIENT_ENTITY_TYPE);
-        this.context.authenticatedUser().validateHasReadPermission(TemplatePopulateImportConstants.SHARED_ACCOUNT_ENTITY_TYPE);
-        List<ShareProductData> shareProductDataList = fetchSharedProducts();
-        List<ChargeData> chargesForShares = fetchChargesForShares();
-        List<ClientData> clientDataList = fetchClients(officeId);
-        List<OfficeData> officeDataList = fetchOffices(officeId);
-        List<SavingsAccountData> savingsAccounts = fetchSavingsAccounts(officeId);
-        return new SharedAccountWorkBookPopulator(new SharedProductsSheetPopulator(shareProductDataList, chargesForShares),
-                new ClientSheetPopulator(clientDataList, officeDataList), new SavingsAccountSheetPopulator(savingsAccounts));
-    }
-
-    private List<ChargeData> fetchChargesForShares() {
-        return chargeReadPlatformService.retrieveSharesApplicableCharges();
-    }
-
-    private List<ShareProductData> fetchSharedProducts() {
-        List<ProductData> productDataList = shareProductReadPlatformService.retrieveAllProducts(0, 50).getPageItems();
-        List<ShareProductData> sharedProductDataList = new ArrayList<>();
-        if (productDataList != null) {
-            for (ProductData data : productDataList) {
-                ShareProductData shareProduct = (ShareProductData) data;
-                sharedProductDataList.add(shareProduct);
-            }
-        }
-        return sharedProductDataList;
+        throw new UnsupportedOperationException("Shares module has been removed");
     }
 
     private WorkbookPopulator populateSavingsAccountWorkbook(Long officeId, Long staffId) {

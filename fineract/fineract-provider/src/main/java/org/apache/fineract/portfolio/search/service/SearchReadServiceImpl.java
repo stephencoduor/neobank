@@ -46,8 +46,6 @@ import org.apache.fineract.portfolio.search.data.AdHocQuerySearchRequest;
 import org.apache.fineract.portfolio.search.data.AdHocSearchQueryData;
 import org.apache.fineract.portfolio.search.data.SearchConditions;
 import org.apache.fineract.portfolio.search.data.SearchData;
-import org.apache.fineract.portfolio.shareaccounts.data.ShareAccountStatusEnumData;
-import org.apache.fineract.portfolio.shareaccounts.service.SharesEnumerations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -219,10 +217,9 @@ public class SearchReadServiceImpl implements SearchReadService {
                 SavingsAccountStatusEnumData savingsAccountStatusEnumData = SavingsEnumerations.status(entityStatusEnum);
 
                 entityStatus = SavingsEnumerations.status(savingsAccountStatusEnumData);
+            // NeoBank: removed — shares module stripped
             } else if (entityType.equalsIgnoreCase("share")) {
-                ShareAccountStatusEnumData shareAccountStatusEnumData = SharesEnumerations.status(entityStatusEnum);
-
-                entityStatus = SharesEnumerations.status(shareAccountStatusEnumData);
+                entityStatus = null;
             }
 
             return new SearchData(entityId, entityAccountNo, entityExternalId, entityName, entityType, parentId, parentName, parentType,

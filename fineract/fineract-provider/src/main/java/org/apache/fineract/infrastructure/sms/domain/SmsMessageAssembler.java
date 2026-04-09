@@ -19,9 +19,6 @@
 package org.apache.fineract.infrastructure.sms.domain;
 
 import com.google.gson.JsonElement;
-import org.apache.fineract.infrastructure.campaigns.sms.domain.SmsCampaign;
-import org.apache.fineract.infrastructure.campaigns.sms.domain.SmsCampaignRepository;
-import org.apache.fineract.infrastructure.campaigns.sms.exception.SmsCampaignNotFound;
 import org.apache.fineract.infrastructure.core.api.JsonCommand;
 import org.apache.fineract.infrastructure.core.serialization.FromJsonHelper;
 import org.apache.fineract.infrastructure.sms.SmsApiConstants;
@@ -42,19 +39,17 @@ public class SmsMessageAssembler {
     private final GroupRepositoryWrapper groupRepository;
     private final ClientRepositoryWrapper clientRepository;
     private final StaffRepositoryWrapper staffRepository;
-    private final SmsCampaignRepository smsCampaignRepository;
     private final FromJsonHelper fromApiJsonHelper;
 
     @Autowired
     public SmsMessageAssembler(final SmsMessageRepository smsMessageRepository, final GroupRepositoryWrapper groupRepositoryWrapper,
             final ClientRepositoryWrapper clientRepository, final StaffRepositoryWrapper staffRepository,
-            final FromJsonHelper fromApiJsonHelper, final SmsCampaignRepository smsCampaignRepository) {
+            final FromJsonHelper fromApiJsonHelper) {
         this.smsMessageRepository = smsMessageRepository;
         this.groupRepository = groupRepositoryWrapper;
         this.clientRepository = clientRepository;
         this.staffRepository = staffRepository;
         this.fromApiJsonHelper = fromApiJsonHelper;
-        this.smsCampaignRepository = smsCampaignRepository;
     }
 
     public SmsMessage assembleFromJson(final JsonCommand command) {
@@ -69,12 +64,10 @@ public class SmsMessageAssembler {
             group = this.groupRepository.findOneWithNotFoundDetection(groupId);
         }
 
-        SmsCampaign smsCampaign = null;
+        Long campaignId = null;
         boolean isNotification = false;
         if (this.fromApiJsonHelper.parameterExists(SmsApiConstants.campaignIdParamName, element)) {
-            final Long campaignId = this.fromApiJsonHelper.extractLongNamed(SmsApiConstants.campaignIdParamName, element);
-            smsCampaign = this.smsCampaignRepository.findById(campaignId).orElseThrow(() -> new SmsCampaignNotFound(campaignId));
-            isNotification = smsCampaign.isNotification();
+            campaignId = this.fromApiJsonHelper.extractLongNamed(SmsApiConstants.campaignIdParamName, element);
         }
 
         Client client = null;
@@ -93,7 +86,7 @@ public class SmsMessageAssembler {
 
         final String message = this.fromApiJsonHelper.extractStringNamed(SmsApiConstants.messageParamName, element);
 
-        return SmsMessage.pendingSms(externalId, group, client, staff, message, mobileNo, smsCampaign, isNotification);
+        return SmsMessage.pendingSms(externalId, group, client, staff, message, mobileNo, campaignId, isNotification);
     }
 
     public SmsMessage assembleFromResourceId(final Long resourceId) {

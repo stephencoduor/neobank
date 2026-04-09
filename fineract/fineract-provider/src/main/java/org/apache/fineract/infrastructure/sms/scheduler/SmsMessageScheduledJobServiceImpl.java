@@ -26,14 +26,9 @@ import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.fineract.infrastructure.campaigns.helper.SmsConfigUtils;
-import org.apache.fineract.infrastructure.campaigns.sms.constants.SmsCampaignConstants;
-import org.apache.fineract.infrastructure.campaigns.sms.domain.SmsCampaign;
-import org.apache.fineract.infrastructure.campaigns.sms.exception.ConnectionFailureException;
 import org.apache.fineract.infrastructure.core.config.TaskExecutorConstant;
 import org.apache.fineract.infrastructure.core.domain.FineractContext;
 import org.apache.fineract.infrastructure.core.service.ThreadLocalContextUtil;
-import org.apache.fineract.infrastructure.gcm.service.NotificationSenderService;
 import org.apache.fineract.infrastructure.sms.data.SmsMessageApiQueueResourceData;
 import org.apache.fineract.infrastructure.sms.domain.SmsMessage;
 import org.apache.fineract.infrastructure.sms.domain.SmsMessageRepository;
@@ -60,37 +55,26 @@ public class SmsMessageScheduledJobServiceImpl implements SmsMessageScheduledJob
 
     private final SmsMessageRepository smsMessageRepository;
     private final RestTemplate restTemplate = new RestTemplate();
-    private final SmsConfigUtils smsConfigUtils;
-    private final NotificationSenderService notificationSenderService;
+    private final Object smsConfigUtils;
+    // NeoBank: removed — notification module stripped (NotificationSenderService)
+    private final Object notificationSenderService;
     @Qualifier(TaskExecutorConstant.DEFAULT_TASK_EXECUTOR_BEAN_NAME)
     private final ThreadPoolTaskExecutor taskExecutor;
 
+    // NeoBank: removed — SMS gateway and notification modules stripped
     @SuppressFBWarnings("SLF4J_SIGN_ONLY_FORMAT")
     private void connectAndSendToIntermediateServer(Collection<SmsMessageApiQueueResourceData> apiQueueResourceDatas) {
-        Map<String, Object> hostConfig = this.smsConfigUtils.getMessageGateWayRequestURI("sms",
-                SmsMessageApiQueueResourceData.toJsonString(apiQueueResourceDatas));
-        URI uri = (URI) hostConfig.get("uri");
-        HttpEntity<?> entity = (HttpEntity<?>) hostConfig.get("entity");
-        ResponseEntity<String> responseOne = restTemplate.exchange(uri, HttpMethod.POST, entity, new ParameterizedTypeReference<String>() {
-
-        });
-        if (responseOne != null) {
-            // String smsResponse = responseOne.getBody();
-            if (!responseOne.getStatusCode().equals(HttpStatus.ACCEPTED)) {
-                log.debug("{}", responseOne.getStatusCode().value());
-                throw new ConnectionFailureException(SmsCampaignConstants.SMS);
-            }
-        }
+        log.warn("SMS gateway integration not available — modules stripped");
     }
 
     @Override
-    public void sendTriggeredMessages(Map<SmsCampaign, Collection<SmsMessage>> smsDataMap) {
+    public void sendTriggeredMessages(Map<Object, Collection<SmsMessage>> smsDataMap) {
         try {
             if (!smsDataMap.isEmpty()) {
                 List<SmsMessage> toSaveMessages = new ArrayList<>();
                 List<SmsMessage> toSendNotificationMessages = new ArrayList<>();
 
-                for (Map.Entry<SmsCampaign, Collection<SmsMessage>> entry : smsDataMap.entrySet()) {
+                for (Map.Entry<Object, Collection<SmsMessage>> entry : smsDataMap.entrySet()) {
                     for (SmsMessage smsMessage : entry.getValue()) {
                         if (smsMessage.isNotification()) {
                             smsMessage.setStatusType(SmsMessageStatusType.WAITING_FOR_DELIVERY_REPORT.getValue());
@@ -105,13 +89,13 @@ public class SmsMessageScheduledJobServiceImpl implements SmsMessageScheduledJob
                     this.smsMessageRepository.saveAll(toSaveMessages);
                     this.smsMessageRepository.flush();
 
-                    for (Map.Entry<SmsCampaign, Collection<SmsMessage>> entry : smsDataMap.entrySet()) {
+                    for (Map.Entry<Object, Collection<SmsMessage>> entry : smsDataMap.entrySet()) {
                         Collection<SmsMessageApiQueueResourceData> apiQueueResourceDatas = new ArrayList<>();
                         for (SmsMessage smsMessage : entry.getValue()) {
                             if (!smsMessage.isNotification()) {
                                 SmsMessageApiQueueResourceData apiQueueResourceData = SmsMessageApiQueueResourceData.instance(
                                         smsMessage.getId(), null, null, null, smsMessage.getMobileNo(), smsMessage.getMessage(),
-                                        entry.getKey().getProviderId());
+                                        0L); // NeoBank: removed — provider ID from stripped SMS module
                                 apiQueueResourceDatas.add(apiQueueResourceData);
                             }
                         }
@@ -121,9 +105,10 @@ public class SmsMessageScheduledJobServiceImpl implements SmsMessageScheduledJob
                     }
                 }
 
-                if (!toSendNotificationMessages.isEmpty()) {
-                    this.notificationSenderService.sendNotification(toSendNotificationMessages);
-                }
+                // NeoBank: removed — notification module stripped
+                // if (!toSendNotificationMessages.isEmpty()) {
+                //     this.notificationSenderService.sendNotification(toSendNotificationMessages);
+                // }
             }
         } catch (Exception e) {
             log.error("Error occurred.", e);

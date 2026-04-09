@@ -24,8 +24,6 @@ import java.util.Map;
 import org.apache.fineract.accounting.provisioning.domain.ProvisioningEntry;
 import org.apache.fineract.infrastructure.core.api.JsonCommand;
 import org.apache.fineract.infrastructure.core.data.CommandProcessingResult;
-import org.apache.fineract.investor.domain.ExternalAssetOwner;
-import org.apache.fineract.investor.domain.ExternalAssetOwnerTransfer;
 import org.apache.fineract.portfolio.loanaccount.data.AccountingBridgeDataDTO;
 import org.apache.fineract.portfolio.loanaccount.domain.Loan;
 import org.apache.fineract.portfolio.loanaccount.domain.LoanTransaction;
@@ -50,9 +48,9 @@ public interface JournalEntryWritePlatformService {
 
     String createProvisioningJournalEntries(ProvisioningEntry entry);
 
-    void createJournalEntriesForShares(Map<String, Object> accountingBridgeData);
+    // NeoBank: share accounting removed
 
-    void revertShareAccountJournalEntries(ArrayList<Long> transactionId, LocalDate transactionDate);
+    // NeoBank: share accounting removed
 
     /**
      * Create journal entries immediately for a single loan transaction
@@ -66,17 +64,6 @@ public interface JournalEntryWritePlatformService {
      */
     void createJournalEntriesForLoanTransaction(LoanTransaction loanTransaction, boolean isAccountTransfer, boolean isLoanToLoanTransfer);
 
-    /**
-     * Create journal entries immediately for an external owner transfer
-     *
-     * @param loan
-     *            the loan being transferred
-     * @param externalAssetOwnerTransfer
-     *            the external owner transfer details
-     * @param previousOwner
-     *            the previous owner (can be null for initial transfers)
-     */
-    void createJournalEntriesForExternalOwnerTransfer(Loan loan, ExternalAssetOwnerTransfer externalAssetOwnerTransfer,
-            ExternalAssetOwner previousOwner);
+    // NeoBank: external asset owner transfer removed
 
 }

@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { currentUser, notifications } from "@/data/mock";
+import { authService } from "@/services/auth-service";
 import {
   LayoutDashboard,
   Wallet,
@@ -59,7 +60,7 @@ export default function AppSidebar() {
       <Separator className="bg-sidebar-border" />
 
       {/* Navigation */}
-      <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
+      <nav className="min-h-0 flex-1 space-y-1 overflow-y-auto px-3 py-4">
         {navItems.map((item) => {
           if ("merchantOnly" in item && item.merchantOnly && !isMerchant)
             return null;
@@ -134,7 +135,7 @@ export default function AppSidebar() {
             variant="ghost"
             size="icon"
             className="h-8 w-8 shrink-0 text-sidebar-foreground/50 hover:bg-sidebar-accent hover:text-white"
-            onClick={() => navigate("/login")}
+            onClick={() => { authService.logout(); navigate("/login"); }}
           >
             <LogOut className="h-4 w-4" />
           </Button>

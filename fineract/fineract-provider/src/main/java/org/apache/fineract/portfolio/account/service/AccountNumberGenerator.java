@@ -39,9 +39,6 @@ import org.apache.fineract.portfolio.loanaccount.domain.Loan;
 import org.apache.fineract.portfolio.loanaccount.domain.LoanRepository;
 import org.apache.fineract.portfolio.savings.domain.SavingsAccount;
 import org.apache.fineract.portfolio.savings.domain.SavingsAccountRepository;
-import org.apache.fineract.portfolio.shareaccounts.domain.ShareAccount;
-import org.apache.fineract.portfolio.workingcapitalloan.domain.WorkingCapitalLoan;
-import org.apache.fineract.portfolio.workingcapitalloan.repository.WorkingCapitalLoanRepository;
 import org.springframework.stereotype.Component;
 
 /**
@@ -66,7 +63,7 @@ public class AccountNumberGenerator implements AccountNumberGeneratorService {
     private final ClientRepository clientRepository;
     private final LoanRepository loanRepository;
     private final SavingsAccountRepository savingsAccountRepository;
-    private final WorkingCapitalLoanRepository workingCapitalLoanRepository;
+    // NeoBank: removed — working-capital-loan module stripped (WorkingCapitalLoanRepository)
 
     public String generate(Client client, AccountNumberFormat accountNumberFormat) {
         Map<String, String> propertyMap = new HashMap<>();
@@ -98,23 +95,12 @@ public class AccountNumberGenerator implements AccountNumberGeneratorService {
         return generateAccountNumber(propertyMap, accountNumberFormat);
     }
 
-    public String generate(ShareAccount shareaccount, AccountNumberFormat accountNumberFormat) {
-        Map<String, String> propertyMap = new HashMap<>();
-        propertyMap.put(ID, shareaccount.getId().toString());
-        propertyMap.put(SHARE_PRODUCT_SHORT_NAME, shareaccount.getShareProduct().getShortName());
-        propertyMap.put(ENTITY_TYPE, "shareAccount");
-        return generateAccountNumber(propertyMap, accountNumberFormat);
+    // NeoBank: removed — shares module stripped (generate(ShareAccount) method)
+    public String generate(Object shareaccount, AccountNumberFormat accountNumberFormat) {
+        throw new UnsupportedOperationException("Shares module has been removed");
     }
 
-    public String generate(WorkingCapitalLoan wcl, AccountNumberFormat accountNumberFormat) {
-        Map<String, String> propertyMap = new HashMap<>();
-        propertyMap.put(ID, wcl.getId().toString());
-        propertyMap.put(OFFICE_NAME,
-                wcl.getClient() != null && wcl.getClient().getOffice() != null ? wcl.getClient().getOffice().getName() : "");
-        propertyMap.put(LOAN_PRODUCT_SHORT_NAME, wcl.getLoanProduct() != null ? wcl.getLoanProduct().getShortName() : "");
-        propertyMap.put(ENTITY_TYPE, "workingCapitalLoan");
-        return generateAccountNumber(propertyMap, accountNumberFormat);
-    }
+    // NeoBank: removed — working-capital-loan module stripped (generate(WorkingCapitalLoan) method)
 
     @Override
     public String generate(EntityAccountType type, Object entity, AccountNumberFormat format) {
@@ -122,8 +108,9 @@ public class AccountNumberGenerator implements AccountNumberGeneratorService {
             case CLIENT -> generate((Client) entity, format);
             case LOAN -> generate((Loan) entity, format);
             case SAVINGS -> generate((SavingsAccount) entity, format);
-            case SHARES -> generate((ShareAccount) entity, format);
-            case WORKING_CAPITAL_LOAN -> generate((WorkingCapitalLoan) entity, format);
+            case SHARES -> generate((Object) entity, format);
+            // NeoBank: removed — working-capital-loan module stripped
+            case WORKING_CAPITAL_LOAN -> throw new UnsupportedOperationException("Working capital loan module has been removed");
             case CENTER, GROUP ->
                 throw new UnsupportedOperationException("Use generateCenterAccountNumber / generateGroupAccountNumber for " + type);
         };
@@ -253,11 +240,12 @@ public class AccountNumberGenerator implements AccountNumberGeneratorService {
                 }
             break;
 
-            case "workingCapitalLoan":
-                if (this.workingCapitalLoanRepository.existsByAccountNumber(accountNumber)) {
-                    randomNumberConflict = true;
-                }
-            break;
+            // NeoBank: removed — working-capital-loan module stripped
+            // case "workingCapitalLoan":
+            //     if (this.workingCapitalLoanRepository.existsByAccountNumber(accountNumber)) {
+            //         randomNumberConflict = true;
+            //     }
+            // break;
 
             default:
             break;

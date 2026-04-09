@@ -39,7 +39,7 @@ import org.apache.fineract.infrastructure.core.service.MDCWrapper;
 import org.apache.fineract.infrastructure.instancemode.filter.FineractInstanceModeApiFilter;
 import org.apache.fineract.infrastructure.jobs.filter.LoanCOBApiFilter;
 import org.apache.fineract.infrastructure.jobs.filter.LoanCOBFilterHelper;
-import org.apache.fineract.infrastructure.jobs.filter.ProgressiveLoanModelCheckerFilter;
+// NeoBank: ProgressiveLoanModelCheckerFilter removed
 import org.apache.fineract.infrastructure.security.data.PlatformRequestLog;
 import org.apache.fineract.infrastructure.security.filter.TenantAwareBasicAuthenticationFilter;
 import org.apache.fineract.infrastructure.security.filter.TwoFactorAuthenticationFilter;
@@ -114,8 +114,6 @@ public class SecurityConfig {
     private LoanCOBFilterHelper loanCOBFilterHelper;
     @Autowired
     private IdempotencyStoreHelper idempotencyStoreHelper;
-    @Autowired
-    private ProgressiveLoanModelCheckerFilter progressiveLoanModelCheckerFilter;
     @Autowired
     private PlatformUserDetailsChecker platformUserDetailsChecker;
 
@@ -378,10 +376,10 @@ public class SecurityConfig {
         if (loanCOBFilterHelper != null) {
             http.addFilterAfter(loanCOBApiFilter(), FineractInstanceModeApiFilter.class).addFilterAfter(idempotencyStoreFilter(),
                     LoanCOBApiFilter.class);
-            http.addFilterBefore(progressiveLoanModelCheckerFilter, LoanCOBApiFilter.class);
+            // NeoBank: progressiveLoanModelCheckerFilter removed
         } else {
             http.addFilterAfter(idempotencyStoreFilter(), FineractInstanceModeApiFilter.class);
-            http.addFilterAfter(progressiveLoanModelCheckerFilter, FineractInstanceModeApiFilter.class);
+            // NeoBank: progressiveLoanModelCheckerFilter removed
         }
         if (fineractProperties.getIpTracking().isEnabled()) {
             http.addFilterAfter(callerIpTrackingFilter(), RequestResponseFilter.class);

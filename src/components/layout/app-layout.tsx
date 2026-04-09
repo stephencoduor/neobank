@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { currentUser, notifications } from "@/data/mock";
+import { authService } from "@/services/auth-service";
 import {
   Bell,
   Search,
@@ -151,7 +152,7 @@ export default function AppLayout() {
                 Settings
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => navigate("/login")}>
+              <DropdownMenuItem onClick={() => { authService.logout(); navigate("/login"); }}>
                 <LogOut className="mr-2 h-4 w-4" />
                 Logout
               </DropdownMenuItem>

@@ -32,7 +32,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.fineract.infrastructure.campaigns.sms.domain.SmsCampaign;
 import org.apache.fineract.infrastructure.core.api.JsonCommand;
 import org.apache.fineract.infrastructure.core.domain.AbstractPersistableCustom;
 import org.apache.fineract.infrastructure.core.service.DateUtils;
@@ -64,9 +63,8 @@ public class SmsMessage extends AbstractPersistableCustom<Long> {
     @JoinColumn(name = "staff_id")
     private Staff staff;
 
-    @ManyToOne
-    @JoinColumn(name = "campaign_id")
-    private SmsCampaign smsCampaign;
+    @Column(name = "campaign_id")
+    private Long campaignId;
 
     @Column(name = "status_enum", nullable = false)
     private Integer statusType;
@@ -87,25 +85,25 @@ public class SmsMessage extends AbstractPersistableCustom<Long> {
     private boolean isNotification;
 
     public static SmsMessage pendingSms(final String externalId, final Group group, final Client client, final Staff staff,
-            final String message, final String mobileNo, final SmsCampaign smsCampaign, final boolean isNotification) {
+            final String message, final String mobileNo, final Long campaignId, final boolean isNotification) {
         return new SmsMessage().setExternalId(externalId).setGroup(group).setClient(client).setStaff(staff)
                 .setStatusType(SmsMessageStatusType.PENDING.getValue()).setMessage(message).setMobileNo(mobileNo)
-                .setSmsCampaign(smsCampaign).setNotification(isNotification).setSubmittedOnDate(DateUtils.getBusinessLocalDate());
+                .setCampaignId(campaignId).setNotification(isNotification).setSubmittedOnDate(DateUtils.getBusinessLocalDate());
     }
 
     public static SmsMessage sentSms(final String externalId, final Group group, final Client client, final Staff staff,
-            final String message, final String mobileNo, final SmsCampaign smsCampaign, final boolean isNotification) {
+            final String message, final String mobileNo, final Long campaignId, final boolean isNotification) {
         return new SmsMessage().setExternalId(externalId).setGroup(group).setClient(client).setStaff(staff)
                 .setStatusType(SmsMessageStatusType.WAITING_FOR_DELIVERY_REPORT.getValue()).setMessage(message).setMobileNo(mobileNo)
-                .setSmsCampaign(smsCampaign).setNotification(isNotification).setSubmittedOnDate(DateUtils.getBusinessLocalDate());
+                .setCampaignId(campaignId).setNotification(isNotification).setSubmittedOnDate(DateUtils.getBusinessLocalDate());
     }
 
     public static SmsMessage instance(String externalId, final Group group, final Client client, final Staff staff,
-            final SmsMessageStatusType statusType, final String message, final String mobileNo, final SmsCampaign smsCampaign,
+            final SmsMessageStatusType statusType, final String message, final String mobileNo, final Long campaignId,
             final boolean isNotification) {
 
         return new SmsMessage().setExternalId(externalId).setGroup(group).setClient(client).setStaff(staff)
-                .setStatusType(statusType.getValue()).setMessage(message).setMobileNo(mobileNo).setSmsCampaign(smsCampaign)
+                .setStatusType(statusType.getValue()).setMessage(message).setMobileNo(mobileNo).setCampaignId(campaignId)
                 .setNotification(isNotification).setSubmittedOnDate(DateUtils.getBusinessLocalDate());
 
     }
