@@ -48,6 +48,9 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { useSavingsGoals, useCreateGoal, useLockGoal, useSweepGoal } from "@/hooks/use-savings-goals";
+import { useApiQuery } from "@/hooks/use-api";
+import { fineract } from "@/services/fineract-service";
+import { Wifi, WifiOff } from "lucide-react";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 function fmtKES(amount: number) {
@@ -179,6 +182,18 @@ export default function SavingsPage() {
   const [newGoalAutoSave, setNewGoalAutoSave] = useState(false);
   const [newGoalAutoAmount, setNewGoalAutoAmount] = useState("");
 
+  // Fineract savings — for live total balance context
+  const { data: fSavings, error: fErr } = useApiQuery(
+    () => fineract.getSavingsAccounts(20),
+    [],
+  );
+  const isFineractLive = !!fSavings && !fErr;
+  const fineractTotalBalance = useMemo(() => {
+    if (!fSavings) return 0;
+    return ((fSavings as unknown as Record<string, unknown>).pageItems as { accountBalance?: number }[] ?? [])
+      .reduce((sum, sa) => sum + (sa.accountBalance ?? 0), 0);
+  }, [fSavings]);
+
   // API hooks — falls back to mock data when backend is unavailable
   const { data: apiGoals, loading: goalsLoading, error: goalsError, refetch: refetchGoals } = useSavingsGoals();
   const { mutate: createGoal, loading: creating } = useCreateGoal();
@@ -253,6 +268,15 @@ export default function SavingsPage() {
           </p>
         </div>
         <div className="flex items-center gap-3">
+          {isFineractLive ? (
+            <Badge className="gap-1 text-[10px] text-emerald-600 bg-emerald-500/10">
+              <Wifi className="h-3 w-3" /> Live · {fmtKES(fineractTotalBalance)}
+            </Badge>
+          ) : (
+            <Badge variant="outline" className="gap-1 text-[10px] text-muted-foreground">
+              <WifiOff className="h-3 w-3" /> Demo
+            </Badge>
+          )}
           <Card className="border-0 bg-primary/10 px-4 py-2">
             <p className="text-xs text-muted-foreground">Total Saved</p>
             <p className="text-lg font-bold text-primary">{fmtKES(totalSaved)}</p>

@@ -36,6 +36,8 @@ import {
   ArrowUpDown,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useApiQuery } from "@/hooks/use-api";
+import { fineract } from "@/services/fineract-service";
 
 interface Terminal {
   id: string;
@@ -113,6 +115,13 @@ export default function PosManagement() {
   const [selectedTerminal, setSelectedTerminal] = useState<Terminal | null>(null);
   const [settingsTerminal, setSettingsTerminal] = useState<Terminal | null>(null);
 
+  // Fineract live status
+  const { data: fData, error: fErr } = useApiQuery(
+    () => fineract.getSavingsAccounts(1),
+    [],
+  );
+  const isFineractLive = !!fData && !fErr;
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -123,10 +132,21 @@ export default function PosManagement() {
             Manage your payment terminals and SoftPOS devices
           </p>
         </div>
+        <div className="flex items-center gap-2">
+          {isFineractLive ? (
+            <Badge className="gap-1 text-[10px] text-emerald-600 bg-emerald-500/10">
+              <Wifi className="h-3 w-3" /> Live
+            </Badge>
+          ) : (
+            <Badge variant="outline" className="gap-1 text-[10px] text-muted-foreground">
+              <WifiOff className="h-3 w-3" /> Demo
+            </Badge>
+          )}
         <Button className="gap-2" onClick={() => setAddOpen(true)}>
           <Plus className="h-4 w-4" />
           Add Terminal
         </Button>
+        </div>
       </div>
 
       {/* Summary */}

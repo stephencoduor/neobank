@@ -37,8 +37,12 @@ import {
   Trash2,
   ChevronLeft,
   ChevronRight,
+  Wifi,
+  WifiOff,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useApiQuery } from "@/hooks/use-api";
+import { fineract, type FClient } from "@/services/fineract-service";
 
 interface User {
   id: string;
@@ -51,7 +55,7 @@ interface User {
   createdAt: string;
 }
 
-const users: User[] = [
+const mockUsers: User[] = [
   { id: "USR-001", name: "Amina Wanjiku", phone: "+254 712 345 678", email: "amina.wanjiku@gmail.com", tier: "Standard", kycStatus: "verified", accountStatus: "active", createdAt: "2025-11-15" },
   { id: "USR-002", name: "James Ochieng", phone: "+254 722 111 222", email: "james.ochieng@outlook.com", tier: "Premium", kycStatus: "verified", accountStatus: "active", createdAt: "2025-10-03" },
   { id: "USR-003", name: "Faith Njeri", phone: "+254 733 222 333", email: "faith.njeri@yahoo.com", tier: "Basic", kycStatus: "pending", accountStatus: "active", createdAt: "2026-03-20" },
@@ -65,6 +69,25 @@ const users: User[] = [
   { id: "USR-011", name: "Wanjiru Muthoni", phone: "+254 710 888 999", email: "wanjiru.m@gmail.com", tier: "Basic", kycStatus: "pending", accountStatus: "active", createdAt: "2026-04-02" },
   { id: "USR-012", name: "Joseph Otieno", phone: "+254 723 777 888", email: "joseph.otieno@yahoo.com", tier: "Standard", kycStatus: "verified", accountStatus: "active", createdAt: "2026-01-15" },
 ];
+
+/** Transform Fineract clients into User rows */
+function clientsToUsers(clients: FClient[]): User[] {
+  return clients.map((c) => {
+    const activationDate = c.activationDate
+      ? `${c.activationDate[0]}-${String(c.activationDate[1]).padStart(2, "0")}-${String(c.activationDate[2]).padStart(2, "0")}`
+      : "2025-01-01";
+    return {
+      id: c.accountNo || `CL-${c.id}`,
+      name: c.displayName,
+      phone: c.mobileNo || "+254 7XX XXX XXX",
+      email: `${c.firstname?.toLowerCase()}.${c.lastname?.toLowerCase()}@neobank.co.ke`,
+      tier: "Standard" as const,
+      kycStatus: c.active ? "verified" as const : "pending" as const,
+      accountStatus: c.active ? "active" as const : "suspended" as const,
+      createdAt: activationDate,
+    };
+  });
+}
 
 const kycStyles: Record<string, string> = {
   verified: "bg-emerald-500/10 text-emerald-600",
@@ -88,6 +111,16 @@ const tierStyles: Record<string, string> = {
 const PAGE_SIZE = 8;
 
 export default function UserManagement() {
+  // Fetch real clients from Fineract
+  const { data: clientsData, error } = useApiQuery(
+    () => fineract.getClients(50),
+    [],
+  );
+  const isLive = !!clientsData && !error;
+  const users: User[] = isLive
+    ? clientsToUsers(clientsData.pageItems)
+    : mockUsers;
+
   const [search, setSearch] = useState("");
   const [tierFilter, setTierFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -118,9 +151,20 @@ export default function UserManagement() {
       {/* Header */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-xl font-bold">User Management</h1>
+          <div className="flex items-center gap-2">
+            <h1 className="text-xl font-bold">User Management</h1>
+            {isLive ? (
+              <Badge variant="secondary" className="gap-1 text-[10px] text-emerald-600">
+                <Wifi className="h-3 w-3" /> Live
+              </Badge>
+            ) : (
+              <Badge variant="outline" className="gap-1 text-[10px]">
+                <WifiOff className="h-3 w-3" /> Demo
+              </Badge>
+            )}
+          </div>
           <p className="text-sm text-muted-foreground">
-            {users.length} total users on the platform
+            {users.length} total {isLive ? "clients" : "users"} on the platform
           </p>
         </div>
         <div className="flex gap-2">

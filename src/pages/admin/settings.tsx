@@ -39,8 +39,13 @@ import {
   CreditCard,
   ScanFace,
   Globe,
+  Wifi,
+  WifiOff,
+  Server,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useApiQuery } from "@/hooks/use-api";
+import { fineract } from "@/services/fineract-service";
 
 const integrations = [
   {
@@ -85,6 +90,17 @@ const statusStyles: Record<string, { badge: string; dot: string }> = {
 };
 
 export default function AdminSettings() {
+  // Fetch live data from Fineract
+  const { data: officesData, error: offErr } = useApiQuery(
+    () => fineract.getOffices(),
+    [],
+  );
+  const { data: usersData, error: usrErr } = useApiQuery(
+    () => fineract.getUsers(),
+    [],
+  );
+  const isLive = !!officesData && !offErr;
+
   // General
   const [platformName, setPlatformName] = useState("NeoBank Kenya");
   const [supportEmail, setSupportEmail] = useState("support@neobank.co.ke");
@@ -160,11 +176,22 @@ export default function AdminSettings() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">System Settings</h1>
-        <p className="text-muted-foreground">
-          Manage platform configuration, security, and integrations
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">System Settings</h1>
+          <p className="text-muted-foreground">
+            Manage platform configuration, security, and integrations
+          </p>
+        </div>
+        {isLive ? (
+          <Badge variant="secondary" className="gap-1 text-[10px] text-emerald-600">
+            <Wifi className="h-3 w-3" /> {officesData?.length ?? 0} offices &middot; {usersData?.length ?? 0} users
+          </Badge>
+        ) : (
+          <Badge variant="outline" className="gap-1 text-[10px]">
+            <WifiOff className="h-3 w-3" /> Demo
+          </Badge>
+        )}
       </div>
 
       {/* Tabs */}
@@ -481,6 +508,38 @@ export default function AdminSettings() {
               </CardDescription>
             </CardHeader>
             <CardContent>
+              {/* Fineract Core Banking — live status */}
+              <Card className="mb-4 border-primary/20 bg-primary/5">
+                <CardContent className="pt-5">
+                  <div className="flex items-start gap-4">
+                    <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10">
+                      <Server className="size-5 text-primary" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <h4 className="font-semibold">Apache Fineract</h4>
+                        <Badge className={isLive ? "bg-emerald-500/10 text-emerald-600" : "bg-red-500/10 text-red-500"}>
+                          <span className={cn("mr-1 inline-block size-1.5 rounded-full", isLive ? "bg-emerald-500" : "bg-red-500")} />
+                          {isLive ? "Connected" : "Offline"}
+                        </Badge>
+                      </div>
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        Core banking engine — clients, savings, loans, GL
+                      </p>
+                      {isLive && (
+                        <p className="mt-1 text-xs text-muted-foreground">
+                          {officesData?.length} offices &middot; {usersData?.length} system users
+                        </p>
+                      )}
+                      <div className="mt-3 flex gap-2">
+                        <Button variant="outline" size="sm">Configure</Button>
+                        <Button variant="outline" size="sm">Test Connection</Button>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
               <div className="grid gap-4 md:grid-cols-2">
                 {integrations.map((integration) => {
                   const Icon = integration.icon;

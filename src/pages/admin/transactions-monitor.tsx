@@ -41,8 +41,12 @@ import {
   AlertTriangle,
   ArrowUpRight,
   ArrowDownLeft,
+  Wifi,
+  WifiOff,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useApiQuery } from "@/hooks/use-api";
+import { fineract, type FJournalEntry } from "@/services/fineract-service";
 
 interface MonitoredTransaction {
   id: string;
@@ -88,14 +92,48 @@ const statusStyles: Record<string, string> = {
   failed: "bg-red-500/10 text-red-500",
 };
 
+/** Transform Fineract journal entries into MonitoredTransaction format */
+function journalsToTxns(entries: FJournalEntry[]): MonitoredTransaction[] {
+  return entries.map((je) => {
+    const date = je.transactionDate
+      ? `${je.transactionDate[0]}-${String(je.transactionDate[1]).padStart(2, "0")}-${String(je.transactionDate[2]).padStart(2, "0")}T12:00:00`
+      : new Date().toISOString();
+    const isDebit = je.entryType?.value === "DEBIT";
+    return {
+      id: `JE-${je.id}`,
+      user: je.glAccountName || "System",
+      type: isDebit ? "debit" : "credit",
+      amount: je.amount,
+      provider: je.manualEntry ? "Manual Entry" : "System",
+      status: je.reversed ? "failed" : "completed",
+      time: date,
+      riskFlag: je.amount > 100_000,
+      riskReason: je.amount > 100_000 ? "High-value journal entry" : undefined,
+      recipientOrSender: `${je.officeName} — GL ${je.glAccountCode}`,
+      phone: "—",
+    };
+  });
+}
+
 export default function TransactionsMonitor() {
+  // Fetch live journal entries from Fineract
+  const { data: journalsData, error } = useApiQuery(
+    () => fineract.getJournalEntries(20),
+    [],
+  );
+  const isLive = !!journalsData && !error;
+
+  // Merge live journal entries (as transactions) with mock data
+  const liveJournalTxns = isLive ? journalsToTxns(journalsData.pageItems) : [];
+  const allTxns = isLive ? [...liveJournalTxns, ...monitoredTxns] : monitoredTxns;
+
   const [typeFilter, setTypeFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
   const [providerFilter, setProviderFilter] = useState("all");
   const [search, setSearch] = useState("");
   const [selectedTxn, setSelectedTxn] = useState<MonitoredTransaction | null>(null);
 
-  const filtered = monitoredTxns.filter((txn) => {
+  const filtered = allTxns.filter((txn) => {
     if (search) {
       const q = search.toLowerCase();
       if (
@@ -110,24 +148,36 @@ export default function TransactionsMonitor() {
     return true;
   });
 
-  const flaggedCount = monitoredTxns.filter((t) => t.riskFlag).length;
+  const flaggedCount = allTxns.filter((t) => t.riskFlag).length;
   const successRate = Math.round(
-    (monitoredTxns.filter((t) => t.status === "completed").length /
-      monitoredTxns.length) *
+    (allTxns.filter((t) => t.status === "completed").length /
+      allTxns.length) *
       100
   );
   const avgAmount = Math.round(
-    monitoredTxns.reduce((s, t) => s + t.amount, 0) / monitoredTxns.length
+    allTxns.reduce((s, t) => s + t.amount, 0) / allTxns.length
   );
-  const totalToday = monitoredTxns.reduce((s, t) => s + t.amount, 0);
+  const totalToday = allTxns.reduce((s, t) => s + t.amount, 0);
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-xl font-bold">Transaction Monitoring</h1>
-        <p className="text-sm text-muted-foreground">
-          Real-time transaction surveillance and risk detection
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-xl font-bold">Transaction Monitoring</h1>
+          <p className="text-sm text-muted-foreground">
+            Real-time transaction surveillance and risk detection
+            {isLive && ` — ${liveJournalTxns.length} live journal entries`}
+          </p>
+        </div>
+        {isLive ? (
+          <Badge variant="secondary" className="gap-1 text-emerald-600">
+            <Wifi className="h-3 w-3" /> Live
+          </Badge>
+        ) : (
+          <Badge variant="outline" className="gap-1">
+            <WifiOff className="h-3 w-3" /> Demo
+          </Badge>
+        )}
       </div>
 
       {/* Real-time Stats */}

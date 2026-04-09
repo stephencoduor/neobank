@@ -5,6 +5,7 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { adminStats } from "@/data/mock";
@@ -21,6 +22,8 @@ import {
   ShieldAlert,
   UserPlus,
   FileCheck,
+  Wifi,
+  WifiOff,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -38,8 +41,10 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
+import { useApiQuery } from "@/hooks/use-api";
+import { fineract } from "@/services/fineract-service";
 
-const userGrowthData = [
+const mockUserGrowthData = [
   { month: "Oct", users: 8200 },
   { month: "Nov", users: 9100 },
   { month: "Dec", users: 9800 },
@@ -151,18 +156,80 @@ const alertCards = [
 ];
 
 export default function AdminDashboard() {
+  // Fetch live counts from Fineract
+  const { data: clientsData, error: clientsErr } = useApiQuery(
+    () => fineract.getClients(1),
+    [],
+  );
+  const { data: savingsData, error: savingsErr } = useApiQuery(
+    () => fineract.getSavingsAccounts(1),
+    [],
+  );
+  const { data: loansData, error: loansErr } = useApiQuery(
+    () => fineract.getLoans(1),
+    [],
+  );
+  const { data: journalsData, error: journalsErr } = useApiQuery(
+    () => fineract.getJournalEntries(1),
+    [],
+  );
+
+  const isLive = !!clientsData && !clientsErr;
+
+  // Override KPI values with live data when available
+  const liveKpiCards = isLive
+    ? [
+        {
+          ...kpiCards[0],
+          value: (clientsData?.totalFilteredRecords ?? adminStats.totalUsers).toLocaleString(),
+          label: "Total Clients",
+        },
+        {
+          ...kpiCards[1],
+          value: (savingsData?.totalFilteredRecords ?? adminStats.activeUsers).toLocaleString(),
+          label: "Savings Accounts",
+        },
+        {
+          ...kpiCards[2],
+          value: formatNumber(journalsData?.totalFilteredRecords ?? adminStats.totalTransactions),
+          label: "Journal Entries",
+        },
+        kpiCards[3],
+      ]
+    : kpiCards;
+
+  // Append live client count to user growth chart
+  const userGrowthData = isLive
+    ? mockUserGrowthData.map((d, i) =>
+        i === mockUserGrowthData.length - 1
+          ? { ...d, users: clientsData?.totalFilteredRecords ?? d.users }
+          : d,
+      )
+    : mockUserGrowthData;
+
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-xl font-bold">Admin Dashboard</h1>
-        <p className="text-sm text-muted-foreground">
-          Platform overview and key metrics
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-xl font-bold">Admin Dashboard</h1>
+          <p className="text-sm text-muted-foreground">
+            Platform overview and key metrics
+          </p>
+        </div>
+        {isLive ? (
+          <Badge variant="secondary" className="gap-1 text-emerald-600">
+            <Wifi className="h-3 w-3" /> Live API
+          </Badge>
+        ) : (
+          <Badge variant="outline" className="gap-1">
+            <WifiOff className="h-3 w-3" /> Demo Data
+          </Badge>
+        )}
       </div>
 
       {/* KPI Cards */}
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        {kpiCards.map((kpi) => (
+        {liveKpiCards.map((kpi) => (
           <Card key={kpi.label}>
             <CardContent className="pt-1">
               <div className="flex items-center justify-between">

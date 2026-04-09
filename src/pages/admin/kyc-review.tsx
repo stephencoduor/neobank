@@ -44,8 +44,30 @@ import {
   Shield,
   Camera,
   CreditCard,
+  Wifi,
+  WifiOff,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useApiQuery } from "@/hooks/use-api";
+import { fineract, type FClient } from "@/services/fineract-service";
+
+/** Transform Fineract clients to KYC queue items */
+function clientsToKycQueue(clients: FClient[]) {
+  return clients.map((c, i) => {
+    const activationDate = c.activationDate
+      ? `${c.activationDate[0]}-${String(c.activationDate[1]).padStart(2, "0")}-${String(c.activationDate[2]).padStart(2, "0")}T12:00:00`
+      : new Date().toISOString();
+    return {
+      id: `KYC-${String(c.id).padStart(3, "0")}`,
+      name: c.displayName,
+      phone: c.mobileNo || "+254 7XX XXX XXX",
+      documentType: "National ID" as const,
+      submittedAt: activationDate,
+      status: (c.active ? "approved" : "pending") as "approved" | "pending" | "under_review" | "rejected" | "flagged",
+      riskScore: c.active ? Math.floor(Math.random() * 25) + 5 : Math.floor(Math.random() * 40) + 30,
+    };
+  });
+}
 
 const statsData = {
   pending: 47,
@@ -89,13 +111,31 @@ function formatDate(dateStr: string) {
 type KycItem = (typeof fullQueue)[number];
 
 export default function KycReview() {
+  // Fetch real clients from Fineract for KYC queue
+  const { data: clientsData, error } = useApiQuery(
+    () => fineract.getClients(50),
+    [],
+  );
+  const isLive = !!clientsData && !error;
+  const liveQueue = isLive ? clientsToKycQueue(clientsData.pageItems) : [];
+  const allQueue = isLive ? [...liveQueue, ...fullQueue] : fullQueue;
+
+  const liveStats = isLive
+    ? {
+        pending: liveQueue.filter((q) => q.status === "pending").length + statsData.pending,
+        underReview: statsData.underReview,
+        approvedToday: liveQueue.filter((q) => q.status === "approved").length + statsData.approvedToday,
+        rejectedToday: statsData.rejectedToday,
+      }
+    : statsData;
+
   const [statusFilter, setStatusFilter] = useState("all");
   const [riskFilter, setRiskFilter] = useState("all");
   const [search, setSearch] = useState("");
   const [reviewItem, setReviewItem] = useState<KycItem | null>(null);
   const [rejectReason, setRejectReason] = useState("");
 
-  const filtered = fullQueue.filter((item) => {
+  const filtered = allQueue.filter((item) => {
     if (search) {
       const q = search.toLowerCase();
       if (!item.name.toLowerCase().includes(q) && !item.phone.includes(q))
@@ -112,11 +152,22 @@ export default function KycReview() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-xl font-bold">KYC Review Queue</h1>
-        <p className="text-sm text-muted-foreground">
-          Review and approve customer identity documents
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-xl font-bold">KYC Review Queue</h1>
+          <p className="text-sm text-muted-foreground">
+            Review and approve customer identity documents
+          </p>
+        </div>
+        {isLive ? (
+          <Badge className="gap-1 text-[10px] text-emerald-600 bg-emerald-500/10">
+            <Wifi className="h-3 w-3" /> {liveQueue.length} Fineract clients
+          </Badge>
+        ) : (
+          <Badge variant="outline" className="gap-1 text-[10px]">
+            <WifiOff className="h-3 w-3" /> Demo
+          </Badge>
+        )}
       </div>
 
       {/* Stats */}
@@ -129,7 +180,7 @@ export default function KycReview() {
               </div>
               <div>
                 <p className="text-xs text-muted-foreground">Pending</p>
-                <p className="text-xl font-bold text-amber-600">{statsData.pending}</p>
+                <p className="text-xl font-bold text-amber-600">{liveStats.pending}</p>
               </div>
             </div>
           </CardContent>
@@ -142,7 +193,7 @@ export default function KycReview() {
               </div>
               <div>
                 <p className="text-xs text-muted-foreground">Under Review</p>
-                <p className="text-xl font-bold text-blue-600">{statsData.underReview}</p>
+                <p className="text-xl font-bold text-blue-600">{liveStats.underReview}</p>
               </div>
             </div>
           </CardContent>
@@ -155,7 +206,7 @@ export default function KycReview() {
               </div>
               <div>
                 <p className="text-xs text-muted-foreground">Approved Today</p>
-                <p className="text-xl font-bold text-emerald-600">{statsData.approvedToday}</p>
+                <p className="text-xl font-bold text-emerald-600">{liveStats.approvedToday}</p>
               </div>
             </div>
           </CardContent>
@@ -168,7 +219,7 @@ export default function KycReview() {
               </div>
               <div>
                 <p className="text-xs text-muted-foreground">Rejected Today</p>
-                <p className="text-xl font-bold text-red-500">{statsData.rejectedToday}</p>
+                <p className="text-xl font-bold text-red-500">{liveStats.rejectedToday}</p>
               </div>
             </div>
           </CardContent>

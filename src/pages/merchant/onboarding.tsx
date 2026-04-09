@@ -35,6 +35,9 @@ import {
   FileCheck,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useApiQuery } from "@/hooks/use-api";
+import { fineract } from "@/services/fineract-service";
+import { Wifi, WifiOff } from "lucide-react";
 
 const steps = [
   { id: 1, label: "Business Info", icon: Building2 },
@@ -177,6 +180,13 @@ function FileDropZone({
 }
 
 export default function MerchantOnboarding() {
+  // Fineract live status
+  const { data: fData, error: fErr } = useApiQuery(
+    () => fineract.getOffices(),
+    [],
+  );
+  const isFineractLive = !!fData && !fErr;
+
   const [currentStep, setCurrentStep] = useState(1);
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState<FormData>({
@@ -234,13 +244,24 @@ export default function MerchantOnboarding() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">
-          Merchant Onboarding
-        </h1>
-        <p className="text-muted-foreground">
-          Complete all steps to activate your merchant account
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">
+            Merchant Onboarding
+          </h1>
+          <p className="text-muted-foreground">
+            Complete all steps to activate your merchant account
+          </p>
+        </div>
+        {isFineractLive ? (
+          <Badge className="gap-1 text-[10px] text-emerald-600 bg-emerald-500/10">
+            <Wifi className="h-3 w-3" /> Live
+          </Badge>
+        ) : (
+          <Badge variant="outline" className="gap-1 text-[10px] text-muted-foreground">
+            <WifiOff className="h-3 w-3" /> Demo
+          </Badge>
+        )}
       </div>
 
       {/* Stepper */}

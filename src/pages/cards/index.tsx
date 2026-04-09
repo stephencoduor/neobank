@@ -8,13 +8,17 @@ import {
   Eye,
   Ban,
   Wifi,
+  Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { cards } from "@/data/mock";
 import { cn } from "@/lib/utils";
+import { useClientCards, useToggleFreeze, useIssueVirtualCard } from "@/hooks";
+import { useApiQuery } from "@/hooks/use-api";
+import { fineract } from "@/services/fineract-service";
+import { WifiOff } from "lucide-react";
 
 function formatKES(amount: number) {
   return `KES ${amount.toLocaleString("en-KE")}`;
@@ -53,16 +57,32 @@ function CardChipIcon() {
   );
 }
 
+/* ── Types ─────────────────────────────────────────────────────────── */
+interface ApiCard {
+  cardId: string;
+  type: string;
+  network: string;
+  last4: string;
+  cardholderName: string;
+  expiryDate: string;
+  status: string;
+  frozen: boolean;
+  dailyLimit: number;
+  monthlyLimit: number;
+  todaySpend: number;
+  monthSpend: number;
+}
+
 /* ── Visual Card Component ──────────────────────────────────────────── */
 
 function VisualCard({
   card,
   onClick,
 }: {
-  card: (typeof cards)[0];
+  card: ApiCard;
   onClick?: () => void;
 }) {
-  const isVirtual = card.type === "virtual";
+  const isVirtual = card.type === "VIRTUAL";
 
   return (
     <button
@@ -74,17 +94,13 @@ function VisualCard({
           : "bg-gradient-to-br from-[#d4a532] via-[#f0c75e] to-[#b8922a] text-[#2a1f0a]"
       )}
     >
-      {/* Background pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[80%] rounded-full bg-white/20 blur-3xl" />
         <div className="absolute bottom-[-30%] left-[-10%] w-[50%] h-[70%] rounded-full bg-white/10 blur-3xl" />
       </div>
-
-      {/* Contactless icon */}
       <Wifi className="absolute top-6 right-6 h-5 w-5 opacity-60 rotate-90" />
 
       <div className="relative z-10 flex flex-col justify-between h-full">
-        {/* Top: chip + type */}
         <div className="flex items-start justify-between">
           <div className={cn("text-gold", isVirtual ? "text-[#d4a532]" : "text-[#2a1f0a]")}>
             <CardChipIcon />
@@ -96,30 +112,28 @@ function VisualCard({
               isVirtual ? "text-white/80" : "text-[#2a1f0a]/80"
             )}
           >
-            {card.type === "virtual" ? "Virtual" : "Physical"}
+            {isVirtual ? "Virtual" : "Physical"}
           </Badge>
         </div>
 
-        {/* Middle: card number */}
         <div className="font-mono text-lg tracking-[0.2em] mt-auto mb-2">
           **** **** **** {card.last4}
         </div>
 
-        {/* Bottom: name + brand */}
         <div className="flex items-end justify-between">
           <div>
             <p className={cn("text-xs opacity-60 mb-0.5", isVirtual ? "text-white/60" : "text-[#2a1f0a]/60")}>
               CARD HOLDER
             </p>
             <p className="text-sm font-semibold tracking-wide uppercase">
-              {card.name}
+              {card.cardholderName}
             </p>
             <p className={cn("text-xs mt-1 opacity-60", isVirtual ? "text-white/60" : "text-[#2a1f0a]/60")}>
               VALID THRU {card.expiryDate}
             </p>
           </div>
           <div>
-            {card.brand === "Visa" ? (
+            {card.network === "VISA" ? (
               <VisaLogo className={isVirtual ? "text-white" : "text-[#2a1f0a]"} />
             ) : (
               <MastercardLogo />
@@ -135,15 +149,32 @@ function VisualCard({
 
 export default function CardsPage() {
   const navigate = useNavigate();
-  const [frozenCards, setFrozenCards] = useState<Set<string>>(new Set());
+  const { data: apiCards } = useClientCards(1);
+  const toggleFreeze = useToggleFreeze();
+  const issueCard = useIssueVirtualCard();
+  const [localFrozen, setLocalFrozen] = useState<Set<string>>(new Set());
 
-  const toggleFreeze = (cardId: string) => {
-    setFrozenCards((prev) => {
+  // Fineract live status
+  const { data: fClient, error: fErr } = useApiQuery(
+    () => fineract.getClient(1),
+    [],
+  );
+  const isFineractLive = !!fClient && !fErr;
+
+  const cardList: ApiCard[] = Array.isArray(apiCards) ? apiCards as ApiCard[] : [];
+
+  const handleToggleFreeze = (cardId: string, currentlyFrozen: boolean) => {
+    toggleFreeze.mutate({ cardId, freeze: !currentlyFrozen });
+    setLocalFrozen((prev) => {
       const next = new Set(prev);
       if (next.has(cardId)) next.delete(cardId);
       else next.add(cardId);
       return next;
     });
+  };
+
+  const handleRequestCard = () => {
+    issueCard.mutate({ clientId: 1, accountRef: "ACC-001", cardholderName: "AMINA WANJIKU" });
   };
 
   return (
@@ -156,27 +187,37 @@ export default function CardsPage() {
             Manage your virtual and physical cards
           </p>
         </div>
-        <Button className="gap-2">
-          <Plus className="h-4 w-4" />
+        <div className="flex items-center gap-2">
+          {isFineractLive ? (
+            <Badge className="gap-1 text-[10px] text-emerald-600 bg-emerald-500/10">
+              <Wifi className="h-3 w-3" /> Live
+            </Badge>
+          ) : (
+            <Badge variant="outline" className="gap-1 text-[10px] text-muted-foreground">
+              <WifiOff className="h-3 w-3" /> Demo
+            </Badge>
+          )}
+        <Button className="gap-2" onClick={handleRequestCard} disabled={issueCard.isPending}>
+          {issueCard.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
           Request New Card
         </Button>
+        </div>
       </div>
 
       {/* Cards grid */}
       <div className="grid gap-8 md:grid-cols-2">
-        {cards.map((card) => {
-          const isFrozen = frozenCards.has(card.id);
-          const spentPct = Math.round(
-            (card.spentThisMonth / card.spendLimit) * 100
-          );
+        {cardList.map((card) => {
+          const isFrozen = card.frozen || localFrozen.has(card.cardId);
+          const spentPct = card.monthlyLimit > 0
+            ? Math.round((card.monthSpend / card.monthlyLimit) * 100)
+            : 0;
 
           return (
-            <div key={card.id} className="space-y-4">
-              {/* Visual card */}
+            <div key={card.cardId} className="space-y-4">
               <div className={cn("relative", isFrozen && "opacity-60")}>
                 <VisualCard
                   card={card}
-                  onClick={() => navigate(`/cards/${card.id}`)}
+                  onClick={() => navigate(`/cards/${card.cardId}`)}
                 />
                 {isFrozen && (
                   <div className="absolute inset-0 rounded-2xl bg-background/40 backdrop-blur-sm flex items-center justify-center">
@@ -188,10 +229,8 @@ export default function CardsPage() {
                 )}
               </div>
 
-              {/* Card info */}
               <Card>
                 <CardContent className="pt-4 space-y-4">
-                  {/* Status + balance */}
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Badge
@@ -203,23 +242,22 @@ export default function CardsPage() {
                         {isFrozen ? "Frozen" : "Active"}
                       </Badge>
                       <span className="text-sm text-muted-foreground">
-                        {card.brand} {card.type}
+                        {card.network} {card.type.toLowerCase()}
                       </span>
                     </div>
                     <span className="text-lg font-bold">
-                      {formatKES(card.balance)}
+                      {formatKES(card.monthlyLimit - card.monthSpend)}
                     </span>
                   </div>
 
-                  {/* Spending */}
                   <div className="space-y-2">
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-muted-foreground">
                         Spent this month
                       </span>
                       <span className="font-medium">
-                        {formatKES(card.spentThisMonth)} /{" "}
-                        {formatKES(card.spendLimit)}
+                        {formatKES(card.monthSpend)} /{" "}
+                        {formatKES(card.monthlyLimit)}
                       </span>
                     </div>
                     <Progress value={spentPct} className="h-2" />
@@ -228,24 +266,23 @@ export default function CardsPage() {
                     </p>
                   </div>
 
-                  {/* Quick actions */}
                   <div className="grid grid-cols-4 gap-2 pt-2">
                     {[
                       {
                         icon: Snowflake,
                         label: isFrozen ? "Unfreeze" : "Freeze",
-                        onClick: () => toggleFreeze(card.id),
+                        onClick: () => handleToggleFreeze(card.cardId, isFrozen),
                         active: isFrozen,
                       },
                       {
                         icon: SlidersHorizontal,
                         label: "Set Limits",
-                        onClick: () => navigate(`/cards/${card.id}`),
+                        onClick: () => navigate(`/cards/${card.cardId}`),
                       },
                       {
                         icon: Eye,
                         label: "View PIN",
-                        onClick: () => navigate(`/cards/${card.id}`),
+                        onClick: () => navigate(`/cards/${card.cardId}`),
                       },
                       {
                         icon: Ban,
@@ -260,7 +297,7 @@ export default function CardsPage() {
                         size="sm"
                         className={cn(
                           "flex-col h-auto py-3 gap-1.5 text-xs",
-                          action.active && "border-blue-400 text-blue-600",
+                          (action as { active?: boolean }).active && "border-blue-400 text-blue-600",
                           (action as { danger?: boolean }).danger &&
                             "hover:border-destructive hover:text-destructive"
                         )}
@@ -289,7 +326,7 @@ export default function CardsPage() {
             Request a virtual card instantly or order a physical Mastercard
             delivered to your address.
           </p>
-          <Button variant="outline" className="mt-2 gap-2">
+          <Button variant="outline" className="mt-2 gap-2" onClick={handleRequestCard}>
             <Plus className="h-4 w-4" />
             Request Card
           </Button>

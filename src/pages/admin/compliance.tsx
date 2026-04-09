@@ -34,6 +34,9 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAmlCases, useAmlRules, useStrExport } from "@/hooks/use-aml";
+import { useApiQuery } from "@/hooks/use-api";
+import { fineract } from "@/services/fineract-service";
+import { Wifi, WifiOff } from "lucide-react";
 
 const sarsReports = [
   { id: "SAR-2026-001", subject: "Hassan Mohamed", type: "Structuring", filedDate: "2026-04-03", status: "filed", regulator: "FRC Kenya" },
@@ -74,6 +77,14 @@ export default function Compliance() {
   const { data: rules } = useAmlRules();
   const { mutate: exportStr, loading: exporting } = useStrExport();
 
+  // Fineract live status — client count for KYC coverage context
+  const { data: clientsData, error: fErr } = useApiQuery(
+    () => fineract.getClients(1),
+    [],
+  );
+  const isFineractLive = !!clientsData && !fErr;
+  const totalClients = (clientsData as unknown as Record<string, unknown>)?.totalFilteredRecords as number ?? 0;
+
   // Transform API AML cases into display format
   const amlAlerts = useMemo(() => {
     if (!amlCases) return [];
@@ -98,6 +109,17 @@ export default function Compliance() {
           <p className="text-sm text-muted-foreground">
             AML monitoring, regulatory compliance, and reporting
           </p>
+        </div>
+        <div className="flex items-center gap-2">
+          {isFineractLive ? (
+            <Badge className="gap-1 text-[10px] text-emerald-600 bg-emerald-500/10">
+              <Wifi className="h-3 w-3" /> Live · {totalClients} clients
+            </Badge>
+          ) : (
+            <Badge variant="outline" className="gap-1 text-[10px] text-muted-foreground">
+              <WifiOff className="h-3 w-3" /> Demo
+            </Badge>
+          )}
         </div>
         <Button
           className="gap-2"

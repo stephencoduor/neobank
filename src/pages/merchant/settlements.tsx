@@ -34,6 +34,31 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useApiQuery } from "@/hooks/use-api";
+import { fineract, type FJournalEntry } from "@/services/fineract-service";
+import { Wifi, WifiOff } from "lucide-react";
+
+/** Transform Fineract journal entries to settlement format */
+function journalsToSettlements(entries: FJournalEntry[]): Settlement[] {
+  return entries
+    .filter((e) => !e.reversed && e.amount > 0)
+    .slice(0, 10)
+    .map((e) => {
+      const dateArr = e.transactionDate;
+      const dateStr = dateArr
+        ? `${dateArr[0]}-${String(dateArr[1]).padStart(2, "0")}-${String(dateArr[2]).padStart(2, "0")}`
+        : "2026-04-03";
+      return {
+        id: `FSTL-${e.id}`,
+        date: dateStr,
+        amount: e.amount,
+        transactionCount: 1,
+        method: e.manualEntry ? "Bank Transfer" : "M-Pesa",
+        status: "settled" as const,
+        reference: `GL-${e.glAccountCode}-${e.id}`,
+      };
+    });
+}
 
 interface Settlement {
   id: string;
@@ -76,22 +101,31 @@ const statusStyles: Record<string, string> = {
 };
 
 export default function Settlements() {
+  // Fetch real journal entries from Fineract
+  const { data: journalsData, error } = useApiQuery(
+    () => fineract.getJournalEntries(20),
+    [],
+  );
+  const isLive = !!journalsData && !error;
+  const liveSettlements = isLive ? journalsToSettlements(journalsData.pageItems) : [];
+  const allSettlements = isLive ? [...liveSettlements, ...settlements] : settlements;
+
   const [statusFilter, setStatusFilter] = useState("all");
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
 
-  const filtered = settlements.filter((s) => {
+  const filtered = allSettlements.filter((s) => {
     if (statusFilter !== "all" && s.status !== statusFilter) return false;
     if (dateFrom && s.date < dateFrom) return false;
     if (dateTo && s.date > dateTo) return false;
     return true;
   });
 
-  const settledToday = settlements
+  const settledToday = allSettlements
     .filter((s) => s.date === "2026-04-03" && s.status === "settled")
     .reduce((sum, s) => sum + s.amount, 0);
 
-  const pendingAmount = settlements
+  const pendingAmount = allSettlements
     .filter((s) => s.status === "pending" || s.status === "processing")
     .reduce((sum, s) => sum + s.amount, 0);
 
@@ -105,10 +139,21 @@ export default function Settlements() {
             Track your payment settlements and payouts
           </p>
         </div>
-        <Button variant="outline" className="gap-2">
-          <Download className="h-4 w-4" />
-          Download CSV
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" className="gap-2">
+            <Download className="h-4 w-4" />
+            Download CSV
+          </Button>
+          {isLive ? (
+            <Badge className="gap-1 text-[10px] text-emerald-600 bg-emerald-500/10">
+              <Wifi className="h-3 w-3" /> Live
+            </Badge>
+          ) : (
+            <Badge variant="outline" className="gap-1 text-[10px]">
+              <WifiOff className="h-3 w-3" /> Demo
+            </Badge>
+          )}
+        </div>
       </div>
 
       {/* Summary Cards */}

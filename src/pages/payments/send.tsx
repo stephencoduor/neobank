@@ -23,10 +23,27 @@ import {
 } from "@/components/ui/select";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { accounts, recentContacts } from "@/data/mock";
+import { accounts as mockAccounts, recentContacts } from "@/data/mock";
 import { interopService } from "@/services/interop-service";
 import { useBankDirectory, usePesaLinkSend } from "@/hooks/use-pesalink";
 import { cn } from "@/lib/utils";
+import { useApiQuery } from "@/hooks/use-api";
+import { fineract, type FSavingsAccount } from "@/services/fineract-service";
+
+/** Transform Fineract savings to account options */
+function savingsToAccounts(savings: FSavingsAccount[]) {
+  return savings.map((sa) => ({
+    id: `SA-${sa.id}`,
+    name: sa.clientName ? `${sa.clientName} — ${sa.productName}` : sa.productName || "Savings Account",
+    type: "savings" as const,
+    currency: sa.currency?.code || "KES",
+    balance: sa.accountBalance ?? sa.summary?.accountBalance ?? 0,
+    availableBalance: sa.accountBalance ?? sa.summary?.accountBalance ?? 0,
+    pendingAmount: 0,
+    accountNumber: sa.accountNo,
+    status: "active" as const,
+  }));
+}
 
 function formatKES(amount: number) {
   return `KES ${amount.toLocaleString("en-KE")}`;
@@ -36,6 +53,14 @@ type Step = "input" | "review" | "success";
 type SendMethod = "mobile" | "bank";
 
 export default function SendMoneyPage() {
+  // Fetch real accounts from Fineract
+  const { data: savingsLive, error } = useApiQuery(
+    () => fineract.getSavingsAccounts(20),
+    [],
+  );
+  const isLive = !!savingsLive && !error;
+  const accounts = isLive ? savingsToAccounts(savingsLive.pageItems) : mockAccounts;
+
   const [step, setStep] = useState<Step>("input");
   const [sendMethod, setSendMethod] = useState<SendMethod>("mobile");
   const [phone, setPhone] = useState("");

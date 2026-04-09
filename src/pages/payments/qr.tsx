@@ -7,6 +7,8 @@ import {
   Download,
   Smartphone,
   ShoppingCart,
+  CheckCircle2,
+  Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,8 +22,27 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { accounts, currentUser } from "@/data/mock";
+import { Badge } from "@/components/ui/badge";
+import { accounts as mockAccounts, currentUser } from "@/data/mock";
 import { cn } from "@/lib/utils";
+import { useGenerateQr, useScanQr, useQrPay } from "@/hooks";
+import { useApiQuery } from "@/hooks/use-api";
+import { fineract, type FSavingsAccount } from "@/services/fineract-service";
+
+/** Transform Fineract savings to account options */
+function savingsToAccounts(savings: FSavingsAccount[]) {
+  return savings.map((sa) => ({
+    id: `SA-${sa.id}`,
+    name: sa.clientName ? `${sa.clientName} — ${sa.productName}` : sa.productName || "Savings Account",
+    type: "savings" as const,
+    currency: sa.currency?.code || "KES",
+    balance: sa.accountBalance ?? sa.summary?.accountBalance ?? 0,
+    availableBalance: sa.accountBalance ?? sa.summary?.accountBalance ?? 0,
+    pendingAmount: 0,
+    accountNumber: sa.accountNo,
+    status: "active" as const,
+  }));
+}
 
 function formatKES(amount: number) {
   return `KES ${amount.toLocaleString("en-KE")}`;
@@ -39,12 +60,10 @@ function formatDate(dateStr: string) {
 /* ── QR Code Placeholder SVG ────────────────────────────────────────── */
 
 function QRCodePlaceholder({ size = 200 }: { size?: number }) {
-  // Generates a grid pattern that looks like a QR code
   const cells = 21;
   const cellSize = size / cells;
   const rects: React.JSX.Element[] = [];
 
-  // Fixed pattern corners (QR finder patterns)
   const finderPositions = [
     [0, 0],
     [0, 14],
@@ -53,7 +72,6 @@ function QRCodePlaceholder({ size = 200 }: { size?: number }) {
 
   for (let row = 0; row < cells; row++) {
     for (let col = 0; col < cells; col++) {
-      // Finder patterns (7x7 squares in corners)
       const inFinder = finderPositions.some(
         ([fr, fc]) => row >= fr && row < fr + 7 && col >= fc && col < fc + 7
       );
@@ -72,7 +90,6 @@ function QRCodePlaceholder({ size = 200 }: { size?: number }) {
           lc === 6 ||
           (lr >= 2 && lr <= 4 && lc >= 2 && lc <= 4);
       } else {
-        // Pseudo-random data pattern based on position
         filled = ((row * 7 + col * 13 + row * col) % 3) === 0;
       }
 
@@ -104,25 +121,18 @@ function QRCodePlaceholder({ size = 200 }: { size?: number }) {
 
 /* ── Camera Viewfinder ──────────────────────────────────────────────── */
 
-function CameraViewfinder() {
+function CameraViewfinder({ onSimulateScan }: { onSimulateScan: () => void }) {
   return (
     <div className="relative bg-black/95 rounded-2xl aspect-square max-w-[320px] mx-auto flex items-center justify-center overflow-hidden">
-      {/* Animated scan line */}
       <div className="absolute inset-x-12 h-0.5 bg-primary/80 animate-pulse top-1/2 -translate-y-1/2 shadow-[0_0_12px_2px] shadow-primary/40" />
 
-      {/* Corner brackets */}
       <div className="absolute inset-8">
-        {/* Top-left */}
         <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-primary rounded-tl-sm" />
-        {/* Top-right */}
         <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-primary rounded-tr-sm" />
-        {/* Bottom-left */}
         <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-primary rounded-bl-sm" />
-        {/* Bottom-right */}
         <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-primary rounded-br-sm" />
       </div>
 
-      {/* Center icon + text */}
       <div className="text-center z-10">
         <Camera className="h-10 w-10 text-white/40 mx-auto mb-3" />
         <p className="text-white/60 text-sm font-medium">
@@ -133,7 +143,14 @@ function CameraViewfinder() {
         </p>
       </div>
 
-      {/* Subtle grid overlay */}
+      {/* Simulate scan button for demo */}
+      <button
+        onClick={onSimulateScan}
+        className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 bg-primary text-primary-foreground text-xs px-4 py-1.5 rounded-full opacity-80 hover:opacity-100 transition-opacity"
+      >
+        Simulate Scan
+      </button>
+
       <div
         className="absolute inset-0 opacity-5"
         style={{
@@ -178,9 +195,51 @@ const qrTransactions = [
 /* ── Main Page ──────────────────────────────────────────────────────── */
 
 export default function QRPaymentsPage() {
-  const [selectedAccount, setSelectedAccount] = useState(accounts[0].id);
-  const [qrAmount, setQrAmount] = useState("");
+  // Fetch real accounts from Fineract
+  const { data: savingsLive, error } = useApiQuery(
+    () => fineract.getSavingsAccounts(20),
+    [],
+  );
+  const isLive = !!savingsLive && !error;
+  const accounts = isLive ? savingsToAccounts(savingsLive.pageItems) : mockAccounts;
 
+  const [selectedAccount, setSelectedAccount] = useState(accounts[0]?.id ?? "");
+  const [qrAmount, setQrAmount] = useState("");
+  const [scanResult, setScanResult] = useState<Record<string, unknown> | null>(null);
+  const [paySuccess, setPaySuccess] = useState(false);
+
+  const generateQr = useGenerateQr();
+  const scanQr = useScanQr();
+  const qrPay = useQrPay();
+
+  const handleGenerateQr = () => {
+    generateQr.mutate({
+      accountRef: selectedAccount,
+      amount: parseFloat(qrAmount) || 0,
+      merchantName: `${currentUser.firstName} ${currentUser.lastName}`,
+      description: "QR Payment",
+    });
+  };
+
+  const handleSimulateScan = () => {
+    const mockQrContent = JSON.stringify({
+      type: "MPESA_TILL",
+      tillNumber: "5274831",
+      businessName: "Mama Njeri's Kitchen",
+      amount: 850,
+    });
+    scanQr.mutate({ qrContent: mockQrContent }, {
+      onSuccess: (data) => setScanResult(data as Record<string, unknown>),
+    });
+  };
+
+  const handlePayScanned = () => {
+    if (!scanResult) return;
+    qrPay.mutate(
+      { qrId: String(scanResult.qrId ?? "QR-SCANNED"), senderAccount: selectedAccount, amount: Number(scanResult.amount ?? 850) },
+      { onSuccess: () => { setPaySuccess(true); setTimeout(() => { setPaySuccess(false); setScanResult(null); }, 3000); } }
+    );
+  };
 
   return (
     <div className="space-y-6 p-4 md:p-6 max-w-lg mx-auto">
@@ -212,26 +271,73 @@ export default function QRPaymentsPage() {
 
         {/* ── Scan Tab ────────────────────────────────────────────── */}
         <TabsContent value="scan" className="space-y-4 mt-4">
-          <CameraViewfinder />
-          <div className="text-center space-y-2">
-            <Button className="gap-2">
-              <Camera className="h-4 w-4" />
-              Open Camera
-            </Button>
-            <p className="text-xs text-muted-foreground">
-              Or upload a QR code image from your gallery
-            </p>
-            <Button variant="outline" size="sm">
-              Upload Image
-            </Button>
-          </div>
+          {paySuccess ? (
+            <div className="flex flex-col items-center gap-3 py-12">
+              <div className="h-16 w-16 rounded-full bg-success/10 flex items-center justify-center">
+                <CheckCircle2 className="h-8 w-8 text-success" />
+              </div>
+              <p className="text-lg font-semibold">Payment Sent!</p>
+              <p className="text-sm text-muted-foreground">KES 850 to Mama Njeri's Kitchen</p>
+            </div>
+          ) : scanResult ? (
+            <Card>
+              <CardContent className="pt-6 space-y-4">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                    <ShoppingCart className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-semibold">{String(scanResult.businessName ?? scanResult.merchantName ?? "Merchant")}</p>
+                    <p className="text-xs text-muted-foreground">Till: {String(scanResult.tillNumber ?? scanResult.qrId ?? "N/A")}</p>
+                  </div>
+                </div>
+                <div className="text-center py-4">
+                  <p className="text-sm text-muted-foreground">Amount</p>
+                  <p className="text-3xl font-bold text-primary">{formatKES(Number(scanResult.amount ?? 0))}</p>
+                </div>
+                <div className="space-y-2">
+                  <Label>Pay From</Label>
+                  <Select value={selectedAccount} onValueChange={(val) => setSelectedAccount(val ?? "")}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {accounts.filter((a) => a.currency === "KES").map((a) => (
+                        <SelectItem key={a.id} value={a.id}>
+                          {a.name} — {formatKES(a.balance)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="flex gap-3">
+                  <Button className="flex-1 gap-2" onClick={handlePayScanned} disabled={qrPay.isPending}>
+                    {qrPay.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+                    Confirm & Pay
+                  </Button>
+                  <Button variant="outline" onClick={() => setScanResult(null)}>Cancel</Button>
+                </div>
+              </CardContent>
+            </Card>
+          ) : (
+            <>
+              <CameraViewfinder onSimulateScan={handleSimulateScan} />
+              <div className="text-center space-y-2">
+                <Badge variant="outline" className="text-xs">
+                  {scanQr.isPending ? "Scanning..." : "Ready to scan"}
+                </Badge>
+                <p className="text-xs text-muted-foreground">
+                  Supports NeoBank QR, M-Pesa Till, and Lipa Na M-Pesa codes
+                </p>
+              </div>
+            </>
+          )}
         </TabsContent>
 
         {/* ── My QR Tab ───────────────────────────────────────────── */}
         <TabsContent value="my-qr" className="space-y-4 mt-4">
           <Card>
             <CardContent className="pt-6 flex flex-col items-center">
-              {/* User info */}
               <p className="text-lg font-semibold mb-1">
                 {currentUser.firstName} {currentUser.lastName}
               </p>
@@ -239,16 +345,20 @@ export default function QRPaymentsPage() {
                 {currentUser.phone}
               </p>
 
-              {/* QR code */}
               <div className="p-4 bg-white rounded-xl border shadow-sm">
                 <QRCodePlaceholder size={200} />
               </div>
 
-              {/* Amount (optional) */}
               {qrAmount && (
                 <p className="mt-3 text-lg font-bold text-primary">
                   {formatKES(parseFloat(qrAmount) || 0)}
                 </p>
+              )}
+
+              {generateQr.data && (
+                <Badge className="mt-2 bg-success/10 text-success">
+                  QR Generated — {String((generateQr.data as Record<string, unknown>).qrId ?? "")}
+                </Badge>
               )}
             </CardContent>
           </Card>
@@ -299,12 +409,13 @@ export default function QRPaymentsPage() {
                 className="pl-14"
               />
             </div>
-            <p className="text-xs text-muted-foreground">
-              Set a specific amount for this QR code
-            </p>
           </div>
 
-          {/* Share / Download buttons */}
+          {/* Generate + Share buttons */}
+          <Button className="w-full gap-2" onClick={handleGenerateQr} disabled={generateQr.isPending}>
+            {generateQr.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <QrCode className="h-4 w-4" />}
+            Generate QR Code
+          </Button>
           <div className="grid grid-cols-2 gap-3">
             <Button variant="outline" className="gap-2">
               <Share2 className="h-4 w-4" />

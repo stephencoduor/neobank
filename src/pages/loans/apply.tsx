@@ -10,6 +10,8 @@ import {
   FileText,
   Check,
   CreditCard,
+  Wifi,
+  WifiOff,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -23,6 +25,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useApiQuery } from "@/hooks/use-api";
+import { fineract, type FLoanProduct } from "@/services/fineract-service";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 function fmtKES(amount: number) {
@@ -46,7 +50,7 @@ interface LoanTypeOption {
   color: string;
 }
 
-const loanTypes: LoanTypeOption[] = [
+const mockLoanTypes: LoanTypeOption[] = [
   {
     id: "personal",
     label: "Personal Loan",
@@ -85,6 +89,35 @@ const loanTypes: LoanTypeOption[] = [
   },
 ];
 
+const productIcons: Record<string, typeof User> = {
+  personal: User,
+  business: Briefcase,
+  emergency: AlertTriangle,
+  education: GraduationCap,
+};
+const productColors = [
+  "bg-primary/10 text-primary border-primary/30",
+  "bg-gold/10 text-gold border-gold/30",
+  "bg-destructive/10 text-destructive border-destructive/30",
+  "bg-chart-3/10 text-chart-3 border-chart-3/30",
+];
+
+/** Transform Fineract loan products to UI format */
+function transformLoanProducts(products: FLoanProduct[]): LoanTypeOption[] {
+  return products.map((p, i) => {
+    const key = p.shortName?.toLowerCase() ?? "";
+    return {
+      id: `fp-${p.id}`,
+      label: p.name,
+      description: p.description || `${p.name} from Fineract`,
+      icon: productIcons[key] ?? (i % 2 === 0 ? User : Briefcase),
+      rate: p.interestRatePerPeriod ?? 12,
+      maxAmount: p.maxPrincipal ?? p.principal ?? 1_000_000,
+      color: productColors[i % productColors.length],
+    };
+  });
+}
+
 const TERM_OPTIONS = [3, 6, 9, 12, 18, 24, 36];
 
 interface DocumentSlot {
@@ -117,6 +150,16 @@ const documentSlots: DocumentSlot[] = [
 
 // ── Component ────────────────────────────────────────────────────────────────
 export default function LoanApplyPage() {
+  // Fetch real loan products from Fineract
+  const { data: loanProductsData, error } = useApiQuery(
+    () => fineract.getLoanProducts(),
+    [],
+  );
+  const isLive = !!loanProductsData && !error;
+  const loanTypes: LoanTypeOption[] = isLive
+    ? transformLoanProducts(loanProductsData)
+    : mockLoanTypes;
+
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [amount, setAmount] = useState(100_000);
@@ -158,11 +201,22 @@ export default function LoanApplyPage() {
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-6">
       {/* Page header */}
-      <div>
-        <h1 className="font-heading text-2xl font-semibold">Apply for a Loan</h1>
-        <p className="text-sm text-muted-foreground">
-          Complete the steps below to submit your loan application
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="font-heading text-2xl font-semibold">Apply for a Loan</h1>
+          <p className="text-sm text-muted-foreground">
+            Complete the steps below to submit your loan application
+          </p>
+        </div>
+        {isLive ? (
+          <Badge variant="secondary" className="gap-1 text-[10px] text-emerald-600">
+            <Wifi className="h-3 w-3" /> Live Products
+          </Badge>
+        ) : (
+          <Badge variant="outline" className="gap-1 text-[10px]">
+            <WifiOff className="h-3 w-3" /> Demo
+          </Badge>
+        )}
       </div>
 
       {/* Progress stepper */}

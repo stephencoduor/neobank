@@ -6,6 +6,8 @@ import {
   ArrowRight,
   CheckCircle2,
   Clock,
+  Wifi,
+  WifiOff,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,6 +17,8 @@ import {
   ProgressLabel,
   ProgressValue,
 } from "@/components/ui/progress";
+import { useApiQuery } from "@/hooks/use-api";
+import { fineract, type FLoanAccount, type FPagedResponse } from "@/services/fineract-service";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 function fmtKES(amount: number) {
@@ -24,34 +28,6 @@ function fmtKES(amount: number) {
     minimumFractionDigits: 0,
   }).format(amount);
 }
-
-// ── Mock Data ────────────────────────────────────────────────────────────────
-const summaryCards = [
-  {
-    title: "Active Loans",
-    value: "2",
-    icon: CreditCard,
-    color: "bg-primary/10 text-primary",
-  },
-  {
-    title: "Total Borrowed",
-    value: fmtKES(450_000),
-    icon: Wallet,
-    color: "bg-gold/10 text-gold",
-  },
-  {
-    title: "Monthly Repayment",
-    value: fmtKES(23_500),
-    icon: TrendingUp,
-    color: "bg-chart-1/10 text-chart-1",
-  },
-  {
-    title: "Next Due Date",
-    value: "15 Apr 2026",
-    icon: CalendarClock,
-    color: "bg-chart-3/10 text-chart-3",
-  },
-];
 
 interface Loan {
   id: string;
@@ -67,7 +43,8 @@ interface Loan {
   completedDate?: string;
 }
 
-const activeLoans: Loan[] = [
+// ── Mock Fallback Data ──────────────────────────────────────────────────────
+const mockActiveLoans: Loan[] = [
   {
     id: "LN-2025-0041",
     name: "Personal Loan",
@@ -94,7 +71,7 @@ const activeLoans: Loan[] = [
   },
 ];
 
-const completedLoans: Loan[] = [
+const mockCompletedLoans: Loan[] = [
   {
     id: "LN-2024-0012",
     name: "Emergency Loan",
@@ -123,14 +100,90 @@ const completedLoans: Loan[] = [
   },
 ];
 
+/** Transform Fineract loan to UI Loan */
+function transformLoan(fl: FLoanAccount): Loan {
+  const s = fl.summary;
+  const totalRepayments = fl.status?.code === "loanStatusType.active"
+    ? (s?.totalExpectedRepayment ?? fl.principal)
+    : fl.principal;
+  const repaid = s?.totalRepayment ?? 0;
+  const numRepayments = s ? Math.round((s.principalPaid / (s.principalDisbursed || 1)) * 12) : 0;
+  return {
+    id: fl.accountNo,
+    name: fl.loanProductName || "Loan",
+    type: fl.loanProductName?.includes("Business") ? "Business" : "Personal",
+    principal: s?.principalDisbursed ?? fl.principal,
+    term: 12, // Fineract doesn't return term in list view
+    rate: 0,
+    paymentsMade: numRepayments,
+    monthlyPayment: totalRepayments > 0 ? Math.round(totalRepayments / 12) : 0,
+    status: fl.status?.code === "loanStatusType.active" ? "active" : "completed",
+    disbursedDate: "—",
+  };
+}
+
 // ── Component ────────────────────────────────────────────────────────────────
 export default function LoanDashboardPage() {
+  const { data: loansData, error } = useApiQuery(
+    () => fineract.getLoans(50),
+    [],
+  );
+
+  const isLive = !!loansData && !error;
+
+  // Transform live data or use mock fallback
+  const allLoans: Loan[] = isLive
+    ? loansData.pageItems.map(transformLoan)
+    : [...mockActiveLoans, ...mockCompletedLoans];
+
+  const activeLoans = allLoans.filter((l) => l.status === "active");
+  const completedLoans = allLoans.filter((l) => l.status === "completed");
+  const totalBorrowed = allLoans.reduce((s, l) => s + l.principal, 0);
+  const monthlyRepayment = activeLoans.reduce((s, l) => s + l.monthlyPayment, 0);
+
+  const summaryCards = [
+    {
+      title: "Active Loans",
+      value: String(activeLoans.length),
+      icon: CreditCard,
+      color: "bg-primary/10 text-primary",
+    },
+    {
+      title: "Total Borrowed",
+      value: fmtKES(totalBorrowed),
+      icon: Wallet,
+      color: "bg-gold/10 text-gold",
+    },
+    {
+      title: "Monthly Repayment",
+      value: fmtKES(monthlyRepayment),
+      icon: TrendingUp,
+      color: "bg-chart-1/10 text-chart-1",
+    },
+    {
+      title: "Next Due Date",
+      value: "15 Apr 2026",
+      icon: CalendarClock,
+      color: "bg-chart-3/10 text-chart-3",
+    },
+  ];
   return (
     <div className="flex flex-col gap-6">
       {/* Page header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-heading text-2xl font-semibold">Loans</h1>
+          <div className="flex items-center gap-2">
+            <h1 className="font-heading text-2xl font-semibold">Loans</h1>
+            {isLive ? (
+              <Badge variant="secondary" className="gap-1 text-[10px] text-emerald-600">
+                <Wifi className="h-3 w-3" /> Live
+              </Badge>
+            ) : (
+              <Badge variant="outline" className="gap-1 text-[10px]">
+                <WifiOff className="h-3 w-3" /> Demo
+              </Badge>
+            )}
+          </div>
           <p className="text-sm text-muted-foreground">
             Manage your loans and track repayment progress
           </p>

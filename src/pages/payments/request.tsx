@@ -16,8 +16,19 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { recentContacts } from "@/data/mock";
+import { recentContacts as mockContacts } from "@/data/mock";
 import { cn } from "@/lib/utils";
+import { useApiQuery } from "@/hooks/use-api";
+import { fineract, type FClient } from "@/services/fineract-service";
+
+/** Transform Fineract clients to contact format */
+function clientsToContacts(clients: FClient[]) {
+  return clients.slice(0, 5).map((c) => ({
+    id: `CL-${c.id}`,
+    name: c.displayName,
+    phone: c.mobileNo || `+254 7${String(c.id).padStart(2, "0")} XXX XXX`,
+  }));
+}
 
 function formatKES(amount: number) {
   return `KES ${amount.toLocaleString("en-KE")}`;
@@ -70,6 +81,14 @@ const statusConfig = {
 };
 
 export default function RequestMoneyPage() {
+  // Fetch real clients from Fineract for contacts
+  const { data: clientsData, error } = useApiQuery(
+    () => fineract.getClients(10),
+    [],
+  );
+  const isLive = !!clientsData && !error;
+  const recentContacts = isLive ? clientsToContacts(clientsData.pageItems) : mockContacts;
+
   const [phone, setPhone] = useState("");
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");

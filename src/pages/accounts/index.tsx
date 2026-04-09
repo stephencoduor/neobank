@@ -6,12 +6,16 @@ import {
   Briefcase,
   Clock,
   ChevronRight,
+  Wifi,
+  WifiOff,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { accounts } from "@/data/mock";
+import { accounts as mockAccounts } from "@/data/mock";
+import { useApiQuery } from "@/hooks/use-api";
+import { fineract, type FSavingsAccount } from "@/services/fineract-service";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 function fmtCurrency(amount: number, currency = "KES") {
@@ -32,8 +36,31 @@ const currencyFlag: Record<string, string> = {
   USD: "🇺🇸",
 };
 
+/** Transform Fineract savings into account cards */
+function toAccountCards(items: FSavingsAccount[]) {
+  return items.map((sa) => ({
+    id: `SA-${sa.id}`,
+    name: sa.clientName ? `${sa.clientName} — ${sa.productName}` : sa.productName,
+    type: sa.productName?.toLowerCase().includes("business") ? "business" as const : "savings" as const,
+    currency: sa.currency?.code || "KES",
+    balance: sa.accountBalance ?? sa.summary?.accountBalance ?? 0,
+    availableBalance: sa.accountBalance ?? sa.summary?.accountBalance ?? 0,
+    pendingAmount: 0,
+    accountNumber: sa.accountNo,
+    status: sa.status?.value?.toLowerCase() === "active" ? "active" as const : "inactive" as const,
+  }));
+}
+
 // ── Component ────────────────────────────────────────────────────────────────
 export default function AccountsPage() {
+  const { data: savingsData, error } = useApiQuery(
+    () => fineract.getSavingsAccounts(50),
+    [],
+  );
+
+  const isLive = !!savingsData && !error;
+  const accounts = isLive ? toAccountCards(savingsData.pageItems) : mockAccounts;
+
   const totalBalance = accounts
     .filter((a) => a.currency === "KES")
     .reduce((s, a) => s + a.balance, 0);
@@ -43,7 +70,18 @@ export default function AccountsPage() {
     <div className="flex flex-col gap-6 pb-8">
       {/* ── Header ───────────────────────────────────────────────────── */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-2xl font-bold tracking-tight">My Accounts</h1>
+        <div className="flex items-center gap-2">
+          <h1 className="text-2xl font-bold tracking-tight">My Accounts</h1>
+          {isLive ? (
+            <Badge variant="secondary" className="gap-1 text-[10px] text-emerald-600">
+              <Wifi className="h-3 w-3" /> Live
+            </Badge>
+          ) : (
+            <Badge variant="outline" className="gap-1 text-[10px]">
+              <WifiOff className="h-3 w-3" /> Demo
+            </Badge>
+          )}
+        </div>
         <Button className="gap-1.5">
           <Plus className="h-4 w-4" /> Open New Account
         </Button>

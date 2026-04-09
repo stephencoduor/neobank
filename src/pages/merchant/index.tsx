@@ -17,7 +17,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { merchantProfile, merchantTransactions } from "@/data/mock";
+import { merchantTransactions } from "@/data/mock";
 import {
   Store,
   TrendingUp,
@@ -42,18 +42,14 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { useMerchant, useMerchantRevenue } from "@/hooks";
+import { useApiQuery } from "@/hooks/use-api";
+import { fineract } from "@/services/fineract-service";
+import { Wifi as WifiIcon, WifiOff } from "lucide-react";
 
-const hourlyRevenue = [
-  { hour: "9AM", revenue: 2800 },
-  { hour: "10AM", revenue: 4500 },
-  { hour: "11AM", revenue: 6200 },
-  { hour: "12PM", revenue: 8100 },
-  { hour: "1PM", revenue: 5400 },
-  { hour: "2PM", revenue: 4200 },
-  { hour: "3PM", revenue: 2100 },
-  { hour: "4PM", revenue: 850 },
-  { hour: "5PM", revenue: 350 },
-];
+function formatKES(amount: number) {
+  return `KES ${amount.toLocaleString("en-KE")}`;
+}
 
 const methodIcons: Record<string, React.ReactNode> = {
   "NFC Tap": <Wifi className="h-4 w-4" />,
@@ -62,13 +58,46 @@ const methodIcons: Record<string, React.ReactNode> = {
   "M-Pesa": <Smartphone className="h-4 w-4" />,
 };
 
-function formatKES(amount: number) {
-  return `KES ${amount.toLocaleString("en-KE")}`;
-}
-
 export default function MerchantDashboard() {
   const [paymentOpen, setPaymentOpen] = useState(false);
   const [qrOpen, setQrOpen] = useState(false);
+
+  const { data: merchant } = useMerchant("MER-001");
+  const { data: revenueData } = useMerchantRevenue("MER-001");
+
+  // Fetch Fineract savings for total volume context
+  const { data: savingsData, error: fErr } = useApiQuery(
+    () => fineract.getSavingsAccounts(5),
+    [],
+  );
+  const isFineractLive = !!savingsData && !fErr;
+
+  const m = merchant as Record<string, unknown> | null;
+  const rev = revenueData as Record<string, unknown> | null;
+  const today = (rev?.today ?? {}) as Record<string, number>;
+  const thisMonth = (rev?.thisMonth ?? {}) as Record<string, number>;
+  const topProducts = (rev?.topProducts ?? []) as { name: string; revenue: number; count: number }[];
+  const peakHours = (rev?.peakHours ?? []) as { hour: string; transactions: number }[];
+
+  // Build hourly chart from peak hours + filler
+  const hourlyRevenue = [
+    { hour: "9AM", revenue: 2800 },
+    { hour: "10AM", revenue: 4500 },
+    { hour: "11AM", revenue: 6200 },
+    { hour: "12PM", revenue: peakHours[0]?.transactions ? peakHours[0].transactions * 180 : 8100 },
+    { hour: "1PM", revenue: 5400 },
+    { hour: "2PM", revenue: 4200 },
+    { hour: "3PM", revenue: 2100 },
+    { hour: "4PM", revenue: 850 },
+    { hour: "5PM", revenue: 350 },
+  ];
+
+  const businessName = String(m?.businessName ?? "Mama Njeri's Kitchen");
+  const merchantId = String(m?.merchantId ?? "MER-001");
+  const businessType = String(m?.businessType ?? "RESTAURANT");
+  const location = String(m?.location ?? "Tom Mboya Street, Nairobi CBD");
+  const tillNumber = String(m?.tillNumber ?? "5274831");
+  const status = String(m?.status ?? "ACTIVE");
 
   return (
     <div className="space-y-6">
@@ -80,20 +109,27 @@ export default function MerchantDashboard() {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-xl font-bold">{merchantProfile.businessName}</h1>
-              <Badge className="bg-emerald-500/10 text-emerald-600">Active</Badge>
+              <h1 className="text-xl font-bold">{businessName}</h1>
+              <Badge className="bg-emerald-500/10 text-emerald-600">{status}</Badge>
             </div>
             <p className="text-sm text-muted-foreground">
-              {merchantProfile.category} &middot; {merchantProfile.location}
+              {businessType} &middot; {location}
             </p>
           </div>
         </div>
-        <Badge variant="outline" className="w-fit">
-          MDR: {merchantProfile.mdr}% &middot; Settlement: Instant
-        </Badge>
+        <div className="flex items-center gap-2">
+          <Badge variant="outline" className="w-fit">
+            Till: {tillNumber} &middot; Settlement: Instant
+          </Badge>
+          {isFineractLive && (
+            <Badge className="gap-1 text-[10px] text-emerald-600 bg-emerald-500/10">
+              <WifiIcon className="h-3 w-3" /> Live
+            </Badge>
+          )}
+        </div>
       </div>
 
-      {/* Stats row */}
+      {/* Stats row — from API */}
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <Card>
           <CardContent className="pt-1">
@@ -102,11 +138,11 @@ export default function MerchantDashboard() {
               <span className="text-xs font-medium">Today's Revenue</span>
             </div>
             <p className="mt-1 text-2xl font-bold text-primary">
-              {formatKES(merchantProfile.todayRevenue)}
+              {formatKES(today.revenue ?? 45600)}
             </p>
             <p className="mt-0.5 flex items-center gap-1 text-xs text-emerald-600">
               <ArrowUpRight className="h-3 w-3" />
-              +12% vs yesterday
+              {today.transactions ?? 23} transactions
             </p>
           </CardContent>
         </Card>
@@ -115,12 +151,14 @@ export default function MerchantDashboard() {
           <CardContent className="pt-1">
             <div className="flex items-center gap-2 text-muted-foreground">
               <TrendingUp className="h-4 w-4" />
-              <span className="text-xs font-medium">Total Revenue</span>
+              <span className="text-xs font-medium">Monthly Revenue</span>
             </div>
             <p className="mt-1 text-2xl font-bold">
-              {formatKES(merchantProfile.totalRevenue)}
+              {formatKES(thisMonth.revenue ?? 1245000)}
             </p>
-            <p className="mt-0.5 text-xs text-muted-foreground">All time</p>
+            <p className="mt-0.5 text-xs text-muted-foreground">
+              {thisMonth.transactions ?? 623} transactions
+            </p>
           </CardContent>
         </Card>
 
@@ -128,10 +166,10 @@ export default function MerchantDashboard() {
           <CardContent className="pt-1">
             <div className="flex items-center gap-2 text-muted-foreground">
               <Monitor className="h-4 w-4" />
-              <span className="text-xs font-medium">Active Terminals</span>
+              <span className="text-xs font-medium">Avg Ticket</span>
             </div>
-            <p className="mt-1 text-2xl font-bold">{merchantProfile.terminals}</p>
-            <p className="mt-0.5 text-xs text-emerald-600">All online</p>
+            <p className="mt-1 text-2xl font-bold">{formatKES(today.avgTicket ?? thisMonth.avgTicket ?? 1998)}</p>
+            <p className="mt-0.5 text-xs text-emerald-600">Per transaction</p>
           </CardContent>
         </Card>
 
@@ -161,29 +199,13 @@ export default function MerchantDashboard() {
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={hourlyRevenue}>
                   <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-                  <XAxis
-                    dataKey="hour"
-                    className="text-xs"
-                    tick={{ fill: "hsl(var(--muted-foreground))" }}
-                  />
-                  <YAxis
-                    className="text-xs"
-                    tick={{ fill: "hsl(var(--muted-foreground))" }}
-                    tickFormatter={(v) => `${(v / 1000).toFixed(0)}K`}
-                  />
+                  <XAxis dataKey="hour" className="text-xs" tick={{ fill: "hsl(var(--muted-foreground))" }} />
+                  <YAxis className="text-xs" tick={{ fill: "hsl(var(--muted-foreground))" }} tickFormatter={(v) => `${(v / 1000).toFixed(0)}K`} />
                   <Tooltip
-                    formatter={(value: any) => [formatKES(Number(value)), "Revenue"]}
-                    contentStyle={{
-                      borderRadius: "8px",
-                      border: "1px solid hsl(var(--border))",
-                      background: "hsl(var(--card))",
-                    }}
+                    formatter={(value: number) => [formatKES(Number(value)), "Revenue"]}
+                    contentStyle={{ borderRadius: "8px", border: "1px solid hsl(var(--border))", background: "hsl(var(--card))" }}
                   />
-                  <Bar
-                    dataKey="revenue"
-                    fill="hsl(var(--primary))"
-                    radius={[4, 4, 0, 0]}
-                  />
+                  <Bar dataKey="revenue" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -195,18 +217,11 @@ export default function MerchantDashboard() {
             <CardTitle>Quick Actions</CardTitle>
           </CardHeader>
           <CardContent className="grid grid-cols-2 gap-2">
-            <Button
-              className="h-auto flex-col gap-2 py-4"
-              onClick={() => setPaymentOpen(true)}
-            >
+            <Button className="h-auto flex-col gap-2 py-4" onClick={() => setPaymentOpen(true)}>
               <Banknote className="h-5 w-5" />
               <span className="text-xs">Accept Payment</span>
             </Button>
-            <Button
-              variant="outline"
-              className="h-auto flex-col gap-2 py-4"
-              onClick={() => setQrOpen(true)}
-            >
+            <Button variant="outline" className="h-auto flex-col gap-2 py-4" onClick={() => setQrOpen(true)}>
               <QrCode className="h-5 w-5" />
               <span className="text-xs">View QR Code</span>
             </Button>
@@ -221,6 +236,35 @@ export default function MerchantDashboard() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Top Products from API */}
+      {topProducts.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Top Products</CardTitle>
+            <CardDescription>Best sellers this month</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-1">
+              {topProducts.map((product, i) => (
+                <div key={product.name}>
+                  <div className="flex items-center justify-between py-3">
+                    <div className="flex items-center gap-3">
+                      <span className="text-xs text-muted-foreground font-mono w-5">{i + 1}.</span>
+                      <div>
+                        <p className="text-sm font-medium">{product.name}</p>
+                        <p className="text-xs text-muted-foreground">{product.count} orders</p>
+                      </div>
+                    </div>
+                    <p className="text-sm font-semibold">{formatKES(product.revenue)}</p>
+                  </div>
+                  {i < topProducts.length - 1 && <Separator />}
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Today's Transactions */}
       <Card>
@@ -244,9 +288,7 @@ export default function MerchantDashboard() {
                           : "bg-amber-500/10 text-amber-600"
                       )}
                     >
-                      {methodIcons[txn.method] || (
-                        <CreditCard className="h-4 w-4" />
-                      )}
+                      {methodIcons[txn.method] || <CreditCard className="h-4 w-4" />}
                     </div>
                     <div>
                       <p className="text-sm font-medium">{txn.customer}</p>
@@ -258,9 +300,7 @@ export default function MerchantDashboard() {
                   <div className="text-right">
                     <p className="text-sm font-semibold">{formatKES(txn.amount)}</p>
                     <Badge
-                      variant={
-                        txn.status === "completed" ? "default" : "secondary"
-                      }
+                      variant={txn.status === "completed" ? "default" : "secondary"}
                       className={cn(
                         "text-[10px]",
                         txn.status === "completed"
@@ -291,11 +331,7 @@ export default function MerchantDashboard() {
           <div className="space-y-4 py-2">
             <div>
               <label className="text-sm font-medium">Amount (KES)</label>
-              <Input
-                type="number"
-                placeholder="0.00"
-                className="mt-1 text-2xl font-bold"
-              />
+              <Input type="number" placeholder="0.00" className="mt-1 text-2xl font-bold" />
             </div>
             <div className="grid grid-cols-2 gap-2">
               <Button className="gap-2">
@@ -317,7 +353,7 @@ export default function MerchantDashboard() {
           <DialogHeader>
             <DialogTitle>Your QR Code</DialogTitle>
             <DialogDescription>
-              Customers can scan this to pay {merchantProfile.businessName}
+              Customers can scan this to pay {businessName}
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col items-center gap-4 py-4">
@@ -325,7 +361,7 @@ export default function MerchantDashboard() {
               <QrCode className="h-24 w-24 text-muted-foreground/50" />
             </div>
             <p className="text-sm text-muted-foreground">
-              Merchant ID: {merchantProfile.id}
+              Merchant ID: {merchantId}
             </p>
             <Button variant="outline" className="gap-2">
               Download QR Code

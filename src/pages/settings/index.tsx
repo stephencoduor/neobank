@@ -20,7 +20,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { currentUser } from "@/data/mock";
+import { currentUser as mockUser } from "@/data/mock";
+import { useApiQuery } from "@/hooks/use-api";
+import { fineract } from "@/services/fineract-service";
 import {
   User,
   Shield,
@@ -52,6 +54,22 @@ const activeSessions = [
 ];
 
 export default function SettingsPage() {
+  // Fetch real client from Fineract
+  const { data: clientData, error } = useApiQuery(
+    () => fineract.getClient(1),
+    [],
+  );
+  const isLive = !!clientData && !error;
+  const currentUser = isLive
+    ? {
+        ...mockUser,
+        firstName: clientData.firstname || mockUser.firstName,
+        lastName: clientData.lastname || mockUser.lastName,
+        phone: clientData.mobileNo || mockUser.phone,
+        email: `${clientData.firstname?.toLowerCase()}.${clientData.lastname?.toLowerCase()}@neobank.co.ke`,
+      }
+    : mockUser;
+
   const [theme, setTheme] = useState("system");
   const [language, setLanguage] = useState("en");
   const [currency, setCurrency] = useState("KES");

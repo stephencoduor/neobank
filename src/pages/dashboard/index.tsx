@@ -11,6 +11,9 @@ import {
   RefreshCw,
   TrendingUp,
   Repeat,
+  Loader2,
+  Wifi,
+  WifiOff,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -27,10 +30,12 @@ import {
 } from "recharts";
 import {
   currentUser,
-  accounts,
-  transactions,
+  accounts as mockAccounts,
+  transactions as mockTransactions,
   chartData,
 } from "@/data/mock";
+import { useApiQuery } from "@/hooks/use-api";
+import { fineract, type FSavingsAccount, type FPagedResponse } from "@/services/fineract-service";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 function fmtKES(amount: number, currency = "KES") {
@@ -67,10 +72,38 @@ const quickActions = [
   { label: "Add Money", icon: PlusCircle, color: "bg-chart-1 text-white" },
 ];
 
+/** Transform Fineract savings accounts into dashboard account cards */
+function transformSavingsToAccounts(savings: FSavingsAccount[]) {
+  return savings.map((sa) => ({
+    id: `SA-${sa.id}`,
+    name: sa.productName || "Savings Account",
+    type: sa.productName?.toLowerCase().includes("business") ? "business" as const : "savings" as const,
+    currency: sa.currency?.code || "KES",
+    balance: sa.accountBalance ?? sa.summary?.accountBalance ?? 0,
+    availableBalance: sa.accountBalance ?? sa.summary?.accountBalance ?? 0,
+    pendingAmount: 0,
+    accountNumber: sa.accountNo,
+    status: sa.status?.value?.toLowerCase() === "active" ? "active" as const : "inactive" as const,
+    clientName: sa.clientName,
+  }));
+}
+
 // ── Component ────────────────────────────────────────────────────────────────
 export default function DashboardPage() {
+  // Fetch real savings accounts from Fineract
+  const { data: savingsData, error: savingsError } = useApiQuery(
+    () => fineract.getSavingsAccounts(20),
+    [],
+  );
+
+  // Use live data if available, else fallback to mock
+  const isLive = !!savingsData && !savingsError;
+  const accounts = isLive
+    ? transformSavingsToAccounts(savingsData.pageItems)
+    : mockAccounts;
+  const transactions = mockTransactions; // Transactions stay mock (Fineract doesn't have merchant-level detail)
+
   const totalBalance = accounts.reduce((s, a) => {
-    // Convert USD approximate to KES for display total
     const bal = a.currency === "USD" ? a.balance * 129 : a.balance;
     return s + bal;
   }, 0);
@@ -111,7 +144,10 @@ export default function DashboardPage() {
           <p className="mt-1 text-4xl font-extrabold tracking-tight sm:text-5xl">
             {fmtKES(totalBalance)}
           </p>
-          <p className="mt-1 text-xs opacity-60">Across all accounts</p>
+          <p className="mt-1 flex items-center gap-1 text-xs opacity-60">
+            {isLive ? <Wifi className="h-3 w-3" /> : <WifiOff className="h-3 w-3" />}
+            {isLive ? `Live — ${accounts.length} accounts` : "Across all accounts"}
+          </p>
         </CardContent>
       </Card>
 

@@ -14,7 +14,25 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { notifications } from "@/data/mock";
+import { notifications as mockNotifications } from "@/data/mock";
+import { useApiQuery } from "@/hooks/use-api";
+import { fineract, type FAuditLog } from "@/services/fineract-service";
+
+/** Transform Fineract audit logs to notification format */
+function auditToNotifications(audits: FAuditLog[]) {
+  return audits.slice(0, 10).map((a) => {
+    const isSecurityAction = a.actionName === "DELETE" || a.actionName === "DISABLE" || a.entityName === "USER";
+    const type = isSecurityAction ? "security" : a.entityName?.includes("LOAN") ? "transaction" : a.entityName?.includes("SAVINGS") ? "transaction" : "promo";
+    return {
+      id: `AUD-${a.id}`,
+      type,
+      title: `${a.actionName} ${a.entityName} #${a.resourceId}`,
+      message: `By ${a.maker} at ${a.officeName} — ${a.processingResult}`,
+      time: new Date(a.madeOnDate).toLocaleDateString("en-KE", { month: "short", day: "numeric" }),
+      read: a.processingResult === "processed",
+    };
+  });
+}
 
 // ── Types ────────────────────────────────────────────────────────────────────
 type NotificationType = "transaction" | "security" | "card" | "promo";
@@ -50,7 +68,15 @@ const filterTabs = ["all", "transaction", "security", "card", "promo"] as const;
 
 // ── Component ────────────────────────────────────────────────────────────────
 export default function NotificationsPage() {
-  const [items, setItems] = useState(notifications);
+  const { data: auditData, error } = useApiQuery(
+    () => fineract.getAuditLogs(20),
+    [],
+  );
+  const isLive = !!auditData && !error;
+  const liveNotifications = isLive ? auditToNotifications(auditData.pageItems) : [];
+  const allNotifications = isLive ? [...liveNotifications, ...mockNotifications] : mockNotifications;
+
+  const [items, setItems] = useState(allNotifications);
   const [expanded, setExpanded] = useState<string | null>(null);
   const [tab, setTab] = useState<string>("all");
 

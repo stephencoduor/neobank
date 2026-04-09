@@ -20,6 +20,11 @@ import {
   ShoppingCart,
   Car,
   Coffee,
+  Loader2,
+  Fuel,
+  Tv,
+  ShoppingBag,
+  Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -36,8 +41,17 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { cards, transactions } from "@/data/mock";
 import { cn } from "@/lib/utils";
+import {
+  useCard,
+  useCardTransactions,
+  useToggleFreeze,
+  useUpdateCardLimits,
+  useRequestPinReset,
+} from "@/hooks";
+import { useApiQuery } from "@/hooks/use-api";
+import { fineract } from "@/services/fineract-service";
+import { WifiOff as WifiOffIcon } from "lucide-react";
 
 function formatKES(amount: number) {
   return `KES ${amount.toLocaleString("en-KE")}`;
@@ -47,26 +61,49 @@ function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString("en-KE", {
     month: "short",
     day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
+    year: "numeric",
   });
 }
 
-const categoryIcons: Record<string, typeof CreditCard> = {
-  card: CreditCard,
-  merchant: ShoppingCart,
-  p2p: Smartphone,
-  mobile_money: Smartphone,
-  bills: Building2,
-  subscription: Globe,
-  salary: Building2,
-  refund: CreditCard,
+const categoryIconMap: Record<string, typeof CreditCard> = {
+  GROCERIES: ShoppingCart,
+  FOOD_DRINK: Coffee,
+  TRANSPORT: Car,
+  ENTERTAINMENT: Tv,
+  FUEL: Fuel,
+  SHOPPING: ShoppingBag,
+  UTILITIES: Zap,
 };
 
 /* ── Visual Card ────────────────────────────────────────────────────── */
 
-function LargeVisualCard({ card }: { card: (typeof cards)[0] }) {
-  const isVirtual = card.type === "virtual";
+interface ApiCard {
+  cardId: string;
+  type: string;
+  network: string;
+  last4: string;
+  cardholderName: string;
+  expiryDate: string;
+  status: string;
+  frozen: boolean;
+  dailyLimit: number;
+  monthlyLimit: number;
+  todaySpend: number;
+  monthSpend: number;
+}
+
+interface CardTxn {
+  id: string;
+  merchant: string;
+  category: string;
+  amount: number;
+  currency: string;
+  date: string;
+  status: string;
+}
+
+function LargeVisualCard({ card }: { card: ApiCard }) {
+  const isVirtual = card.type === "VIRTUAL";
 
   return (
     <div
@@ -99,7 +136,7 @@ function LargeVisualCard({ card }: { card: (typeof cards)[0] }) {
               isVirtual ? "text-white/80" : "text-[#2a1f0a]/80"
             )}
           >
-            {card.type === "virtual" ? "Virtual" : "Physical"}
+            {isVirtual ? "Virtual" : "Physical"}
           </Badge>
         </div>
 
@@ -111,11 +148,11 @@ function LargeVisualCard({ card }: { card: (typeof cards)[0] }) {
           <div>
             <p className="text-xs opacity-60 mb-0.5">CARD HOLDER</p>
             <p className="text-sm font-semibold tracking-wide uppercase">
-              {card.name}
+              {card.cardholderName}
             </p>
             <p className="text-xs mt-1 opacity-60">VALID THRU {card.expiryDate}</p>
           </div>
-          <span className="text-xl font-bold opacity-80">{card.brand}</span>
+          <span className="text-xl font-bold opacity-80">{card.network}</span>
         </div>
       </div>
     </div>
@@ -127,54 +164,90 @@ function LargeVisualCard({ card }: { card: (typeof cards)[0] }) {
 export default function CardDetailPage() {
   const { cardId } = useParams<{ cardId: string }>();
   const navigate = useNavigate();
-  const card = cards.find((c) => c.id === cardId) ?? cards[0];
+  const { data: cardData } = useCard(cardId ?? "CARD-V-001");
+  const { data: txnData } = useCardTransactions(cardId ?? "CARD-V-001");
+  const freezeMutation = useToggleFreeze();
+  const limitsMutation = useUpdateCardLimits();
+  const pinResetMutation = useRequestPinReset();
 
-  const [frozen, setFrozen] = useState(card.frozen);
+  // Fineract live status
+  const { data: fClient, error: fErr } = useApiQuery(
+    () => fineract.getClient(1),
+    [],
+  );
+  const isFineractLive = !!fClient && !fErr;
+
+  const card = cardData as ApiCard;
+  const cardTxns = (Array.isArray(txnData) ? txnData : []) as CardTxn[];
+
+  const [frozen, setFrozen] = useState(card?.frozen ?? false);
   const [showCVV, setShowCVV] = useState(false);
   const [copied, setCopied] = useState(false);
   const [limitsOpen, setLimitsOpen] = useState(false);
+  const [pinResetSent, setPinResetSent] = useState(false);
   const [onlinePayments, setOnlinePayments] = useState(true);
   const [internationalPayments, setInternationalPayments] = useState(false);
   const [contactless, setContactless] = useState(true);
   const [atmWithdrawals, setAtmWithdrawals] = useState(true);
-  const [dailyLimit, setDailyLimit] = useState("100000");
-  const [monthlyLimit, setMonthlyLimit] = useState(
-    card.spendLimit.toString()
-  );
+  const [dailyLimit, setDailyLimit] = useState(String(card?.dailyLimit ?? 100000));
+  const [monthlyLimit, setMonthlyLimit] = useState(String(card?.monthlyLimit ?? 500000));
 
-  const spentPct = Math.round(
-    (card.spentThisMonth / card.spendLimit) * 100
-  );
-
-  const cardTransactions = transactions.filter(
-    (t): t is (typeof transactions)[number] => t.category === "card" || t.category === "merchant"
-  );
+  const spentPct = card?.monthlyLimit
+    ? Math.round((card.monthSpend / card.monthlyLimit) * 100)
+    : 0;
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(`**** **** **** ${card.last4}`);
+    navigator.clipboard.writeText(`**** **** **** ${card?.last4 ?? ""}`);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+
+  const handleToggleFreeze = () => {
+    freezeMutation.mutate({ cardId: card.cardId, freeze: !frozen });
+    setFrozen(!frozen);
+  };
+
+  const handleSaveLimits = () => {
+    limitsMutation.mutate({
+      cardId: card.cardId,
+      dailyLimit: parseInt(dailyLimit),
+      monthlyLimit: parseInt(monthlyLimit),
+    });
+    setLimitsOpen(false);
+  };
+
+  const handlePinReset = () => {
+    pinResetMutation.mutate({ cardId: card.cardId }, {
+      onSuccess: () => setPinResetSent(true),
+    });
+  };
+
+  if (!card) return null;
 
   return (
     <div className="space-y-6 p-4 md:p-6 max-w-3xl mx-auto">
       {/* Back header */}
       <div className="flex items-center gap-3">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => navigate("/cards")}
-        >
+        <Button variant="ghost" size="icon" onClick={() => navigate("/cards")}>
           <ArrowLeft className="h-5 w-5" />
         </Button>
         <div>
           <h1 className="text-xl font-bold">
-            {card.brand} {card.type === "virtual" ? "Virtual" : "Physical"} Card
+            {card.network} {card.type === "VIRTUAL" ? "Virtual" : "Physical"} Card
           </h1>
           <p className="text-sm text-muted-foreground">
             Ending in {card.last4}
           </p>
         </div>
+        {isFineractLive ? (
+          <Badge className="ml-auto gap-1 text-[10px] text-emerald-600 bg-emerald-500/10">
+            <Wifi className="h-3 w-3" /> Live
+          </Badge>
+        ) : (
+          <Badge variant="outline" className="ml-auto gap-1 text-[10px] text-muted-foreground">
+            <WifiOffIcon className="h-3 w-3" /> Demo
+          </Badge>
+        )}
       </div>
 
       {/* Large card visual */}
@@ -223,17 +296,8 @@ export default function CardDetailPage() {
               <span className="font-mono text-sm">
                 {showCVV ? "847" : "***"}
               </span>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-7 w-7"
-                onClick={() => setShowCVV(!showCVV)}
-              >
-                {showCVV ? (
-                  <EyeOff className="h-3.5 w-3.5" />
-                ) : (
-                  <Eye className="h-3.5 w-3.5" />
-                )}
+              <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => setShowCVV(!showCVV)}>
+                {showCVV ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
               </Button>
             </div>
           </div>
@@ -247,6 +311,16 @@ export default function CardDetailPage() {
               {frozen ? "Frozen" : "Active"}
             </Badge>
           </div>
+          <Separator />
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-muted-foreground">Daily Limit</span>
+            <span className="text-sm font-medium">{formatKES(card.dailyLimit)}</span>
+          </div>
+          <Separator />
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-muted-foreground">Today's Spend</span>
+            <span className="text-sm font-medium">{formatKES(card.todaySpend)}</span>
+          </div>
         </CardContent>
       </Card>
 
@@ -258,15 +332,15 @@ export default function CardDetailPage() {
         <CardContent className="space-y-3">
           <div className="flex items-center justify-between text-sm">
             <span className="text-muted-foreground">
-              {formatKES(card.spentThisMonth)} spent
+              {formatKES(card.monthSpend)} spent
             </span>
             <span className="font-medium">
-              {formatKES(card.spendLimit)} limit
+              {formatKES(card.monthlyLimit)} limit
             </span>
           </div>
           <Progress value={spentPct} className="h-3" />
           <p className="text-xs text-muted-foreground text-center">
-            {formatKES(card.spendLimit - card.spentThisMonth)} remaining ({100 - spentPct}%)
+            {formatKES(card.monthlyLimit - card.monthSpend)} remaining ({100 - spentPct}%)
           </p>
         </CardContent>
       </Card>
@@ -277,13 +351,13 @@ export default function CardDetailPage() {
           {
             icon: Snowflake,
             label: frozen ? "Unfreeze" : "Freeze",
-            onClick: () => setFrozen(!frozen),
+            onClick: handleToggleFreeze,
             active: frozen,
           },
           {
             icon: Lock,
             label: "Change PIN",
-            onClick: () => {},
+            onClick: handlePinReset,
           },
           {
             icon: SlidersHorizontal,
@@ -327,6 +401,17 @@ export default function CardDetailPage() {
           </Button>
         ))}
       </div>
+
+      {/* PIN Reset confirmation */}
+      {pinResetSent && (
+        <Card className="border-success/30 bg-success/5">
+          <CardContent className="pt-4">
+            <p className="text-sm text-success font-medium">
+              OTP sent to your registered phone number for PIN reset.
+            </p>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Card Settings */}
       <Card>
@@ -390,63 +475,33 @@ export default function CardDetailPage() {
         </CardContent>
       </Card>
 
-      {/* Recent card transactions */}
+      {/* Recent card transactions — from API */}
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-base">Recent Card Transactions</CardTitle>
         </CardHeader>
         <CardContent>
-          {cardTransactions.length === 0 ? (
+          {cardTxns.length === 0 ? (
             <p className="text-sm text-muted-foreground text-center py-8">
               No card transactions yet
             </p>
           ) : (
             <div className="space-y-3">
-              {cardTransactions.map((txn) => {
-                const Icon = categoryIcons[txn.category] ?? CreditCard;
-                const iconMap: Record<string, typeof Coffee> = {
-                  "Bolt Ride": Car,
-                  "Naivas": ShoppingCart,
-                  "Java House": Coffee,
-                };
-                const matchedIcon = Object.entries(iconMap).find(([key]) =>
-                  txn.description.includes(key)
-                );
-                const TxnIcon = matchedIcon ? matchedIcon[1] : Icon;
-
+              {cardTxns.map((txn) => {
+                const Icon = categoryIconMap[txn.category] ?? CreditCard;
                 return (
-                  <div
-                    key={txn.id}
-                    className="flex items-center gap-3 py-2"
-                  >
-                    <div
-                      className={cn(
-                        "h-10 w-10 rounded-full flex items-center justify-center shrink-0",
-                        txn.type === "credit"
-                          ? "bg-success/10 text-success"
-                          : "bg-muted text-muted-foreground"
-                      )}
-                    >
-                      <TxnIcon className="h-4 w-4" />
+                  <div key={txn.id} className="flex items-center gap-3 py-2">
+                    <div className="h-10 w-10 rounded-full bg-muted text-muted-foreground flex items-center justify-center shrink-0">
+                      <Icon className="h-4 w-4" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium truncate">
-                        {txn.description}
-                      </p>
+                      <p className="text-sm font-medium truncate">{txn.merchant}</p>
                       <p className="text-xs text-muted-foreground">
-                        {formatDate(txn.date)}
+                        {formatDate(txn.date)} &middot; {txn.category.replace("_", " ")}
                       </p>
                     </div>
-                    <span
-                      className={cn(
-                        "text-sm font-semibold whitespace-nowrap",
-                        txn.type === "credit"
-                          ? "text-success"
-                          : "text-foreground"
-                      )}
-                    >
-                      {txn.type === "credit" ? "+" : "-"}
-                      {formatKES(txn.amount)}
+                    <span className={cn("text-sm font-semibold whitespace-nowrap", txn.amount > 0 ? "text-success" : "text-foreground")}>
+                      {formatKES(Math.abs(txn.amount))}
                     </span>
                   </div>
                 );
@@ -490,7 +545,10 @@ export default function CardDetailPage() {
             <Button variant="outline" onClick={() => setLimitsOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={() => setLimitsOpen(false)}>Save Limits</Button>
+            <Button onClick={handleSaveLimits} disabled={limitsMutation.isPending}>
+              {limitsMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+              Save Limits
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

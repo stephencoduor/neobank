@@ -4,7 +4,7 @@
  * All requests include tenant header and auth token.
  */
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "https://localhost:8443/fineract-provider/api";
+const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "https://api.fineract.us/fineract-provider/api";
 const TENANT_ID = import.meta.env.VITE_TENANT_ID ?? "default";
 
 interface RequestOptions extends Omit<RequestInit, "body"> {
@@ -52,7 +52,10 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
 
   const token = getAuthToken();
   if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
+    // Support both Basic and Bearer auth — Fineract returns base64-encoded key
+    headers["Authorization"] = token.startsWith("Basic ") || token.startsWith("Bearer ")
+      ? token
+      : `Basic ${token}`;
   }
 
   const response = await fetch(url, {

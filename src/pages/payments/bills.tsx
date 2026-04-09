@@ -34,9 +34,26 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { accounts } from "@/data/mock";
+import { accounts as mockAccounts } from "@/data/mock";
 import { billsService } from "@/services/bills-service";
 import { cn } from "@/lib/utils";
+import { useApiQuery } from "@/hooks/use-api";
+import { fineract, type FSavingsAccount } from "@/services/fineract-service";
+
+/** Transform Fineract savings to account selector options */
+function savingsToAccounts(savings: FSavingsAccount[]) {
+  return savings.map((sa) => ({
+    id: `SA-${sa.id}`,
+    name: sa.clientName ? `${sa.clientName} — ${sa.productName}` : sa.productName || "Savings Account",
+    type: "savings" as const,
+    currency: sa.currency?.code || "KES",
+    balance: sa.accountBalance ?? sa.summary?.accountBalance ?? 0,
+    availableBalance: sa.accountBalance ?? sa.summary?.accountBalance ?? 0,
+    pendingAmount: 0,
+    accountNumber: sa.accountNo,
+    status: "active" as const,
+  }));
+}
 
 function formatKES(amount: number) {
   return `KES ${amount.toLocaleString("en-KE")}`;
@@ -178,6 +195,14 @@ const recentBills = [
 /* ── Main Page ──────────────────────────────────────────────────────── */
 
 export default function BillPaymentsPage() {
+  // Fetch real accounts from Fineract
+  const { data: savingsLive, error } = useApiQuery(
+    () => fineract.getSavingsAccounts(20),
+    [],
+  );
+  const isLive = !!savingsLive && !error;
+  const accounts = isLive ? savingsToAccounts(savingsLive.pageItems) : mockAccounts;
+
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [accountNumber, setAccountNumber] = useState("");
   const [amount, setAmount] = useState("");

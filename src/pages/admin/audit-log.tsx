@@ -36,8 +36,12 @@ import {
   Activity,
   Filter,
   Calendar,
+  Wifi,
+  WifiOff,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useApiQuery } from "@/hooks/use-api";
+import { fineract, type FAuditLog } from "@/services/fineract-service";
 
 type Severity = "info" | "warning" | "critical";
 
@@ -246,14 +250,46 @@ const actionTypes = [
 ];
 const severityOptions = ["All", "Info", "Warning", "Critical"];
 
+/** Transform Fineract audit logs into our UI format */
+function transformAuditLogs(logs: FAuditLog[]): AuditEntry[] {
+  return logs.map((log) => {
+    const date = new Date(log.madeOnDate);
+    const severity: Severity =
+      log.processingResult === "FAILURE" ? "critical"
+        : log.actionName.includes("DELETE") || log.actionName.includes("REJECT") ? "warning"
+        : "info";
+    return {
+      id: `AUD-F${log.id}`,
+      timestamp: date.toISOString().replace("T", " ").slice(0, 19),
+      user: log.maker || "system",
+      action: log.actionName,
+      resource: `${log.entityName} #${log.resourceId}`,
+      ipAddress: "—",
+      severity,
+      details: `${log.actionName} on ${log.entityName} (ID: ${log.resourceId}) at ${log.officeName}`,
+    };
+  });
+}
+
 export default function AuditLog() {
+  // Fetch real audit logs from Fineract
+  const { data: auditLive, error } = useApiQuery(
+    () => fineract.getAuditLogs(50),
+    [],
+  );
+  const isLive = !!auditLive && !error;
+
+  // Merge live audit logs with mock data (live first)
+  const liveEntries = isLive ? transformAuditLogs(auditLive.pageItems) : [];
+  const allAuditData = isLive ? [...liveEntries, ...auditData] : auditData;
+
   const [searchQuery, setSearchQuery] = useState("");
   const [actionFilter, setActionFilter] = useState("All");
   const [severityFilter, setSeverityFilter] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  const filtered = auditData.filter((entry) => {
+  const filtered = allAuditData.filter((entry) => {
     const matchesSearch =
       !searchQuery ||
       entry.user.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -273,11 +309,11 @@ export default function AuditLog() {
     currentPage * itemsPerPage
   );
 
-  const totalToday = auditData.length;
-  const criticalCount = auditData.filter(
+  const totalToday = allAuditData.length;
+  const criticalCount = allAuditData.filter(
     (e) => e.severity === "critical"
   ).length;
-  const warningCount = auditData.filter(
+  const warningCount = allAuditData.filter(
     (e) => e.severity === "warning"
   ).length;
 
@@ -286,9 +322,21 @@ export default function AuditLog() {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Audit Log</h1>
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-bold tracking-tight">Audit Log</h1>
+            {isLive ? (
+              <Badge variant="secondary" className="gap-1 text-[10px] text-emerald-600">
+                <Wifi className="h-3 w-3" /> Live
+              </Badge>
+            ) : (
+              <Badge variant="outline" className="gap-1 text-[10px]">
+                <WifiOff className="h-3 w-3" /> Demo
+              </Badge>
+            )}
+          </div>
           <p className="text-muted-foreground">
             Track all system events, user actions, and security alerts
+            {isLive && ` — ${liveEntries.length} from Fineract`}
           </p>
         </div>
         <Button variant="outline">

@@ -6,3 +6,6 @@ export { default as amlService } from "./aml-service";
 export { default as interopService } from "./interop-service";
 export { default as billsService } from "./bills-service";
 export { default as pesalinkService } from "./pesalink-service";
+export { default as qrService } from "./qr-service";
+export { default as cardService } from "./card-service";
+export { default as merchantService } from "./merchant-service";

@@ -14,6 +14,8 @@ import {
   Repeat,
   FileText,
   Calendar,
+  Wifi,
+  WifiOff,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -21,7 +23,9 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { accounts, transactions } from "@/data/mock";
+import { accounts, transactions as mockTransactions } from "@/data/mock";
+import { useApiQuery } from "@/hooks/use-api";
+import { fineract, type FSavingsAccount, type FSavingsTransaction } from "@/services/fineract-service";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 function fmtCurrency(amount: number, currency = "KES") {
@@ -51,10 +55,54 @@ const monthlyStatements = [
   { month: "November 2025", id: "ST-202511", size: "87 KB" },
 ];
 
+/** Transform Fineract savings transactions to UI transaction format */
+function transformSavingsTxns(txns: FSavingsTransaction[]) {
+  return txns
+    .filter((t) => !t.reversed)
+    .map((t) => {
+      const isDeposit = t.transactionType?.code?.includes("deposit") || t.transactionType?.value === "Deposit";
+      const dateArr = t.date;
+      const dateStr = dateArr
+        ? `${dateArr[0]}-${String(dateArr[1]).padStart(2, "0")}-${String(dateArr[2]).padStart(2, "0")}T12:00:00`
+        : new Date().toISOString();
+      return {
+        id: `ST-${t.id}`,
+        type: isDeposit ? "credit" as const : "debit" as const,
+        description: t.transactionType?.value || "Transaction",
+        amount: t.amount,
+        currency: t.currency?.code || "KES",
+        date: dateStr,
+        status: "completed" as const,
+        category: isDeposit ? "salary" : "bills",
+        reference: `REF-${t.id}`,
+        runningBalance: t.runningBalance,
+      };
+    });
+}
+
 // ── Component ────────────────────────────────────────────────────────────────
 export default function AccountDetailPage() {
   // In a real app, account ID comes from router params
   const account = accounts[0];
+
+  // Fetch real savings account #1 with transactions from Fineract
+  const { data: savingsLive, error } = useApiQuery(
+    () => fineract.getSavingsTransactions(1),
+    [],
+  );
+  const isLive = !!savingsLive?.transactions && !error;
+
+  // Transform live transactions or use mock
+  const transactions = isLive
+    ? transformSavingsTxns(savingsLive.transactions!)
+    : mockTransactions;
+
+  // Override account balance if live data available
+  const liveBalance = savingsLive?.summary?.accountBalance ?? savingsLive?.accountBalance;
+  const displayAccount = isLive && liveBalance != null
+    ? { ...account, balance: liveBalance, availableBalance: liveBalance, name: savingsLive.productName || account.name, accountNumber: savingsLive.accountNo || account.accountNumber }
+    : account;
+
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState<"all" | "credit" | "debit">("all");
 
@@ -72,20 +120,28 @@ export default function AccountDetailPage() {
         <CardContent className="flex flex-col gap-4 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-xl font-bold">{account.name}</h1>
+              <h1 className="text-xl font-bold">{displayAccount.name}</h1>
               <p className="font-mono text-sm opacity-70">
-                {account.accountNumber}
+                {displayAccount.accountNumber}
               </p>
             </div>
-            <Badge className="bg-white/20 text-white hover:bg-white/30">
-              {account.status}
-            </Badge>
+            <div className="flex items-center gap-2">
+              {isLive ? (
+                <Badge className="bg-white/20 text-white hover:bg-white/30 gap-1">
+                  <Wifi className="h-3 w-3" /> Live
+                </Badge>
+              ) : (
+                <Badge className="bg-white/20 text-white hover:bg-white/30">
+                  {displayAccount.status}
+                </Badge>
+              )}
+            </div>
           </div>
 
           <div>
             <p className="text-sm opacity-70">Current Balance</p>
             <p className="text-3xl font-extrabold tracking-tight sm:text-4xl">
-              {fmtCurrency(account.balance, account.currency)}
+              {fmtCurrency(displayAccount.balance, displayAccount.currency)}
             </p>
           </div>
 
@@ -233,13 +289,13 @@ export default function AccountDetailPage() {
             </CardHeader>
             <CardContent className="flex flex-col gap-3">
               {[
-                { label: "Account Number", value: account.accountNumber },
-                { label: "Account Type", value: account.type, capitalize: true },
-                { label: "Currency", value: account.currency },
-                { label: "Status", value: account.status, capitalize: true },
-                { label: "Current Balance", value: fmtCurrency(account.balance, account.currency) },
-                { label: "Available Balance", value: fmtCurrency(account.availableBalance, account.currency) },
-                { label: "Pending Amount", value: fmtCurrency(account.pendingAmount, account.currency) },
+                { label: "Account Number", value: displayAccount.accountNumber },
+                { label: "Account Type", value: displayAccount.type, capitalize: true },
+                { label: "Currency", value: displayAccount.currency },
+                { label: "Status", value: displayAccount.status, capitalize: true },
+                { label: "Current Balance", value: fmtCurrency(displayAccount.balance, displayAccount.currency) },
+                { label: "Available Balance", value: fmtCurrency(displayAccount.availableBalance, displayAccount.currency) },
+                { label: "Pending Amount", value: fmtCurrency(displayAccount.pendingAmount, displayAccount.currency) },
                 { label: "Date Opened", value: "November 15, 2025" },
                 { label: "Interest Rate", value: "4.5% p.a." },
                 { label: "Account Tier", value: "Standard" },

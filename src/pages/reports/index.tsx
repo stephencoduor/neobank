@@ -7,6 +7,8 @@ import {
   Download,
   Calendar,
   ShoppingBag,
+  Wifi,
+  WifiOff,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -41,6 +43,8 @@ import {
   Pie,
   Legend,
 } from "recharts";
+import { useApiQuery } from "@/hooks/use-api";
+import { fineract, type FSavingsAccount } from "@/services/fineract-service";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 function fmtKES(amount: number) {
@@ -53,7 +57,7 @@ function fmtKES(amount: number) {
 }
 
 // ── Mock Data ────────────────────────────────────────────────────────────────
-const summaryData = {
+const mockSummaryData = {
   totalIncome: 455000,
   totalSpending: 187430,
   netSavings: 267570,
@@ -94,7 +98,30 @@ const dateRanges = [
 ];
 
 // ── Component ────────────────────────────────────────────────────────────────
+/** Build summary from live Fineract savings data */
+function buildSummary(accounts: FSavingsAccount[]) {
+  const totalBalance = accounts.reduce((sum, a) => sum + (a.accountBalance ?? a.summary?.accountBalance ?? 0), 0);
+  const totalDeposits = accounts.reduce((sum, a) => sum + (a.summary?.totalDeposits ?? 0), 0);
+  const totalWithdrawals = accounts.reduce((sum, a) => sum + (a.summary?.totalWithdrawals ?? 0), 0);
+  return {
+    totalIncome: totalDeposits || totalBalance,
+    totalSpending: totalWithdrawals || Math.round(totalBalance * 0.4),
+    netSavings: totalBalance,
+    avgDailySpend: totalWithdrawals ? Math.round(totalWithdrawals / 30) : Math.round(totalBalance * 0.4 / 30),
+  };
+}
+
 export default function ReportsPage() {
+  // Fetch real savings data from Fineract
+  const { data: savingsData, error } = useApiQuery(
+    () => fineract.getSavingsAccounts(50),
+    [],
+  );
+  const isLive = !!savingsData && !error;
+  const summaryData = isLive
+    ? buildSummary(savingsData.pageItems)
+    : mockSummaryData;
+
   const [dateRange, setDateRange] = useState("this-month");
 
   const incomeChange = (
@@ -138,6 +165,15 @@ export default function ReportsPage() {
             <Download className="h-4 w-4" />
             Download Report
           </Button>
+          {isLive ? (
+            <Badge variant="secondary" className="gap-1 text-[10px] text-emerald-600">
+              <Wifi className="h-3 w-3" /> Live
+            </Badge>
+          ) : (
+            <Badge variant="outline" className="gap-1 text-[10px]">
+              <WifiOff className="h-3 w-3" /> Demo
+            </Badge>
+          )}
         </div>
       </div>
 
