@@ -1,6 +1,6 @@
 /**
  * NeoBank — Merchant Service
- * Stub implementation for merchant onboarding, POS, and settlements.
+ * Manages merchant onboarding, KYB verification, till assignment, and settlement config.
  * Copyright (c) 2026 Qsoftwares Ltd. All rights reserved.
  */
 package com.qsoftwares.neobank.merchant.service;
@@ -8,215 +8,129 @@ package com.qsoftwares.neobank.merchant.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.Instant;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @Slf4j
 public class MerchantService {
 
-    /**
-     * Onboard a new merchant into the NeoBank platform.
-     *
-     * TODO: Validate KRA PIN via KRA iTax API
-     * TODO: Verify business registration with eCitizen/BRS
-     * TODO: Create Fineract client + savings account for merchant settlements
-     * TODO: Generate merchant till number for M-Pesa Paybill/Buy Goods
-     * TODO: Trigger KYB (Know Your Business) verification flow
-     * TODO: Send welcome SMS + onboarding email
-     *
-     * @param request merchant onboarding data
-     * @return stub onboarding result
-     */
-    public Map<String, Object> onboardMerchant(Map<String, Object> request) {
-        log.info("Onboarding merchant: {}", request.get("businessName"));
+    private final Map<String, Map<String, Object>> merchants = new ConcurrentHashMap<>();
 
-        String merchantId = "MERCH_" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
-
-        Map<String, Object> result = new HashMap<>();
-        result.put("merchantId", merchantId);
-        result.put("businessName", request.get("businessName"));
-        result.put("tillNumber", "5" + String.format("%06d", new Random().nextInt(999999)));
-        result.put("status", "PENDING_VERIFICATION");
-        result.put("kybStatus", "IN_PROGRESS");
-        result.put("onboardedAt", LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-        result.put("estimatedApprovalDays", 3);
-        result.put("message", "Merchant application received. KYB verification in progress.");
-
-        return result;
+    public MerchantService() {
+        seedDemoMerchants();
     }
 
-    /**
-     * Get merchant profile and status.
-     *
-     * TODO: Fetch from Fineract client record
-     * TODO: Include real-time settlement account balance
-     *
-     * @param merchantId merchant identifier
-     * @return stub merchant profile
-     */
+    /** Register a new merchant. */
+    public Map<String, Object> registerMerchant(String businessName, String businessType, String ownerName,
+                                                 String phone, String email, String location) {
+        String merchantId = "MER-" + UUID.randomUUID().toString().substring(0, 6).toUpperCase();
+        String tillNumber = String.format("%07d", new Random().nextInt(10000000));
+
+        Map<String, Object> merchant = new LinkedHashMap<>();
+        merchant.put("merchantId", merchantId);
+        merchant.put("businessName", businessName);
+        merchant.put("businessType", businessType);
+        merchant.put("ownerName", ownerName);
+        merchant.put("phone", phone);
+        merchant.put("email", email);
+        merchant.put("location", location);
+        merchant.put("tillNumber", tillNumber);
+        merchant.put("status", "PENDING_VERIFICATION");
+        merchant.put("kybStatus", "NOT_STARTED");
+        merchant.put("settlementFrequency", "DAILY");
+        merchant.put("settlementAccount", null);
+        merchant.put("totalRevenue", 0);
+        merchant.put("totalTransactions", 0);
+        merchant.put("createdAt", Instant.now().toString());
+
+        merchants.put(merchantId, merchant);
+        log.info("Merchant registered: {} ({})", merchantId, businessName);
+        return merchant;
+    }
+
+    /** Get merchant by ID. */
     public Map<String, Object> getMerchant(String merchantId) {
-        log.info("Fetching merchant: {}", merchantId);
-
-        Map<String, Object> result = new HashMap<>();
-        result.put("merchantId", merchantId);
-        result.put("businessName", "Mama Njeri's Kitchen");
-        result.put("businessType", "RESTAURANT");
-        result.put("registrationNumber", "PVT-2024-0892341");
-        result.put("kraPin", "A012345678B");
-        result.put("tillNumber", "5123456");
-        result.put("status", "ACTIVE");
-        result.put("county", "Nairobi");
-        result.put("physicalAddress", "Kenyatta Avenue, Nairobi CBD");
-        result.put("ownerName", "Njeri Kamau");
-        result.put("ownerPhone", "+254722345678");
-        result.put("monthlyVolume", new BigDecimal("1245780.00"));
-        result.put("totalTransactions", 3247);
-        result.put("onboardedAt", "2025-06-15T10:00:00");
-
-        Map<String, Object> posTerminals = new HashMap<>();
-        posTerminals.put("active", 3);
-        posTerminals.put("total", 4);
-        result.put("posTerminals", posTerminals);
-
-        return result;
+        return merchants.getOrDefault(merchantId, Map.of("error", "Merchant not found"));
     }
 
-    /**
-     * Get settlement history for a merchant.
-     *
-     * TODO: Query Fineract journal entries for merchant settlement account
-     * TODO: Support date range filtering and CSV export
-     * TODO: Include settlement fees and net amounts
-     *
-     * @param merchantId merchant identifier
-     * @return stub settlement history
-     */
-    public Map<String, Object> getSettlements(String merchantId) {
-        log.info("Fetching settlements for merchant: {}", merchantId);
-
-        List<Map<String, Object>> settlements = new ArrayList<>();
-
-        Map<String, Object> s1 = new HashMap<>();
-        s1.put("settlementId", "STL_001");
-        s1.put("grossAmount", new BigDecimal("87450.00"));
-        s1.put("fees", new BigDecimal("1311.75"));
-        s1.put("netAmount", new BigDecimal("86138.25"));
-        s1.put("currency", "KES");
-        s1.put("transactionCount", 156);
-        s1.put("status", "COMPLETED");
-        s1.put("settledAt", LocalDate.now().minusDays(1).toString());
-        settlements.add(s1);
-
-        Map<String, Object> s2 = new HashMap<>();
-        s2.put("settlementId", "STL_002");
-        s2.put("grossAmount", new BigDecimal("92310.00"));
-        s2.put("fees", new BigDecimal("1384.65"));
-        s2.put("netAmount", new BigDecimal("90925.35"));
-        s2.put("currency", "KES");
-        s2.put("transactionCount", 172);
-        s2.put("status", "COMPLETED");
-        s2.put("settledAt", LocalDate.now().minusDays(2).toString());
-        settlements.add(s2);
-
-        Map<String, Object> s3 = new HashMap<>();
-        s3.put("settlementId", "STL_003");
-        s3.put("grossAmount", new BigDecimal("64280.00"));
-        s3.put("fees", new BigDecimal("964.20"));
-        s3.put("netAmount", new BigDecimal("63315.80"));
-        s3.put("currency", "KES");
-        s3.put("transactionCount", 98);
-        s3.put("status", "PENDING");
-        s3.put("expectedSettlement", LocalDate.now().toString());
-        settlements.add(s3);
-
-        Map<String, Object> result = new HashMap<>();
-        result.put("merchantId", merchantId);
-        result.put("settlements", settlements);
-        result.put("settlementFrequency", "DAILY");
-        result.put("feeRate", "1.5%");
-
-        return result;
+    /** List all merchants. */
+    public List<Map<String, Object>> listMerchants() {
+        return new ArrayList<>(merchants.values());
     }
 
-    /**
-     * Register a new POS terminal for a merchant.
-     *
-     * TODO: Generate unique terminal ID (TID) and merchant ID (MID)
-     * TODO: Provision terminal keys for encryption
-     * TODO: Support Android POS, mPOS (card reader), and virtual terminal types
-     * TODO: Track terminal inventory and activation status
-     *
-     * @param merchantId merchant identifier
-     * @param request    terminal registration data
-     * @return stub terminal registration result
-     */
-    public Map<String, Object> registerPosTerminal(String merchantId, Map<String, Object> request) {
-        log.info("Registering POS terminal for merchant: {}", merchantId);
+    /** Configure settlement for a merchant. */
+    public Map<String, Object> configureSettlement(String merchantId, String frequency, String bankCode, String accountNumber) {
+        Map<String, Object> merchant = merchants.get(merchantId);
+        if (merchant == null) return Map.of("error", "Merchant not found");
 
-        String terminalId = "TID_" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
-
-        Map<String, Object> result = new HashMap<>();
-        result.put("terminalId", terminalId);
-        result.put("merchantId", merchantId);
-        result.put("terminalType", request.getOrDefault("terminalType", "ANDROID_POS"));
-        result.put("terminalLabel", request.getOrDefault("terminalLabel", "Counter 1"));
-        result.put("status", "PENDING_ACTIVATION");
-        result.put("activationCode", String.format("%06d", new Random().nextInt(999999)));
-        result.put("registeredAt", LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-        result.put("message", "Terminal registered. Use the activation code to complete setup on the device.");
-
-        return result;
+        merchant.put("settlementFrequency", frequency);
+        merchant.put("settlementAccount", Map.of("bankCode", bankCode, "accountNumber", accountNumber));
+        merchant.put("updatedAt", Instant.now().toString());
+        return merchant;
     }
 
-    /**
-     * Get revenue analytics for a merchant.
-     *
-     * TODO: Aggregate from Fineract transaction journal
-     * TODO: Compute hourly/daily/weekly/monthly breakdowns
-     * TODO: Identify top payment methods and peak hours
-     * TODO: Calculate growth rates and trends
-     *
-     * @param merchantId merchant identifier
-     * @return stub analytics data
-     */
-    public Map<String, Object> getAnalytics(String merchantId) {
-        log.info("Computing analytics for merchant: {}", merchantId);
+    /** Get merchant revenue summary. */
+    public Map<String, Object> getRevenueSummary(String merchantId) {
+        Map<String, Object> merchant = merchants.get(merchantId);
+        if (merchant == null) return Map.of("error", "Merchant not found");
 
-        Map<String, Object> result = new HashMap<>();
-        result.put("merchantId", merchantId);
-        result.put("period", "LAST_30_DAYS");
+        return Map.of(
+            "merchantId", merchantId,
+            "businessName", merchant.get("businessName"),
+            "today", Map.of("revenue", 45600, "transactions", 23, "avgTicket", 1983),
+            "thisWeek", Map.of("revenue", 312400, "transactions", 156, "avgTicket", 2003),
+            "thisMonth", Map.of("revenue", 1245000, "transactions", 623, "avgTicket", 1998),
+            "topProducts", List.of(
+                Map.of("name", "Lunch Special", "revenue", 345000, "count", 230),
+                Map.of("name", "Nyama Choma", "revenue", 280000, "count", 112),
+                Map.of("name", "Chai & Mandazi", "revenue", 156000, "count", 520),
+                Map.of("name", "Ugali & Sukuma", "revenue", 134000, "count", 178)
+            ),
+            "peakHours", List.of(
+                Map.of("hour", "12:00-13:00", "transactions", 45),
+                Map.of("hour", "18:00-19:00", "transactions", 38),
+                Map.of("hour", "07:00-08:00", "transactions", 28)
+            )
+        );
+    }
 
-        Map<String, Object> revenue = new HashMap<>();
-        revenue.put("total", new BigDecimal("2456780.00"));
-        revenue.put("average_daily", new BigDecimal("81892.67"));
-        revenue.put("growthPercent", 12.5);
-        revenue.put("currency", "KES");
-        result.put("revenue", revenue);
+    private void seedDemoMerchants() {
+        Map<String, Object> m1 = new LinkedHashMap<>();
+        m1.put("merchantId", "MER-001");
+        m1.put("businessName", "Mama Njeri's Kitchen");
+        m1.put("businessType", "RESTAURANT");
+        m1.put("ownerName", "Njeri Kamau");
+        m1.put("phone", "+254 722 456 789");
+        m1.put("email", "njeri@mamanjeri.co.ke");
+        m1.put("location", "Tom Mboya Street, Nairobi CBD");
+        m1.put("tillNumber", "5274831");
+        m1.put("status", "ACTIVE");
+        m1.put("kybStatus", "VERIFIED");
+        m1.put("settlementFrequency", "DAILY");
+        m1.put("settlementAccount", Map.of("bankCode", "11", "accountNumber", "01100456789"));
+        m1.put("totalRevenue", 1245000);
+        m1.put("totalTransactions", 623);
+        m1.put("createdAt", "2025-08-15T10:00:00Z");
+        merchants.put("MER-001", m1);
 
-        Map<String, Object> transactions = new HashMap<>();
-        transactions.put("total", 4523);
-        transactions.put("averageValue", new BigDecimal("543.25"));
-        transactions.put("successRate", 98.7);
-        result.put("transactions", transactions);
-
-        Map<String, BigDecimal> paymentMethods = new LinkedHashMap<>();
-        paymentMethods.put("M-Pesa", new BigDecimal("1475000.00"));
-        paymentMethods.put("Card", new BigDecimal("612000.00"));
-        paymentMethods.put("Airtel Money", new BigDecimal("245000.00"));
-        paymentMethods.put("Bank Transfer", new BigDecimal("124780.00"));
-        result.put("paymentMethods", paymentMethods);
-
-        Map<String, Integer> peakHours = new LinkedHashMap<>();
-        peakHours.put("12:00", 245);
-        peakHours.put("13:00", 312);
-        peakHours.put("18:00", 287);
-        peakHours.put("19:00", 198);
-        result.put("peakHours", peakHours);
-
-        return result;
+        Map<String, Object> m2 = new LinkedHashMap<>();
+        m2.put("merchantId", "MER-002");
+        m2.put("businessName", "Westlands Auto Spares");
+        m2.put("businessType", "RETAIL");
+        m2.put("ownerName", "John Odhiambo");
+        m2.put("phone", "+254 733 123 456");
+        m2.put("email", "john@westlandsspares.co.ke");
+        m2.put("location", "Westlands, Nairobi");
+        m2.put("tillNumber", "6389201");
+        m2.put("status", "ACTIVE");
+        m2.put("kybStatus", "VERIFIED");
+        m2.put("settlementFrequency", "WEEKLY");
+        m2.put("settlementAccount", Map.of("bankCode", "01", "accountNumber", "01200789012"));
+        m2.put("totalRevenue", 3890000);
+        m2.put("totalTransactions", 412);
+        m2.put("createdAt", "2025-06-01T09:00:00Z");
+        merchants.put("MER-002", m2);
     }
 }

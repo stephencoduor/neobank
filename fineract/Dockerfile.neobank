@@ -1,0 +1,33 @@
+FROM azul/zulu-openjdk-alpine:21-jre
+
+LABEL maintainer="Qsoftwares Ltd <info@qsoftwares.co.ke>"
+LABEL description="NeoBank Digital Banking - Custom Fineract"
+
+RUN addgroup -S fineract && adduser -S fineract -G fineract
+
+WORKDIR /app
+
+COPY fineract-provider.jar /app/fineract-provider.jar
+
+# Plugin directory for custom modules
+RUN mkdir -p /app/plugins /tmp/fineract && chown -R fineract:fineract /app /tmp/fineract
+
+USER fineract
+
+EXPOSE 8080 8443
+
+ENV JAVA_TOOL_OPTIONS="-Xmx1G \
+  -XX:MinRAMPercentage=25 \
+  -XX:MaxRAMPercentage=80 \
+  -Duser.timezone=Africa/Nairobi \
+  -Dfile.encoding=UTF-8 \
+  --add-exports=java.naming/com.sun.jndi.ldap=ALL-UNNAMED \
+  --add-opens=java.base/java.lang=ALL-UNNAMED \
+  --add-opens=java.base/java.lang.invoke=ALL-UNNAMED \
+  --add-opens=java.base/java.io=ALL-UNNAMED \
+  --add-opens=java.base/java.security=ALL-UNNAMED \
+  --add-opens=java.base/java.util=ALL-UNNAMED \
+  --add-opens=java.management/javax.management=ALL-UNNAMED \
+  --add-opens=java.naming/javax.naming=ALL-UNNAMED"
+
+ENTRYPOINT ["java", "-jar", "/app/fineract-provider.jar"]

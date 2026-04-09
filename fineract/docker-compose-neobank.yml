@@ -9,19 +9,22 @@ services:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: neobank_db_secret_2026
     volumes:
-      - ./config/docker/postgresql/docker-entrypoint-initdb.d/01-init-neobank.sh:/docker-entrypoint-initdb.d/01-init.sh:ro
+      - ./01-init-neobank.sh:/docker-entrypoint-initdb.d/01-init.sh:ro
       - neobank-pgdata:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD", "pg_isready", "-q", "-d", "postgres", "-U", "root"]
       timeout: 10s
       retries: 10
     ports:
-      - "5432:5432"
+      - "5433:5432"
     networks:
       - neobank-net
 
   neobank-fineract:
-    image: fineract:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.neobank
+    image: neobank-fineract:latest
     container_name: neobank-fineract
     restart: always
     depends_on:
@@ -55,37 +58,21 @@ services:
       FINERACT_SECURITY_OAUTH_ENABLED: "false"
       FINERACT_SECURITY_2FA_ENABLED: "false"
       FINERACT_SECURITY_CORS_ENABLED: "true"
-      FINERACT_SECURITY_CORS_ALLOWED_ORIGIN_PATTERNS: "http://localhost:5173,http://localhost:5174,https://neo.fineract.us,https://*.neobank.co.ke"
+      FINERACT_SECURITY_CORS_ALLOWED_ORIGIN_PATTERNS: "http://localhost:5173,http://localhost:5174,https://neo.fineract.us,https://pro.fineract.us,https://*.neobank.co.ke"
       # ── Server ──
       FINERACT_SERVER_SSL_ENABLED: "true"
-      FINERACT_NODE_ID: "1"
+      FINERACT_NODE_ID: "2"
       FINERACT_INSECURE_HTTP_CLIENT: "true"
-      FINERACT_CONTENT_FILESYSTEM_ROOT_FOLDER: /tmp
+      FINERACT_CONTENT_FILESYSTEM_ROOT_FOLDER: /tmp/fineract
       # ── Monitoring ──
       FINERACT_MANAGEMENT_ENDPOINT_WEB_EXPOSURE_INCLUDE: health,info,prometheus
       FINERACT_MANAGEMENT_METRICS_TAGS_APPLICATION: neobank-fineract
       # ── Jobs ──
       FINERACT_REMOTE_JOB_MESSAGE_HANDLER_SPRING_EVENTS_ENABLED: "true"
       FINERACT_JOB_LOAN_COB_ENABLED: "true"
-      # ── JVM ──
-      JAVA_TOOL_OPTIONS: >-
-        -Xmx1G
-        -XX:MinRAMPercentage=25
-        -XX:MaxRAMPercentage=80
-        -Duser.timezone=Africa/Nairobi
-        --add-exports=java.naming/com.sun.jndi.ldap=ALL-UNNAMED
-        --add-opens=java.base/java.lang=ALL-UNNAMED
-        --add-opens=java.base/java.lang.invoke=ALL-UNNAMED
-        --add-opens=java.base/java.io=ALL-UNNAMED
-        --add-opens=java.base/java.security=ALL-UNNAMED
-        --add-opens=java.base/java.util=ALL-UNNAMED
-        --add-opens=java.management/javax.management=ALL-UNNAMED
-        --add-opens=java.naming/javax.naming=ALL-UNNAMED
-    volumes:
-      - ./build/fineract/logs:/var/logs/fineract:rw
     ports:
-      - "8443:8443"
-      - "8080:8080"
+      - "9443:8443"
+      - "9080:8080"
     healthcheck:
       test: ["CMD", "sh", "-c", "nc -z localhost 8443"]
       timeout: 10s
