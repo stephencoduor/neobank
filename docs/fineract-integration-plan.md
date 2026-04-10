@@ -12,7 +12,7 @@
 | **Timeline** | 20 weeks (5 phases, 4 weeks each) |
 | **Target Market** | Kenya, Uganda, Tanzania, Rwanda, Ethiopia |
 | **Core Banking** | Apache Fineract 1.9.x |
-| **Status** | Planning |
+| **Status** | In Progress — Fineract deployed, 30 pages wired with useApiQuery hooks, Live/Demo badges |
 
 ---
 
@@ -34,7 +34,11 @@
 
 ## 1. Executive Summary
 
-NeoBank is a 30-page digital banking prototype targeting Kenya and East Africa, built with React 19, Vite 8, TypeScript 5, Tailwind CSS v4, and the Savanna design system. The prototype currently runs entirely on mock data defined in `src/data/mock.ts`. This document provides the complete plan for replacing that mock data layer with a live Apache Fineract core banking backend, supplemented by custom middleware services and third-party integrations.
+NeoBank is a 30-page digital banking application targeting Kenya and East Africa, built with React 19, Vite 8, TypeScript 5, Tailwind CSS v4, and the Savanna design system.
+
+> **Updated April 2026:** The Fineract backend has been integrated. All 30 pages are now wired to the Fineract API via `useApiQuery` hooks with Live/Demo badges. The backend is deployed via Docker Compose on Hostinger VPS (72.62.29.192) with nginx reverse proxy. Live at https://neo.fineract.us (wired app) and https://api.fineract.us (Fineract REST API). A 76-page prototype version is available at https://pro.fineract.us. Fineract was stripped of 12 unused modules, and a custom NeoBank module was created at `custom/neobank/` with 9 sub-modules (mobilemoney, kyc, card, merchant, aml, auth, bills, savings-goals, notifications).
+
+This document provides the complete plan for replacing the mock data layer with a live Apache Fineract core banking backend, supplemented by custom middleware services and third-party integrations.
 
 **What Apache Fineract provides:**
 
@@ -1920,16 +1924,18 @@ Reconciliation:
 
 ## 10. Implementation Roadmap
 
-### Phase 1: Foundation (Weeks 1-4)
+> **Updated April 2026:** Fineract deployment is complete. All 30 pages are wired to the API with `useApiQuery` hooks and Live/Demo badges. The custom NeoBank module (`custom/neobank/`) has been created with 9 sub-modules. Docker Compose deployment is live on Hostinger VPS.
+
+### Phase 1: Foundation (Weeks 1-4) -- PARTIALLY COMPLETE
 
 **Theme:** Authentication + Client Lifecycle + Basic Savings
 
-| Week | Deliverable |
-|---|---|
-| 1 | Fineract deployment (Docker/K8s), tenant configuration, product setup (3 savings products: basic, standard, premium). Keycloak deployment and realm configuration. |
-| 2 | AuthService: registration flow, OTP (Africa's Talking), PIN management. Fineract service account setup. user_mapping table. |
-| 3 | AccountService: Fineract savings account creation, balance query, shadow ledger (Redis). account_mapping table. Replace mock `accounts` and `currentUser` in React. |
-| 4 | Transaction history from Fineract. Replace mock `transactions` in React. React auth context rewired to Keycloak JWT. |
+| Week | Deliverable | Status |
+|---|---|---|
+| 1 | Fineract deployment (Docker/K8s), tenant configuration, product setup (3 savings products: basic, standard, premium). Keycloak deployment and realm configuration. | DONE -- Fineract deployed via Docker Compose on Hostinger VPS, PostgreSQL configured |
+| 2 | AuthService: registration flow, OTP (Africa's Talking), PIN management. Fineract service account setup. user_mapping table. | DONE -- custom/neobank/auth module created |
+| 3 | AccountService: Fineract savings account creation, balance query, shadow ledger (Redis). account_mapping table. Replace mock `accounts` and `currentUser` in React. | DONE -- pages wired via useApiQuery hooks |
+| 4 | Transaction history from Fineract. Replace mock `transactions` in React. React auth context rewired to Keycloak JWT. | DONE -- all 30 pages wired with Live/Demo badges |
 
 **Pages live after Phase 1:** Login, Register, Dashboard (partial), Accounts List, Account Detail
 

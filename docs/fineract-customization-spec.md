@@ -10,7 +10,7 @@
 | **Date** | 2026-04-04 |
 | **Depends On** | `fineract-integration-plan.md`, `TECH-SPEC.md`, `api-mapping.md` |
 | **Core Banking** | Apache Fineract 1.9.x (Java 21, Spring Boot 3.x) |
-| **Status** | Planning |
+| **Status** | Implemented — custom/neobank module created with 9 sub-modules |
 
 ---
 
@@ -74,6 +74,30 @@ All customizations follow Fineract's official extension mechanism. The rules are
 
 ### 1.4 Module Packaging
 
+> **Updated April 2026:** The custom module has been implemented at `custom/neobank/` within the Fineract source tree (not as external JARs). The Fineract backend was stripped of 12 unused modules and unnecessary provider packages to reduce the footprint.
+
+**Actual implementation:**
+```
+fineract/custom/neobank/
+  mobilemoney/                          # M-Pesa, Airtel Money, MTN MoMo integration
+  kyc/                                  # KYC tier enforcement and verification
+  card/                                 # BaaS card transaction posting
+  merchant/                             # Merchant onboarding, POS, settlement
+  aml/                                  # AML/sanctions screening
+  auth/                                 # Authentication extensions
+  bills/                                # Bill payment aggregation
+  savings-goals/                        # Savings goals and targets
+  notifications/                        # Event-driven notifications
+```
+
+**Stripped modules (removed from Fineract):**
+- fineract-investor, fineract-mix, fineract-loan-origination, fineract-client-feign
+- fineract-react, fineract-e2e-tests-core, fineract-e2e-tests-runner
+- oauth2-tests, twofactor-tests, custom/acme, fineract-working-capital-loan
+- Provider packages: shareaccounts, shareproducts, meeting, collectionsheet, repaymentwithpostdatedchecks, interoperation, spm, gcm, campaigns, adhocquery, teller
+- fineract-progressive-loan was **kept** (too deeply integrated)
+
+**Original planned structure (for reference):**
 ```
 neobank-fineract-extensions/
   build.gradle                          # Root build (multi-module)

@@ -1,9 +1,9 @@
 # Deployment Architecture — NeoBank + DisbursePro
 
-**Version:** 1.0
-**Last Updated:** 2026-04-04
+**Version:** 1.1
+**Last Updated:** 2026-04-09
 **Author:** Platform Engineering
-**Status:** Production-Ready Specification
+**Status:** Partially Deployed — Hostinger VPS live, AWS spec remains as target architecture
 
 ---
 
@@ -23,7 +23,32 @@
 
 ## 1. Overview
 
-### 1.1 Multi-Project Topology
+### 1.0 Current Deployment (Hostinger VPS)
+
+> **Updated April 2026:** The initial deployment is live on a Hostinger VPS, not yet on AWS. The AWS architecture below remains the target for production scale-up.
+
+**Current live deployment:**
+
+| Aspect | Detail |
+|---|---|
+| **VPS** | Hostinger VPS at 72.62.29.192 |
+| **SSH Access** | `~/.ssh/hostinger-canvas` key |
+| **Orchestration** | Docker Compose |
+| **Reverse Proxy** | nginx |
+| **Live URLs** | https://neo.fineract.us (30-page wired app, D:\neobank) |
+| | https://pro.fineract.us (76-page prototype, D:\neobank-app) |
+| | https://api.fineract.us (Fineract REST API) |
+| **Backend** | Apache Fineract (Java 21, Spring Boot) with PostgreSQL |
+| **Custom Module** | `custom/neobank/` — 9 sub-modules: mobilemoney, kyc, card, merchant, aml, auth, bills, savings-goals, notifications |
+| **Stripped Modules** | 12 unused Fineract modules removed to reduce footprint |
+| **Frontend** | React 19 + Vite, served via nginx |
+
+**Fineract module changes:**
+- Removed: fineract-investor, fineract-mix, fineract-loan-origination, fineract-client-feign, fineract-react, fineract-e2e-tests-core, fineract-e2e-tests-runner, oauth2-tests, twofactor-tests, custom/acme, fineract-working-capital-loan
+- Removed provider packages: shareaccounts, shareproducts, meeting, collectionsheet, repaymentwithpostdatedchecks, interoperation, spm, gcm, campaigns, adhocquery, teller
+- Kept: fineract-progressive-loan (too deeply integrated)
+
+### 1.1 Multi-Project Topology (Target AWS Architecture)
 
 NeoBank and DisbursePro are two distinct financial products deployed into a shared AWS infrastructure footprint. They share foundational services (IAM, monitoring, networking) while maintaining strict data isolation at the application and database layers.
 

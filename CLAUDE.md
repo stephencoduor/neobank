@@ -4,12 +4,19 @@
 A $60K fintech prototype for Qsoftwares Ltd — a next-generation digital banking and payments platform targeting Kenya and East Africa. Built on top of Apache Fineract as the core banking backend.
 
 **Client:** Qsoftwares Ltd — Digital Financial Solutions
-**Status:** Prototype/design phase — no deployment yet
+**Status:** Deployed — backend integrated, 30 pages wired to Fineract API with Live/Demo badges
 **Origin repo:** D:\fineract (branch `neobank/prototype`) — this repo was extracted to be standalone
+
+**Live URLs:**
+- **https://neo.fineract.us** — 30-page wired app (this project)
+- **https://pro.fineract.us** — 76-page prototype (D:\neobank-app)
+- **https://api.fineract.us** — Fineract REST API
+
+**Deployment:** Docker Compose on Hostinger VPS (72.62.29.192), nginx reverse proxy
 
 ## Tech Stack
 - **Frontend:** React 19 + Vite 8 + TypeScript 5 + Tailwind CSS v4 + shadcn/ui (base-ui)
-- **Backend (planned):** Apache Fineract (Java 21, Spring Boot) — not connected yet
+- **Backend:** Apache Fineract (Java 21, Spring Boot) — integrated, stripped to essential modules, custom NeoBank module at `custom/neobank/`
 - **Design System:** Savanna — deep forest greens + warm golds
 - **Charts:** Recharts
 - **Icons:** Lucide React
@@ -122,6 +129,15 @@ All dummy data is **realistic Kenyan/East African context** — never lorem ipsu
 - Transactions reference real Kenyan merchants (Naivas, Java House, Bolt, KPLC)
 - Merchant: Mama Njeri's Kitchen, Nairobi CBD
 - Admin: 12,458 users, KES 245M transaction volume
+
+## Fineract Backend
+The Fineract backend lives at `fineract/` with 12 unused modules stripped:
+- **Removed modules:** fineract-investor, fineract-mix, fineract-loan-origination, fineract-client-feign, fineract-react, fineract-e2e-tests-core, fineract-e2e-tests-runner, oauth2-tests, twofactor-tests, custom/acme, fineract-working-capital-loan
+- **Removed provider packages:** shareaccounts, shareproducts, meeting, collectionsheet, repaymentwithpostdatedchecks, interoperation, spm, gcm, campaigns, adhocquery, teller
+- **Kept:** fineract-progressive-loan (too deeply integrated)
+- **Custom module:** `custom/neobank/` with sub-modules: mobilemoney, kyc, card, merchant, aml, auth, bills, savings-goals, notifications
+
+All 30 pages use `useApiQuery` hooks with Live/Demo badges indicating Fineract API connection status.
 
 ## Documentation
 - `docs/PRD.md` — 85 functional requirements across 9 modules (FR-100 through FR-900)

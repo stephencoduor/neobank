@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeoBank Prototypes — Qsoftwares Ltd</title>
+  <style>
+    :root { --green: #2D6A4F; --gold: #E9B949; --bg: #FAFAF5; --card: #fff; --text: #1a1a1a; --muted: #6b7280; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    .header { background: var(--green); color: white; padding: 2rem; text-align: center; }
+    .header h1 { font-size: 2rem; margin-bottom: 0.25rem; }
+    .header p { opacity: 0.85; font-size: 0.95rem; }
+    .badge { display: inline-block; background: var(--gold); color: #1a1a1a; padding: 0.2rem 0.75rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700; margin-top: 0.5rem; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+    .section { margin-bottom: 2.5rem; }
+    .section h2 { color: var(--green); font-size: 1.3rem; margin-bottom: 0.5rem; border-bottom: 2px solid var(--gold); padding-bottom: 0.5rem; display: inline-block; }
+    .section p.desc { color: var(--muted); font-size: 0.9rem; margin-bottom: 1rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.75rem; }
+    .card { background: var(--card); border: 1px solid #e5e7eb; border-radius: 0.75rem; padding: 1rem; text-decoration: none; color: var(--text); transition: all 0.2s; }
+    .card:hover { border-color: var(--green); box-shadow: 0 4px 12px rgba(45,106,79,0.12); transform: translateY(-2px); }
+    .card .name { font-weight: 600; font-size: 0.9rem; }
+    .card .path { color: var(--muted); font-size: 0.75rem; margin-top: 0.25rem; }
+    .links { display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap; }
+    .links a { color: var(--green); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+    .links a:hover { text-decoration: underline; }
+    .footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.85rem; border-top: 1px solid #e5e7eb; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>NeoBank Prototypes</h1>
+    <p>Digital Banking & Payments Ecosystem — Qsoftwares Ltd</p>
+    <span class="badge">57 HTML Prototypes + 76 React Pages + 6 Design Systems</span>
+  </div>
+  <div class="container">
+    <div class="links">
+      <a href="https://neo.fineract.us">Live React App (74 pages)</a>
+      <a href="https://github.com/stephencoduor/neobank-prototype">GitHub Repo</a>
+    </div>
+
+    <div class="section" style="margin-top:2rem">
+      <h2>M-SACCO Prototypes (57)</h2>
+      <p class="desc">HTML/CSS prototypes covering all Fineract banking modules — Kenyan context</p>
+      <div class="grid" id="msacco-grid"></div>
+    </div>
+
+    <div class="section">
+      <h2>Design Systems</h2>
+      <p class="desc">Savanna design system iterations — from v2 through v4 Mint</p>
+      <div class="grid">
+        <a class="card" href="/design-systems/msacco-v2/"><div class="name">Savanna v2</div><div class="path">Used for React build</div></a>
+        <a class="card" href="/design-systems/msacco-v3/"><div class="name">Savanna v3</div><div class="path">Revised spec</div></a>
+        <a class="card" href="/design-systems/msacco-v3-updated/"><div class="name">Savanna v3 Updated</div><div class="path">Revised + refined</div></a>
+        <a class="card" href="/design-systems/msacco-v4/"><div class="name">Savanna v4 Mint</div><div class="path">User's favorite design</div></a>
+        <a class="card" href="/design-systems/neobank/design-system.html"><div class="name">NeoBank Design System</div><div class="path">Final reference</div></a>
+        <a class="card" href="/design-systems/fineract-v2/"><div class="name">Fineract v2</div><div class="path">Core banking design</div></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    NeoBank — Qsoftwares Ltd &copy; 2026 | <a href="https://neo.fineract.us" style="color:inherit">neo.fineract.us</a>
+  </div>
+
+  <script>
+    const files = [
+      'account-transfer','accounting-rules','accounting','admin','app-shell','audit-trails',
+      'bulk-import','centers-list','checker-inbox','client-charges','client-create','client-detail',
+      'client-documents','client-family','client-identities','client-notes','clients-list',
+      'collection-sheet','currencies','dashboard','data-tables','employee-create','employees',
+      'fixed-deposit-create','fixed-deposit-product','floating-rates','fund-mapping','funds',
+      'gl-accounts','global-config','group-create','groups-list','holidays','journal-entries',
+      'loan-create','loan-detail','loan-products','loan-schedule','loans-list','maker-checker',
+      'manage-hooks','notifications','offices','password-preferences','payment-types','products',
+      'provisioning','recurring-deposit-create','recurring-deposit-product','reports','roles',
+      'savings-create','savings-detail','savings-products','savings-list','share-products',
+      'standing-instructions','tax-config'
+    ];
+    const grid = document.getElementById('msacco-grid');
+    files.forEach(f => {
+      const name = f.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+      grid.innerHTML += `<a class="card" href="/msacco/${f}.html"><div class="name">${name}</div><div class="path">msacco/${f}.html</div></a>`;
+    });
+  </script>
+</body>
+</html>

@@ -2,8 +2,8 @@
 
 ## Qsoftwares Ltd — Fintech Platform Portfolio
 
-**Document Version:** 1.0
-**Last Updated:** 2026-04-04
+**Document Version:** 1.1
+**Last Updated:** 2026-04-09
 **Author:** Architecture Team, Qsoftwares Ltd
 **Classification:** Internal — Technical Reference
 
@@ -32,13 +32,21 @@ Qsoftwares Ltd operates three interconnected fintech projects targeting East and
 
 **NeoBank** serves the Kenyan market with a consumer-facing digital banking platform built on Apache Fineract. **DisbursePro** targets the Zambian enterprise market as a disbursement and expense management platform for companies with distributed workforces. **Fineract-React** provides the pan-African core banking administration interface that underpins the entire ecosystem.
 
-All three projects share a common frontend technology stack (React 19, Vite 8, TypeScript 5, Tailwind CSS v4, shadcn/ui), a unified design system library (14 systems, with v2 Savanna as the primary production system), and planned shared backend infrastructure (Keycloak identity, Kafka event streaming, shared monitoring). This architectural alignment enables code reuse, consistent developer experience, and a clear path to white-label deployments across new African markets.
+> **Updated April 2026:** NeoBank now has two deployed projects:
+> - **D:\neobank** (30 pages) — wired to Fineract API with `useApiQuery` hooks and Live/Demo badges, deployed at **https://neo.fineract.us**
+> - **D:\neobank-app** (76 pages) — full prototype with extended features, deployed at **https://pro.fineract.us**
+> - **Fineract REST API** available at **https://api.fineract.us**
+> - All deployed via Docker Compose on Hostinger VPS (72.62.29.192) with nginx reverse proxy
+> - Fineract backend stripped of 12 unused modules; custom NeoBank module at `custom/neobank/` with 9 sub-modules
+
+All three projects share a common frontend technology stack (React 19, Vite 8, TypeScript 5, Tailwind CSS v4, shadcn/ui), a unified design system library (14 systems, with v2 Savanna as the primary production system), and shared backend infrastructure deployed on Hostinger VPS. This architectural alignment enables code reuse, consistent developer experience, and a clear path to white-label deployments across new African markets.
 
 **Combined scope:**
-- 98+ frontend pages across three projects
+- 106+ frontend pages across three projects (30 wired + 76 prototype + Fineract-React)
 - 14 design systems in the shared library
 - $60K NeoBank budget + $10K-$20K DisbursePro MVP budget
 - Target markets: Kenya (KES), Zambia (ZMW), with pan-African expansion planned
+- 3 live URLs: neo.fineract.us, pro.fineract.us, api.fineract.us
 
 ---
 
@@ -53,7 +61,7 @@ All three projects share a common frontend technology stack (React 19, Vite 8, T
 | **Primary Currency** | KES (Kenyan Shilling) | ZMW (Zambian Kwacha) | Multi-currency |
 | **Total Pages** | 30 | 28 | 40+ |
 | **Design System** | v2 Savanna | v4 Lagoon (branch) / v2 Savanna (master) | v2 Savanna |
-| **Status** | Prototype complete | Prototype complete | Prototype + React build |
+| **Status** | Deployed — neo.fineract.us (30p wired) + pro.fineract.us (76p prototype) | Prototype complete | Prototype + React build |
 | **Budget** | $60K (6-phase, 20-week roadmap) | $10K-$20K MVP, $80K-$150K full build | Part of Fineract ecosystem |
 | **Client** | Qsoftwares Ltd | Publicly traded technology company (competitive RFP) | Open-source community + clients |
 | **Backend** | Apache Fineract (Java 21, Spring Boot) | Custodian API orchestration layer | Apache Fineract REST API |
@@ -132,15 +140,17 @@ All three projects use shadcn/ui with base-ui primitives instead of Radix. This 
 - Import path is always `@/components/ui/*`
 - DisbursePro adds a `cta` Button variant for coral action buttons
 
-### Backend Stack (Planned)
+### Backend Stack
 
 | Component | NeoBank | DisbursePro | Fineract-React |
 |-----------|---------|-------------|----------------|
-| **Core** | Apache Fineract (Java 21, Spring Boot) | Custom orchestration layer | Apache Fineract REST API |
+| **Core** | Apache Fineract (Java 21, Spring Boot) — **deployed** at api.fineract.us | Custom orchestration layer | Apache Fineract REST API |
+| **Custom Module** | `custom/neobank/` — 9 sub-modules (mobilemoney, kyc, card, merchant, aml, auth, bills, savings-goals, notifications) | N/A | N/A |
 | **Identity** | Keycloak (planned) | Keycloak (planned) | Keycloak (planned) |
-| **Database** | MySQL/PostgreSQL (Fineract) | PostgreSQL | MySQL/PostgreSQL (Fineract) |
+| **Database** | PostgreSQL — **deployed** (Docker Compose on Hostinger VPS) | PostgreSQL | MySQL/PostgreSQL (Fineract) |
 | **Messaging** | Kafka (planned) | Kafka (planned) | Kafka (planned) |
 | **Cache** | Redis (planned) | Redis (planned) | Redis (planned) |
+| **Deployment** | Docker Compose on Hostinger VPS (72.62.29.192), nginx reverse proxy | Not deployed | Not deployed |
 
 ### Design Systems Library
 

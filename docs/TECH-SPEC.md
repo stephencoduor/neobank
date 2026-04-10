@@ -11,7 +11,7 @@
 | **Budget** | USD 60,000 |
 | **Timeline** | 20 weeks |
 | **Authors** | Qsoftwares Engineering Team |
-| **Status** | Draft |
+| **Status** | Active — Fineract backend integrated, Docker deployment on Hostinger VPS |
 
 ---
 
@@ -122,7 +122,20 @@ NeoBank follows a layered, event-driven microservices architecture with a clear 
 +--------------------------------------------------------------------+
 ```
 
-### 1.2 Design Principles
+### 1.2 Current Deployment State
+
+> **Note (Updated April 2026):** The Fineract backend has been integrated and deployed. Key changes from the original spec:
+>
+> - **Fineract is deployed** via Docker Compose on Hostinger VPS (72.62.29.192) with PostgreSQL
+> - **12 unused modules stripped** from Fineract: fineract-investor, fineract-mix, fineract-loan-origination, fineract-client-feign, fineract-react, fineract-e2e-tests-core, fineract-e2e-tests-runner, oauth2-tests, twofactor-tests, custom/acme, fineract-working-capital-loan
+> - **Provider packages removed:** shareaccounts, shareproducts, meeting, collectionsheet, repaymentwithpostdatedchecks, interoperation, spm, gcm, campaigns, adhocquery, teller
+> - **fineract-progressive-loan kept** (too deeply integrated to remove)
+> - **Custom NeoBank module** created at `custom/neobank/` with sub-modules: mobilemoney, kyc, card, merchant, aml, auth, bills, savings-goals, notifications
+> - **All 30 React pages** wired to Fineract API via `useApiQuery` hooks with Live/Demo badges
+> - **Live URLs:** https://neo.fineract.us (wired app), https://pro.fineract.us (76-page prototype), https://api.fineract.us (Fineract REST API)
+> - **Deployment:** nginx reverse proxy on Hostinger VPS, Docker Compose orchestration
+
+### 1.3 Design Principles
 
 1. **API-First**: All services expose RESTful APIs; no service-to-service direct database access.
 2. **Event-Driven**: Financial events published to Kafka; consumers process asynchronously (notifications, compliance, analytics).

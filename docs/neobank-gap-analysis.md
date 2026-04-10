@@ -10,6 +10,18 @@
 
 The client is a Fintech startup building a comprehensive digital financial ecosystem for an emerging market. They need a mobile-first "Financial Operating System" serving retail banking (individuals) and merchant payment acceptance. This document analyzes the gap between our existing mSACCO/Fineract platform and the client's requirements, then proposes a phased implementation plan.
 
+> **Updated April 2026 — Progress since original analysis:**
+> - **Fineract backend deployed** via Docker Compose on Hostinger VPS (72.62.29.192) with PostgreSQL
+> - **12 unused Fineract modules stripped** to reduce footprint (fineract-investor, fineract-mix, fineract-loan-origination, etc.)
+> - **Custom NeoBank module created** at `custom/neobank/` with 9 sub-modules: mobilemoney, kyc, card, merchant, aml, auth, bills, savings-goals, notifications
+> - **30 React pages wired** to Fineract API via `useApiQuery` hooks with Live/Demo badges
+> - **76-page prototype** deployed at https://pro.fineract.us (D:\neobank-app)
+> - **30-page wired app** deployed at https://neo.fineract.us (D:\neobank)
+> - **Fineract REST API** available at https://api.fineract.us
+> - **Docker Compose + nginx** deployment operational on Hostinger VPS
+>
+> Several gaps identified below have been partially or fully addressed by these changes. See inline status notes.
+
 **Our Advantage:** We already have ~60% of the backend infrastructure (Apache Fineract core banking), 9 payment provider integrations, a React admin dashboard, and two Android apps. This dramatically reduces the build timeline vs. starting from scratch.
 
 **Key Decision:** The client requests Flutter/React Native. We recommend **Flutter** for cross-platform (iOS + Android) from a single codebase, replacing our current Android-only Kotlin apps.
@@ -95,7 +107,9 @@ Flutter App → Our Backend → Card Issuing API (Marqeta/Stripe)
 
 **Effort:** 3-4 weeks (infrastructure hardening + documentation + audit prep)
 
-#### Gap 3: KYC/AML Automated Workflows
+#### Gap 3: KYC/AML Automated Workflows -- PARTIALLY ADDRESSED
+> **Status:** Custom `custom/neobank/kyc` and `custom/neobank/aml` modules created. Third-party provider integration (Smile ID/Onfido) still needed.
+
 **Impact:** Cannot onboard users without automated identity verification
 **Solution:** Integrate KYC-as-a-Service provider
 
@@ -124,7 +138,9 @@ Flutter App → Camera (ID capture + selfie) → Our Backend → Smile ID API
 
 ### 3.2 HIGH GAPS (Significant Build Required)
 
-#### Gap 4: POS & Merchant Solutions
+#### Gap 4: POS & Merchant Solutions -- PARTIALLY ADDRESSED
+> **Status:** Custom `custom/neobank/merchant` module created. POS hardware integration and SoftPOS SDK still needed.
+
 **Impact:** Revenue stream — merchant acquiring is a key product
 **Solution:** Multi-layered approach
 
@@ -298,17 +314,20 @@ The client's product is a digital bank — but they likely don't have a banking 
 
 ### 5.1 Backend (Extend Existing)
 
-| Component | Technology | Rationale |
-|---|---|---|
-| Core Banking | Apache Fineract (Java 21, Spring Boot) | Already built, proven |
-| API Gateway | Kong or AWS API Gateway | Rate limiting, auth, routing |
-| Auth Server | Keycloak or Spring Auth Server | OAuth2 + JWT + MFA |
-| Cache Layer | Redis | Shadow ledger, session, rate limits |
-| Message Queue | Apache Kafka or RabbitMQ | Event sourcing, webhooks |
-| Database | PostgreSQL (primary) + Redis (cache) | Fineract-compatible |
-| Search | Elasticsearch | Client/transaction search |
-| File Storage | AWS S3 / GCP Cloud Storage | KYC documents, statements |
-| Monitoring | Grafana + Prometheus + Sentry | Observability |
+> **Status:** Fineract is deployed with PostgreSQL on Hostinger VPS via Docker Compose. Custom NeoBank module at `custom/neobank/` with 9 sub-modules. 12 unused Fineract modules stripped.
+
+| Component | Technology | Rationale | Status |
+|---|---|---|---|
+| Core Banking | Apache Fineract (Java 21, Spring Boot) | Already built, proven | DEPLOYED at api.fineract.us |
+| Custom Module | custom/neobank/ (9 sub-modules) | NeoBank-specific extensions | CREATED |
+| API Gateway | Kong or AWS API Gateway | Rate limiting, auth, routing | PENDING -- nginx proxy in place |
+| Auth Server | Keycloak or Spring Auth Server | OAuth2 + JWT + MFA | PENDING |
+| Cache Layer | Redis | Shadow ledger, session, rate limits | PENDING |
+| Message Queue | Apache Kafka or RabbitMQ | Event sourcing, webhooks | PENDING |
+| Database | PostgreSQL (primary) + Redis (cache) | Fineract-compatible | DEPLOYED (PostgreSQL) |
+| Search | Elasticsearch | Client/transaction search | PENDING |
+| File Storage | AWS S3 / GCP Cloud Storage | KYC documents, statements | PENDING |
+| Monitoring | Grafana + Prometheus + Sentry | Observability | PENDING |
 
 ### 5.2 Mobile App
 
@@ -338,29 +357,36 @@ The client's product is a digital bank — but they likely don't have a banking 
 
 ### 5.4 Infrastructure
 
-| Component | Technology | Purpose |
-|---|---|---|
-| Cloud | AWS (primary) or GCP | PCI-DSS eligible regions |
-| Orchestration | Kubernetes (EKS/GKE) | Multi-region deployment |
-| CI/CD | GitHub Actions | Automated build, test, deploy |
-| Secrets | AWS Secrets Manager / Vault | Credential management |
-| CDN | CloudFront / Cloud CDN | Static assets + API caching |
-| WAF | AWS WAF | DDoS protection |
-| Logging | CloudWatch + ELK | Centralized logging |
+> **Status:** Initial deployment on Hostinger VPS with Docker Compose + nginx. AWS/K8s is the target for production scale-up.
+
+| Component | Technology | Purpose | Status |
+|---|---|---|---|
+| Current Host | Hostinger VPS (72.62.29.192) | Initial deployment | DEPLOYED |
+| Orchestration | Docker Compose (current) / Kubernetes (target) | Container orchestration | DEPLOYED (Docker Compose) |
+| Reverse Proxy | nginx | TLS termination, routing | DEPLOYED |
+| Cloud (target) | AWS (primary) or GCP | PCI-DSS eligible regions | PLANNED |
+| K8s (target) | Kubernetes (EKS/GKE) | Multi-region deployment | PLANNED |
+| CI/CD | GitHub Actions | Automated build, test, deploy | PLANNED |
+| Secrets | AWS Secrets Manager / Vault | Credential management | PLANNED |
+| CDN | CloudFront / Cloud CDN | Static assets + API caching | PLANNED |
+| WAF | AWS WAF | DDoS protection | PLANNED |
+| Logging | CloudWatch + ELK | Centralized logging | PLANNED |
 
 ---
 
 ## 6. Implementation Phases
 
-### Phase 1: Foundation & Security (Weeks 1-4) — $12,000
+### Phase 1: Foundation & Security (Weeks 1-4) — $12,000 -- PARTIALLY COMPLETE
 
-| Week | Deliverable | Details |
-|---|---|---|
-| 1 | OAuth2 + JWT auth server | Replace basic auth with Keycloak/Spring Auth Server |
-| 1-2 | Infrastructure hardening | TLS 1.3, WAF, encryption at rest, VPC isolation |
-| 2-3 | KYC/AML integration | Smile ID or Onfido — ID verification + liveness |
-| 3-4 | BaaS partner discovery & vetting | Evaluate 3-5 BaaS partners, select primary |
-| 4 | Security documentation | SOC2 evidence collection, PCI-DSS SAQ |
+> **Status:** Fineract deployed via Docker Compose on Hostinger VPS. Custom auth module created. TLS via nginx. OAuth2/Keycloak and BaaS vetting still pending.
+
+| Week | Deliverable | Details | Status |
+|---|---|---|---|
+| 1 | OAuth2 + JWT auth server | Replace basic auth with Keycloak/Spring Auth Server | PENDING -- custom/neobank/auth module scaffolded |
+| 1-2 | Infrastructure hardening | TLS 1.3, WAF, encryption at rest, VPC isolation | PARTIAL -- TLS via nginx on Hostinger VPS, Docker Compose deployed |
+| 2-3 | KYC/AML integration | Smile ID or Onfido — ID verification + liveness | PARTIAL -- custom/neobank/kyc + aml modules created, provider integration pending |
+| 3-4 | BaaS partner discovery & vetting | Evaluate 3-5 BaaS partners, select primary | PENDING |
+| 4 | Security documentation | SOC2 evidence collection, PCI-DSS SAQ | PENDING |
 
 ### Phase 2: Core Banking Enhancement (Weeks 5-8) — $12,000
 

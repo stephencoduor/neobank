@@ -11,7 +11,7 @@
 | **Budget** | USD 60,000 |
 | **Timeline** | 20 weeks (5 months) |
 | **Target Markets** | Kenya, Uganda, Tanzania, Rwanda, Ethiopia |
-| **Status** | Draft |
+| **Status** | Active — Backend integrated, deployed at https://neo.fineract.us |
 
 ---
 
@@ -493,12 +493,14 @@ Grace signs up for NeoBank merchant account and downloads the app. She activates
 | PIN + biometric setup | FR-900 |
 
 **Milestones**:
-- Week 2: Backend infrastructure + Fineract deployment complete
-- Week 4: Authentication flow + KYC integration complete
-- Week 6: Banking core (accounts, transactions, shadow ledger) complete
-- Week 8: Cards + P2P + M-Pesa integration complete
-- Week 9: Internal QA + pen test
-- Week 10: MVP launch (Kenya only, invite-only beta with 500 users)
+- Week 2: Backend infrastructure + Fineract deployment complete -- **DONE** (Docker Compose on Hostinger VPS, api.fineract.us)
+- Week 4: Authentication flow + KYC integration complete -- **PARTIAL** (custom/neobank/auth + kyc modules created, provider integration pending)
+- Week 6: Banking core (accounts, transactions, shadow ledger) complete -- **PARTIAL** (30 pages wired to Fineract API with useApiQuery hooks)
+- Week 8: Cards + P2P + M-Pesa integration complete -- PENDING
+- Week 9: Internal QA + pen test -- PENDING
+- Week 10: MVP launch (Kenya only, invite-only beta with 500 users) -- PENDING
+
+> **Live URLs (as of April 2026):** https://neo.fineract.us (30-page wired app), https://pro.fineract.us (76-page prototype), https://api.fineract.us (Fineract REST API)
 
 ---
 

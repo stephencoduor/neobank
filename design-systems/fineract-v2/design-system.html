@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fineract Savanna Gate — Design System &amp; Component Reference</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sg: {
+              primary: '#2D6A4F',
+              'primary-hover': '#245A42',
+              'primary-dark': '#1B4332',
+              'primary-light': '#D4E7DC',
+              'primary-lighter': '#B7D7C4',
+              gold: '#E9B949',
+              'gold-dark': '#854D0E',
+              'gold-light': '#FEF9E7',
+              surface: '#FAFAF5',
+              'surface-warm': '#F5F0E8',
+              'surface-muted': '#F0EDE6',
+              card: '#FFFFFF',
+              border: '#E8E5DE',
+              'border-muted': '#D1CCC2',
+              'text-heading': '#1A1A1A',
+              'text-body': '#374151',
+              'text-secondary': '#6B7280',
+              'text-muted': '#9CA3AF',
+              'text-placeholder': '#9CA3AF',
+              success: '#22C55E',
+              'success-text': '#166534',
+              'success-bg': '#F0FDF4',
+              warning: '#EAB308',
+              'warning-text': '#854D0E',
+              'warning-bg': '#FEFCE8',
+              danger: '#EF4444',
+              'danger-text': '#991B1B',
+              'danger-bg': '#FEF2F2',
+              info: '#3B82F6',
+              'info-text': '#1D4ED8',
+              'info-bg': '#EFF6FF',
+              purple: '#9333EA',
+              'purple-text': '#6B21A8',
+              'purple-bg': '#FAF5FF',
+            },
+          },
+          fontFamily: {
+            sans: ['DM Sans', 'system-ui', 'sans-serif'],
+          },
+          borderRadius: {
+            'sg-sm': '6px',
+            'sg-md': '12px',
+            'sg-lg': '16px',
+            'sg-xl': '20px',
+          },
+          boxShadow: {
+            'sg-card': '0 1px 3px rgba(0,0,0,0.04)',
+            'sg-elevated': '0 1px 3px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.06)',
+            'sg-dropdown': '0 4px 20px rgba(0,0,0,0.08)',
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    body { font-family: 'DM Sans', sans-serif; }
+    .section-anchor::before { content: ''; display: block; height: 80px; margin-top: -80px; visibility: hidden; }
+    .color-swatch { transition: transform 0.2s; }
+    .color-swatch:hover { transform: scale(1.05); }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #D1CCC2; border-radius: 4px; }
+  </style>
+</head>
+<body class="bg-sg-surface text-sg-text-body">
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       NAVIGATION
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <nav class="sticky top-0 z-50 bg-sg-primary-dark/95 text-white border-b border-sg-primary backdrop-blur-sm">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-sg-gold flex items-center justify-center">
+          <svg class="w-5 h-5 text-sg-primary-dark" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8V7m0 1v8m0 0v1"/></svg>
+        </div>
+        <span class="text-xl font-bold">Savanna Gate</span>
+        <span class="text-xs bg-sg-gold/20 text-sg-gold px-2 py-0.5 rounded-full ml-2">Design System v2.0</span>
+      </div>
+      <div class="hidden md:flex items-center gap-6 text-sm">
+        <a href="#colors" class="hover:text-sg-gold transition">Colors</a>
+        <a href="#typography" class="hover:text-sg-gold transition">Typography</a>
+        <a href="#spacing" class="hover:text-sg-gold transition">Spacing</a>
+        <a href="#components" class="hover:text-sg-gold transition">Components</a>
+        <a href="#layouts" class="hover:text-sg-gold transition">Layouts</a>
+        <a href="#pages" class="hover:text-sg-gold transition">Pages</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       HERO
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <section class="bg-gradient-to-br from-sg-primary-dark via-sg-primary to-sg-primary-dark text-white py-20">
+    <div class="max-w-7xl mx-auto px-6">
+      <p class="text-sg-gold font-medium mb-2">Apache Fineract &mdash; SACCO Management Platform</p>
+      <h1 class="text-5xl font-bold leading-tight mb-4">Savanna Gate Design System</h1>
+      <p class="text-sg-primary-light text-lg max-w-2xl mb-8">
+        Design language for the Fineract Prototypes v2 &mdash; a core-banking admin UI for SACCOs and MFIs.
+        40 HTML pages. Two layout modes. Kenyan data. Warm earth tones.
+      </p>
+      <div class="flex gap-4 flex-wrap">
+        <span class="bg-white/10 px-4 py-2 rounded-sg-md text-sm">Tailwind CSS CDN</span>
+        <span class="bg-white/10 px-4 py-2 rounded-sg-md text-sm">DM Sans</span>
+        <span class="bg-white/10 px-4 py-2 rounded-sg-md text-sm">Inline SVG Icons</span>
+        <span class="bg-white/10 px-4 py-2 rounded-sg-md text-sm">No Dark Mode</span>
+        <span class="bg-white/10 px-4 py-2 rounded-sg-md text-sm">40 Pages</span>
+      </div>
+    </div>
+  </section>
+
+
+  <div class="max-w-7xl mx-auto px-6 py-16 space-y-24">
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         SECTION 1: COLOR PALETTE
+         ═══════════════════════════════════════════════════════════════════ -->
+    <section id="colors" class="section-anchor">
+      <h2 class="text-3xl font-bold text-sg-text-heading mb-2">Color Palette</h2>
+      <p class="text-sg-text-secondary mb-8">Extracted from all 40 prototype HTML files. Savanna-inspired: deep forest greens, warm golds, and earthy neutrals.</p>
+
+      <!-- Primary Colors -->
+      <h3 class="text-lg font-semibold text-sg-text-heading mb-4">Primary</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-10">
+        <div class="color-swatch">
+          <div class="h-24 rounded-t-sg-md bg-sg-primary-dark"></div>
+          <div class="bg-white p-3 rounded-b-sg-md border border-sg-border">
+            <p class="font-semibold text-sm">Primary Dark</p>
+            <p class="text-xs text-sg-text-muted">#1B4332</p>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="h-24 rounded-t-sg-md bg-sg-primary"></div>
+          <div class="bg-white p-3 rounded-b-sg-md border border-sg-border">
+            <p class="font-semibold text-sm">Primary</p>
+            <p class="text-xs text-sg-text-muted">#2D6A4F</p>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="h-24 rounded-t-sg-md bg-sg-primary-hover"></div>
+          <div class="bg-white p-3 rounded-b-sg-md border border-sg-border">
+            <p class="font-semibold text-sm">Primary Hover</p>
+            <p class="text-xs text-sg-text-muted">#245A42</p>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="h-24 rounded-t-sg-md bg-sg-primary-lighter"></div>
+          <div class="bg-white p-3 rounded-b-sg-md border border-sg-border">
+            <p class="font-semibold text-sm">Primary Lighter</p>
+            <p class="text-xs text-sg-text-muted">#B7D7C4</p>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="h-24 rounded-t-sg-md bg-sg-primary-light"></div>
+          <div class="bg-white p-3 rounded-b-sg-md border border-sg-border">
+            <p class="font-semibold text-sm">Primary Light</p>
+            <p class="text-xs text-sg-text-muted">#D4E7DC</p>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="h-24 rounded-t-sg-md bg-sg-gold"></div>
+          <div class="bg-white p-3 rounded-b-sg-md border border-sg-border">
+            <p class="font-semibold text-sm">Gold (Accent)</p>
+            <p class="text-xs text-sg-text-muted">#E9B949</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Surfaces -->
+      <h3 class="text-lg font-semibold text-sg-text-heading mb-4">Surfaces &amp; Backgrounds</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-10">
+        <div class="color-swatch">
+          <div class="h-20 rounded-t-sg-md bg-sg-surface border border-sg-border"></div>
+          <div class="bg-white p-3 rounded-b-sg-md border border-sg-border">
+            <p class="font-semibold text-sm">Surface / Body BG</p>
+            <p class="text-xs text-sg-text-muted">#FAFAF5</p>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="h-20 rounded-t-sg-md bg-sg-surface-warm"></div>
+          <div class="bg-white p-3 rounded-b-sg-md border border-sg-border">
+            <p class="font-semibold text-sm">Surface Warm / Sidebar BG</p>
+            <p class="text-xs text-sg-text-muted">#F5F0E8</p>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="h-20 rounded-t-sg-md bg-sg-surface-muted"></div>
+          <div class="bg-white p-3 rounded-b-sg-md border border-sg-border">
+            <p class="font-semibold text-sm">Surface Muted / Table Header</p>
+            <p class="text-xs text-sg-text-muted">#F0EDE6</p>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="h-20 rounded-t-sg-md bg-white border border-sg-border"></div>
+          <div class="bg-white p-3 rounded-b-sg-md border border-sg-border">
+            <p class="font-semibold text-sm">Card / Nav BG</p>
+            <p class="text-xs text-sg-text-muted">#FFFFFF</p>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="h-20 rounded-t-sg-md" style="background:#E8E5DE"></div>
+          <div class="bg-white p-3 rounded-b-sg-md border border-sg-border">
+            <p class="font-semibold text-sm">Border Warm</p>
+            <p class="text-xs text-sg-text-muted">#E8E5DE</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Text Colors -->
+      <h3 class="text-lg font-semibold text-sg-text-heading mb-4">Text</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-10">
+        <div class="color-swatch">
+          <div class="h-20 rounded-t-sg-md" style="background:#1A1A1A"></div>
+          <div class="bg-white p-3 rounded-b-sg-md border border-sg-border">
+            <p class="font-semibold text-sm">Heading</p>
+            <p class="text-xs text-sg-text-muted">#1A1A1A</p>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="h-20 rounded-t-sg-md" style="background:#1F2937"></div>
+          <div class="bg-white p-3 rounded-b-sg-md border border-sg-border">
+            <p class="font-semibold text-sm">Body Alt</p>
+            <p class="text-xs text-sg-text-muted">#1F2937</p>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="h-20 rounded-t-sg-md bg-sg-text-secondary"></div>
+          <div class="bg-white p-3 rounded-b-sg-md border border-sg-border">
+            <p class="font-semibold text-sm">Secondary</p>
+            <p class="text-xs text-sg-text-muted">#6B7280</p>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="h-20 rounded-t-sg-md bg-sg-text-muted"></div>
+          <div class="bg-white p-3 rounded-b-sg-md border border-sg-border">
+            <p class="font-semibold text-sm">Muted / Placeholder</p>
+            <p class="text-xs text-sg-text-muted">#9CA3AF</p>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="h-20 rounded-t-sg-md bg-sg-border-muted"></div>
+          <div class="bg-white p-3 rounded-b-sg-md border border-sg-border">
+            <p class="font-semibold text-sm">Scrollbar / Grid</p>
+            <p class="text-xs text-sg-text-muted">#D1CCC2</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Semantic Colors -->
+      <h3 class="text-lg font-semibold text-sg-text-heading mb-4">Semantic / Status</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="color-swatch">
+          <div class="h-16 rounded-t-sg-md bg-sg-success-bg flex items-center justify-center"><span class="text-sg-success-text font-semibold text-sm">Active / Approved</span></div>
+          <div class="bg-white p-3 rounded-b-sg-md border border-sg-border">
+            <p class="text-xs text-sg-text-muted">BG #F0FDF4 &middot; Text #166534</p>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="h-16 rounded-t-sg-md bg-sg-warning-bg flex items-center justify-center"><span class="text-sg-warning-text font-semibold text-sm">Pending / Warning</span></div>
+          <div class="bg-white p-3 rounded-b-sg-md border border-sg-border">
+            <p class="text-xs text-sg-text-muted">BG #FEFCE8 &middot; Text #854D0E</p>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="h-16 rounded-t-sg-md bg-sg-danger-bg flex items-center justify-center"><span class="text-sg-danger-text font-semibold text-sm">Overdue / Error</span></div>
+          <div class="bg-white p-3 rounded-b-sg-md border border-sg-border">
+            <p class="text-xs text-sg-text-muted">BG #FEF2F2 &middot; Text #991B1B</p>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="h-16 rounded-t-sg-md bg-sg-info-bg flex items-center justify-center"><span class="text-sg-info-text font-semibold text-sm">Info / Create</span></div>
+          <div class="bg-white p-3 rounded-b-sg-md border border-sg-border">
+            <p class="text-xs text-sg-text-muted">BG #EFF6FF &middot; Text #1D4ED8</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Audit action badges -->
+      <h3 class="text-lg font-semibold text-sg-text-heading mt-8 mb-4">Audit Action Badges</h3>
+      <div class="flex gap-3 flex-wrap">
+        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-sg-success-bg text-green-700">APPROVE</span>
+        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-sg-info-bg text-blue-700">CREATE</span>
+        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-sg-purple-bg text-purple-700">UPDATE</span>
+        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-sg-danger-bg text-red-700">DELETE</span>
+        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-sg-warning-bg text-sg-warning-text">PENDING</span>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         SECTION 2: TYPOGRAPHY
+         ═══════════════════════════════════════════════════════════════════ -->
+    <section id="typography" class="section-anchor">
+      <h2 class="text-3xl font-bold text-sg-text-heading mb-2">Typography</h2>
+      <p class="text-sg-text-secondary mb-8">DM Sans is used globally via <code class="bg-sg-surface-muted px-1.5 py-0.5 rounded text-sm">* { font-family: 'DM Sans', sans-serif; }</code>. Weights: 400, 500, 600, 700.</p>
+
+      <div class="bg-white rounded-sg-lg border border-sg-border shadow-sg-card p-8 space-y-6">
+        <!-- Page Title -->
+        <div class="flex items-baseline gap-6 pb-6 border-b border-sg-border">
+          <div class="w-40 shrink-0">
+            <p class="text-xs font-semibold text-sg-text-muted uppercase tracking-wider">Page Title</p>
+            <p class="text-xs text-sg-text-muted mt-1">text-2xl font-bold</p>
+          </div>
+          <h1 class="text-2xl font-bold text-sg-text-heading">Overview</h1>
+        </div>
+        <!-- Card Section Title -->
+        <div class="flex items-baseline gap-6 pb-6 border-b border-sg-border">
+          <div class="w-40 shrink-0">
+            <p class="text-xs font-semibold text-sg-text-muted uppercase tracking-wider">Section Title</p>
+            <p class="text-xs text-sg-text-muted mt-1">text-[16px] font-bold</p>
+          </div>
+          <h2 class="text-[16px] font-bold text-sg-text-heading">Personal Information</h2>
+        </div>
+        <!-- Card Heading -->
+        <div class="flex items-baseline gap-6 pb-6 border-b border-sg-border">
+          <div class="w-40 shrink-0">
+            <p class="text-xs font-semibold text-sg-text-muted uppercase tracking-wider">Card Heading</p>
+            <p class="text-xs text-sg-text-muted mt-1">text-sm font-semibold</p>
+          </div>
+          <h3 class="text-sm font-semibold text-sg-text-heading">Portfolio Performance</h3>
+        </div>
+        <!-- KPI Label -->
+        <div class="flex items-baseline gap-6 pb-6 border-b border-sg-border">
+          <div class="w-40 shrink-0">
+            <p class="text-xs font-semibold text-sg-text-muted uppercase tracking-wider">KPI Label</p>
+            <p class="text-xs text-sg-text-muted mt-1">text-xs uppercase tracking-wide</p>
+          </div>
+          <p class="text-xs font-medium uppercase tracking-wide text-sg-text-muted">Total Portfolio</p>
+        </div>
+        <!-- KPI Value -->
+        <div class="flex items-baseline gap-6 pb-6 border-b border-sg-border">
+          <div class="w-40 shrink-0">
+            <p class="text-xs font-semibold text-sg-text-muted uppercase tracking-wider">KPI Value</p>
+            <p class="text-xs text-sg-text-muted mt-1">text-2xl font-bold</p>
+          </div>
+          <p class="text-2xl font-bold text-sg-primary">KES 48.2M</p>
+        </div>
+        <!-- Table Header -->
+        <div class="flex items-baseline gap-6 pb-6 border-b border-sg-border">
+          <div class="w-40 shrink-0">
+            <p class="text-xs font-semibold text-sg-text-muted uppercase tracking-wider">Table Header</p>
+            <p class="text-xs text-sg-text-muted mt-1">text-[11px] uppercase font-semibold tracking-wider</p>
+          </div>
+          <span class="text-[11px] font-semibold text-sg-text-secondary uppercase tracking-wider">Member</span>
+        </div>
+        <!-- Body Text -->
+        <div class="flex items-baseline gap-6 pb-6 border-b border-sg-border">
+          <div class="w-40 shrink-0">
+            <p class="text-xs font-semibold text-sg-text-muted uppercase tracking-wider">Body / Cell</p>
+            <p class="text-xs text-sg-text-muted mt-1">text-[13px]</p>
+          </div>
+          <span class="text-[13px] text-sg-text-secondary">Westlands Branch</span>
+        </div>
+        <!-- Nav Item -->
+        <div class="flex items-baseline gap-6 pb-6 border-b border-sg-border">
+          <div class="w-40 shrink-0">
+            <p class="text-xs font-semibold text-sg-text-muted uppercase tracking-wider">Nav Link</p>
+            <p class="text-xs text-sg-text-muted mt-1">text-sm font-medium</p>
+          </div>
+          <span class="text-sm font-medium text-sg-text-secondary">Dashboard</span>
+        </div>
+        <!-- Form Label -->
+        <div class="flex items-baseline gap-6 pb-6 border-b border-sg-border">
+          <div class="w-40 shrink-0">
+            <p class="text-xs font-semibold text-sg-text-muted uppercase tracking-wider">Form Label</p>
+            <p class="text-xs text-sg-text-muted mt-1">text-[13px] font-medium</p>
+          </div>
+          <label class="text-[13px] font-medium text-sg-text-heading">First Name <span class="text-sg-danger-text">*</span></label>
+        </div>
+        <!-- Sidebar Section Label -->
+        <div class="flex items-baseline gap-6">
+          <div class="w-40 shrink-0">
+            <p class="text-xs font-semibold text-sg-text-muted uppercase tracking-wider">Sidebar Section</p>
+            <p class="text-xs text-sg-text-muted mt-1">text-[10px] uppercase tracking-widest</p>
+          </div>
+          <span class="text-[10px] font-semibold text-sg-text-muted tracking-widest uppercase">Main</span>
+        </div>
+      </div>
+
+      <!-- Monospace -->
+      <div class="mt-6 bg-white rounded-sg-lg border border-sg-border shadow-sg-card p-6">
+        <h3 class="text-sm font-semibold text-sg-text-heading mb-3">Monospace (System)</h3>
+        <p class="text-sg-text-secondary text-sm mb-3">Used for account numbers, audit IDs, and reference codes.</p>
+        <div class="flex gap-6">
+          <span class="font-mono text-[13px] text-sg-text-heading">SAV-001-4521</span>
+          <span class="font-mono text-[13px] text-sg-text-heading">LN-004521</span>
+          <span class="font-mono text-sm text-sg-primary font-medium">SA-00089742</span>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         SECTION 3: SPACING & BORDERS
+         ═══════════════════════════════════════════════════════════════════ -->
+    <section id="spacing" class="section-anchor">
+      <h2 class="text-3xl font-bold text-sg-text-heading mb-2">Spacing &amp; Borders</h2>
+      <p class="text-sg-text-secondary mb-8">Consistent radius, shadow, and spacing values used across all 40 pages.</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Border Radius -->
+        <div class="bg-white rounded-sg-lg border border-sg-border shadow-sg-card p-6">
+          <h3 class="text-sm font-semibold text-sg-text-heading mb-4">Border Radius</h3>
+          <div class="space-y-4">
+            <div class="flex items-center gap-4">
+              <div class="w-20 h-12 bg-sg-surface-warm border border-sg-border rounded-2xl"></div>
+              <div><p class="font-semibold text-sm">rounded-2xl (16px)</p><p class="text-xs text-sg-text-muted">Cards, modals, tables, KPI boxes</p></div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="w-20 h-12 bg-sg-surface-warm border border-sg-border rounded-xl"></div>
+              <div><p class="font-semibold text-sm">rounded-xl (12px)</p><p class="text-xs text-sg-text-muted">Inputs, buttons, dropdowns, nav pills, sidebar items</p></div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="w-20 h-12 bg-sg-surface-warm border border-sg-border rounded-lg"></div>
+              <div><p class="font-semibold text-sm">rounded-lg (8px)</p><p class="text-xs text-sg-text-muted">Nav logo container, icon buttons, hover states</p></div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="w-20 h-12 bg-sg-surface-warm border border-sg-border rounded-full"></div>
+              <div><p class="font-semibold text-sm">rounded-full</p><p class="text-xs text-sg-text-muted">Avatars, badges, status pills, step indicators</p></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Shadows -->
+        <div class="bg-white rounded-sg-lg border border-sg-border shadow-sg-card p-6">
+          <h3 class="text-sm font-semibold text-sg-text-heading mb-4">Box Shadows</h3>
+          <div class="space-y-4">
+            <div class="flex items-center gap-4">
+              <div class="w-20 h-12 bg-white rounded-sg-md border border-sg-border shadow-sg-card"></div>
+              <div><p class="font-semibold text-sm">Card Shadow</p><p class="text-xs text-sg-text-muted">0 1px 3px rgba(0,0,0,0.04)</p></div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="w-20 h-12 bg-white rounded-sg-md border border-sg-border shadow-sg-elevated"></div>
+              <div><p class="font-semibold text-sm">Elevated (Login Card)</p><p class="text-xs text-sg-text-muted">0 1px 3px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.06)</p></div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="w-20 h-12 bg-white rounded-sg-md border border-sg-border shadow-sg-dropdown"></div>
+              <div><p class="font-semibold text-sm">Dropdown</p><p class="text-xs text-sg-text-muted">0 4px 20px rgba(0,0,0,0.08)</p></div>
+            </div>
+          </div>
+
+          <h3 class="text-sm font-semibold text-sg-text-heading mt-6 mb-3">Focus Ring</h3>
+          <div class="flex gap-4 items-center">
+            <input type="text" value="Focus me" class="px-3 py-2.5 border border-sg-primary rounded-xl text-sm outline-none ring-2 ring-sg-primary/20 w-40" />
+            <p class="text-xs text-sg-text-muted">ring-2 ring-[#2D6A4F]/20 + border-[#2D6A4F]</p>
+          </div>
+        </div>
+
+        <!-- Key Spacing -->
+        <div class="bg-white rounded-sg-lg border border-sg-border shadow-sg-card p-6 md:col-span-2">
+          <h3 class="text-sm font-semibold text-sg-text-heading mb-4">Common Spacing Values</h3>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+            <div class="p-3 bg-sg-surface rounded-sg-md border border-sg-border">
+              <p class="font-semibold">Nav height</p><p class="text-xs text-sg-text-muted">h-16 (64px)</p>
+            </div>
+            <div class="p-3 bg-sg-surface rounded-sg-md border border-sg-border">
+              <p class="font-semibold">Sidebar width</p><p class="text-xs text-sg-text-muted">w-[260px]</p>
+            </div>
+            <div class="p-3 bg-sg-surface rounded-sg-md border border-sg-border">
+              <p class="font-semibold">Content max-width</p><p class="text-xs text-sg-text-muted">max-w-7xl</p>
+            </div>
+            <div class="p-3 bg-sg-surface rounded-sg-md border border-sg-border">
+              <p class="font-semibold">Content padding</p><p class="text-xs text-sg-text-muted">p-6 (24px)</p>
+            </div>
+            <div class="p-3 bg-sg-surface rounded-sg-md border border-sg-border">
+              <p class="font-semibold">Card padding</p><p class="text-xs text-sg-text-muted">p-5 (20px)</p>
+            </div>
+            <div class="p-3 bg-sg-surface rounded-sg-md border border-sg-border">
+              <p class="font-semibold">Grid gap (KPIs)</p><p class="text-xs text-sg-text-muted">gap-5 (20px)</p>
+            </div>
+            <div class="p-3 bg-sg-surface rounded-sg-md border border-sg-border">
+              <p class="font-semibold">Table cell padding</p><p class="text-xs text-sg-text-muted">px-5 py-3.5</p>
+            </div>
+            <div class="p-3 bg-sg-surface rounded-sg-md border border-sg-border">
+              <p class="font-semibold">Login card width</p><p class="text-xs text-sg-text-muted">max-w-[420px]</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         SECTION 4: COMPONENTS
+         ═══════════════════════════════════════════════════════════════════ -->
+    <section id="components" class="section-anchor">
+      <h2 class="text-3xl font-bold text-sg-text-heading mb-2">Components</h2>
+      <p class="text-sg-text-secondary mb-8">Live component specimens extracted from the 40 prototype files.</p>
+
+      <!-- Buttons -->
+      <div class="bg-white rounded-sg-lg border border-sg-border shadow-sg-card p-8 mb-6">
+        <h3 class="text-lg font-semibold text-sg-text-heading mb-6">Buttons</h3>
+        <div class="flex flex-wrap gap-4 items-center">
+          <!-- Primary -->
+          <button class="bg-sg-primary text-white text-[13px] font-semibold px-4 py-2.5 rounded-xl flex items-center gap-2 hover:bg-sg-primary-hover transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            New Client
+          </button>
+          <!-- Primary (no icon) -->
+          <button class="bg-sg-primary text-white text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-sg-primary-hover transition">Filter</button>
+          <!-- Secondary / Outline -->
+          <button class="bg-white border border-sg-border text-sg-text-heading text-[13px] font-medium px-4 py-2.5 rounded-xl hover:bg-sg-surface transition">Edit Profile</button>
+          <!-- Export button -->
+          <button class="bg-white border border-sg-border text-sg-text-heading text-[13px] font-medium px-4 py-2.5 rounded-xl flex items-center gap-2 hover:bg-sg-surface transition">
+            <svg class="w-4 h-4 text-sg-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            Export
+          </button>
+          <!-- Login Full Width -->
+          <button class="bg-sg-primary text-white py-3.5 rounded-xl font-semibold text-sm px-8 hover:opacity-90 active:scale-[0.98] transition-all">Sign In</button>
+          <!-- Ghost icon button -->
+          <button class="p-2 text-sg-text-secondary hover:text-sg-text-heading rounded-lg hover:bg-sg-surface-warm transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Form Inputs -->
+      <div class="bg-white rounded-sg-lg border border-sg-border shadow-sg-card p-8 mb-6">
+        <h3 class="text-lg font-semibold text-sg-text-heading mb-6">Form Inputs</h3>
+        <div class="grid grid-cols-2 gap-x-6 gap-y-5 max-w-3xl">
+          <!-- Text Input -->
+          <div>
+            <label class="block text-[13px] font-medium text-sg-text-heading mb-1.5">First Name <span class="text-sg-danger-text">*</span></label>
+            <input type="text" placeholder="Enter first name" class="w-full bg-white border border-sg-border rounded-xl px-4 py-2.5 text-[13px] text-sg-text-heading placeholder-sg-text-muted focus:outline-none focus:ring-2 focus:ring-sg-primary/20 focus:border-sg-primary">
+          </div>
+          <!-- Select -->
+          <div>
+            <label class="block text-[13px] font-medium text-sg-text-heading mb-1.5">Office <span class="text-sg-danger-text">*</span></label>
+            <select class="w-full bg-white border border-sg-border rounded-xl px-4 py-2.5 text-[13px] text-sg-text-heading focus:outline-none focus:ring-2 focus:ring-sg-primary/20 focus:border-sg-primary appearance-none" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 24 24%22 stroke=%22%239CA3AF%22><path stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%222%22 d=%22M19 9l-7 7-7-7%22/></svg>'); background-repeat: no-repeat; background-position: right 12px center; background-size: 16px;">
+              <option>Westlands Branch</option>
+              <option>Kilimani Branch</option>
+            </select>
+          </div>
+          <!-- Phone Input -->
+          <div>
+            <label class="block text-[13px] font-medium text-sg-text-heading mb-1.5">Mobile Phone <span class="text-sg-danger-text">*</span></label>
+            <div class="flex gap-2">
+              <div class="bg-sg-surface border border-sg-border rounded-xl px-3 py-2.5 text-[13px] text-sg-text-secondary font-medium shrink-0">+254</div>
+              <input type="tel" placeholder="712 345 678" class="w-full bg-white border border-sg-border rounded-xl px-4 py-2.5 text-[13px] text-sg-text-heading placeholder-sg-text-muted focus:outline-none focus:ring-2 focus:ring-sg-primary/20 focus:border-sg-primary">
+            </div>
+          </div>
+          <!-- Date Input -->
+          <div>
+            <label class="block text-[13px] font-medium text-sg-text-heading mb-1.5">Date of Birth</label>
+            <input type="date" class="w-full bg-white border border-sg-border rounded-xl px-4 py-2.5 text-[13px] text-sg-text-heading focus:outline-none focus:ring-2 focus:ring-sg-primary/20 focus:border-sg-primary">
+          </div>
+          <!-- Amount Input -->
+          <div>
+            <label class="block text-sm font-medium text-sg-text-heading mb-1.5">Amount (KES)</label>
+            <div class="relative">
+              <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sg-text-muted text-sm font-medium">KES</span>
+              <input type="text" value="50,000" class="w-full pl-12 pr-4 py-2.5 border border-sg-border rounded-xl text-sm font-semibold text-sg-text-heading focus:outline-none focus:border-sg-primary focus:ring-1 focus:ring-sg-primary/20">
+            </div>
+          </div>
+          <!-- Search Input -->
+          <div>
+            <label class="block text-[13px] font-medium text-sg-text-heading mb-1.5">Search</label>
+            <div class="relative">
+              <svg class="w-4 h-4 text-sg-text-muted absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              <input type="text" placeholder="Search by name, account, or ID..." class="w-full bg-sg-surface border border-sg-border rounded-xl pl-9 pr-4 py-2.5 text-[13px] text-sg-text-heading placeholder-sg-text-muted focus:outline-none focus:ring-2 focus:ring-sg-primary/20 focus:border-sg-primary">
+            </div>
+          </div>
+          <!-- Login Input (FAFAF5 bg) -->
+          <div>
+            <label class="block text-sm font-medium text-sg-text-heading mb-1.5">Login Input Style</label>
+            <input type="text" value="default" class="w-full rounded-xl py-3 px-4 text-sm outline-none transition-all bg-sg-surface border border-sg-border text-sg-text-heading">
+            <p class="text-[11px] text-sg-text-muted mt-1">Login page uses bg-[#FAFAF5] inputs</p>
+          </div>
+          <!-- Textarea -->
+          <div>
+            <label class="block text-sm font-medium text-sg-text-heading mb-1.5">Notes</label>
+            <textarea rows="2" placeholder="Optional notes..." class="w-full px-3 py-2.5 border border-sg-border rounded-xl text-sm focus:outline-none focus:border-sg-primary focus:ring-1 focus:ring-sg-primary/20 placeholder:text-sg-text-muted resize-none"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Badges & Status -->
+      <div class="bg-white rounded-sg-lg border border-sg-border shadow-sg-card p-8 mb-6">
+        <h3 class="text-lg font-semibold text-sg-text-heading mb-6">Badges &amp; Status Pills</h3>
+        <div class="flex flex-wrap gap-3 mb-6">
+          <span class="bg-sg-success-bg text-sg-success-text text-[11px] font-semibold px-2.5 py-1 rounded-full">Active</span>
+          <span class="bg-sg-warning-bg text-sg-warning-text text-[11px] font-semibold px-2.5 py-1 rounded-full">Pending</span>
+          <span class="bg-sg-danger-bg text-sg-danger-text text-[11px] font-semibold px-2.5 py-1 rounded-full">Overdue</span>
+          <span class="bg-sg-info-bg text-sg-info-text text-[11px] font-semibold px-2.5 py-1 rounded-full">Processing</span>
+          <span class="bg-sg-surface-muted text-sg-text-secondary text-[11px] font-semibold px-2.5 py-1 rounded-full">Closed</span>
+        </div>
+        <p class="text-xs text-sg-text-muted mb-3">Count badges (used next to page titles):</p>
+        <div class="flex gap-3 items-center">
+          <h2 class="text-2xl font-bold text-sg-text-heading">Clients</h2>
+          <span class="bg-sg-success-bg text-sg-success-text text-xs font-semibold px-2.5 py-1 rounded-full">1,847</span>
+        </div>
+      </div>
+
+      <!-- KPI Cards -->
+      <div class="bg-white rounded-sg-lg border border-sg-border shadow-sg-card p-8 mb-6">
+        <h3 class="text-lg font-semibold text-sg-text-heading mb-6">KPI Cards</h3>
+        <div class="grid grid-cols-4 gap-5">
+          <!-- KPI: Primary value -->
+          <div class="bg-white rounded-2xl p-5 border border-sg-border shadow-sg-card">
+            <p class="text-xs font-medium uppercase tracking-wide mb-1 text-sg-text-muted">Total Portfolio</p>
+            <div class="flex items-end gap-2">
+              <p class="text-2xl font-bold text-sg-primary">KES 48.2M</p>
+              <span class="flex items-center gap-0.5 text-xs font-medium mb-1 px-1.5 py-0.5 rounded-full text-sg-success-text bg-sg-success-bg">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"/></svg>
+                +8.3%
+              </span>
+            </div>
+            <p class="text-xs mt-2 text-sg-text-muted">vs KES 44.5M last period</p>
+          </div>
+          <!-- KPI: Dark value + mini chart -->
+          <div class="bg-white rounded-2xl p-5 border border-sg-border shadow-sg-card">
+            <p class="text-xs font-medium uppercase tracking-wide mb-1 text-sg-text-muted">Active Loans</p>
+            <p class="text-2xl font-bold text-sg-text-heading">342</p>
+            <div class="flex items-end gap-1 mt-3 h-8">
+              <div class="flex-1 rounded-sm" style="height: 45%; background-color: #D4E7DC;"></div>
+              <div class="flex-1 rounded-sm" style="height: 55%; background-color: #D4E7DC;"></div>
+              <div class="flex-1 rounded-sm" style="height: 40%; background-color: #D4E7DC;"></div>
+              <div class="flex-1 rounded-sm" style="height: 65%; background-color: #D4E7DC;"></div>
+              <div class="flex-1 rounded-sm" style="height: 72%; background-color: #D4E7DC;"></div>
+              <div class="flex-1 rounded-sm" style="height: 85%; background-color: #2D6A4F;"></div>
+            </div>
+            <p class="text-[10px] mt-1 text-sg-text-muted">6-month trend</p>
+          </div>
+          <!-- KPI: With badge -->
+          <div class="bg-white rounded-2xl p-5 border border-sg-border shadow-sg-card">
+            <p class="text-xs font-medium uppercase tracking-wide mb-1 text-sg-text-muted">Savings Deposits</p>
+            <p class="text-2xl font-bold text-sg-text-heading">KES 156.4M</p>
+            <div class="flex items-center gap-2 mt-3">
+              <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-sg-success-bg text-sg-success-text">+12.4%</span>
+              <span class="text-xs text-sg-text-muted">growth this quarter</span>
+            </div>
+          </div>
+          <!-- KPI: Progress ring (gold) -->
+          <div class="bg-white rounded-2xl p-5 border border-sg-border shadow-sg-card">
+            <p class="text-xs font-medium uppercase tracking-wide mb-1 text-sg-text-muted">Collections Today</p>
+            <p class="text-2xl font-bold text-sg-text-heading">KES 1.2M</p>
+            <div class="flex items-center gap-3 mt-3">
+              <div class="relative w-10 h-10">
+                <svg class="w-10 h-10 -rotate-90" viewBox="0 0 36 36">
+                  <path d="M18 2.0845a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#E8E5DE" stroke-width="3"/>
+                  <path d="M18 2.0845a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#E9B949" stroke-width="3" stroke-dasharray="78, 100" stroke-linecap="round"/>
+                </svg>
+                <span class="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-sg-gold">78%</span>
+              </div>
+              <span class="text-xs text-sg-text-muted">of KES 1.54M target</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Avatars -->
+      <div class="bg-white rounded-sg-lg border border-sg-border shadow-sg-card p-8 mb-6">
+        <h3 class="text-lg font-semibold text-sg-text-heading mb-6">Avatars</h3>
+        <p class="text-sm text-sg-text-secondary mb-4">Initial-based avatars cycle through primary, gold, gray, and purple backgrounds. Used in tables, sidebars, headers, and client lists.</p>
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-full bg-sg-primary flex items-center justify-center text-white text-[16px] font-bold">GK</div>
+          <div class="w-9 h-9 rounded-full bg-sg-gold flex items-center justify-center text-white text-[11px] font-semibold">SM</div>
+          <div class="w-9 h-9 rounded-full bg-sg-text-secondary flex items-center justify-center text-white text-[11px] font-semibold">EN</div>
+          <div class="w-9 h-9 rounded-full bg-sg-purple flex items-center justify-center text-white text-[11px] font-semibold">JO</div>
+          <div class="w-8 h-8 bg-sg-primary/10 rounded-full flex items-center justify-center"><span class="text-sg-primary text-xs font-semibold">AW</span></div>
+          <div class="w-7 h-7 rounded-full bg-sg-primary flex items-center justify-center text-white text-[11px] font-semibold">FK</div>
+        </div>
+        <p class="text-xs text-sg-text-muted mt-3">Sizes: 48px (detail header), 36px (table/list), 32px (nav user), 28px (sidebar recent)</p>
+      </div>
+
+      <!-- Table -->
+      <div class="bg-white rounded-sg-lg border border-sg-border shadow-sg-card p-8 mb-6">
+        <h3 class="text-lg font-semibold text-sg-text-heading mb-6">Data Table</h3>
+        <div class="bg-white rounded-2xl border border-sg-border shadow-sg-card overflow-hidden">
+          <table class="w-full">
+            <thead>
+              <tr class="bg-sg-surface-muted">
+                <th class="text-left text-[11px] font-semibold text-sg-text-secondary uppercase tracking-wider px-5 py-3">Member</th>
+                <th class="text-left text-[11px] font-semibold text-sg-text-secondary uppercase tracking-wider px-5 py-3">Account No</th>
+                <th class="text-left text-[11px] font-semibold text-sg-text-secondary uppercase tracking-wider px-5 py-3">Branch</th>
+                <th class="text-left text-[11px] font-semibold text-sg-text-secondary uppercase tracking-wider px-5 py-3">Status</th>
+                <th class="text-left text-[11px] font-semibold text-sg-text-secondary uppercase tracking-wider px-5 py-3">Joined</th>
+                <th class="text-left text-[11px] font-semibold text-sg-text-secondary uppercase tracking-wider px-5 py-3 w-12"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-t border-sg-border hover:bg-sg-surface transition cursor-pointer">
+                <td class="px-5 py-3.5">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-sg-primary flex items-center justify-center text-white text-[11px] font-semibold shrink-0">GK</div>
+                    <div>
+                      <div class="text-[13px] font-semibold text-sg-text-heading">Grace Kemunto</div>
+                      <div class="text-[11px] text-sg-text-muted">ID: 28451923</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-5 py-3.5"><span class="font-mono text-[13px] text-sg-text-heading">SAV-001-4521</span></td>
+                <td class="px-5 py-3.5 text-[13px] text-sg-text-secondary">Westlands</td>
+                <td class="px-5 py-3.5"><span class="bg-sg-success-bg text-sg-success-text text-[11px] font-semibold px-2.5 py-1 rounded-full">Active</span></td>
+                <td class="px-5 py-3.5 text-[13px] text-sg-text-secondary">Apr 12, 2023</td>
+                <td class="px-5 py-3.5 text-center">
+                  <button class="text-sg-text-muted hover:text-sg-text-secondary p-1"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg></button>
+                </td>
+              </tr>
+              <tr class="border-t border-sg-border hover:bg-sg-surface transition cursor-pointer">
+                <td class="px-5 py-3.5">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-sg-gold flex items-center justify-center text-white text-[11px] font-semibold shrink-0">SM</div>
+                    <div>
+                      <div class="text-[13px] font-semibold text-sg-text-heading">Samuel Mwangi</div>
+                      <div class="text-[11px] text-sg-text-muted">ID: 31204876</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-5 py-3.5"><span class="font-mono text-[13px] text-sg-text-heading">SAV-001-4522</span></td>
+                <td class="px-5 py-3.5 text-[13px] text-sg-text-secondary">Kilimani</td>
+                <td class="px-5 py-3.5"><span class="bg-sg-success-bg text-sg-success-text text-[11px] font-semibold px-2.5 py-1 rounded-full">Active</span></td>
+                <td class="px-5 py-3.5 text-[13px] text-sg-text-secondary">Jan 8, 2024</td>
+                <td class="px-5 py-3.5 text-center">
+                  <button class="text-sg-text-muted hover:text-sg-text-secondary p-1"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="text-xs text-sg-text-muted mt-3">Header bg: #F0EDE6 | Row hover: #FAFAF5 | Border: #E8E5DE | Cell text: 13px</p>
+      </div>
+
+      <!-- Tabs -->
+      <div class="bg-white rounded-sg-lg border border-sg-border shadow-sg-card p-8 mb-6">
+        <h3 class="text-lg font-semibold text-sg-text-heading mb-6">Tabs</h3>
+        <p class="text-sm text-sg-text-secondary mb-4">Underline tabs for detail pages (client, loan, savings):</p>
+        <div class="flex items-center gap-1 border-b border-sg-border">
+          <button class="px-4 py-3 text-[13px] font-semibold text-sg-primary border-b-2 border-sg-primary -mb-[1px]">Overview</button>
+          <button class="px-4 py-3 text-[13px] font-medium text-sg-text-secondary hover:text-sg-text-heading transition">Applications</button>
+          <button class="px-4 py-3 text-[13px] font-medium text-sg-text-secondary hover:text-sg-text-heading transition">Documents</button>
+          <button class="px-4 py-3 text-[13px] font-medium text-sg-text-secondary hover:text-sg-text-heading transition">Notes</button>
+        </div>
+        <p class="text-xs text-sg-text-muted mt-4">Modal tabs (used in deposit/withdraw modals):</p>
+        <div class="mt-2 px-6 border-b border-sg-border inline-flex">
+          <div class="flex gap-6">
+            <button class="pb-3 text-sm font-semibold text-sg-primary border-b-2 border-sg-primary">Deposit</button>
+            <button class="pb-3 text-sm text-sg-text-secondary hover:text-sg-text-heading transition">Withdraw</button>
+            <button class="pb-3 text-sm text-sg-text-secondary hover:text-sg-text-heading transition">Transfer</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Date Range Picker -->
+      <div class="bg-white rounded-sg-lg border border-sg-border shadow-sg-card p-8 mb-6">
+        <h3 class="text-lg font-semibold text-sg-text-heading mb-6">Date Range Toggle</h3>
+        <div class="flex items-center gap-1 p-1 rounded-xl bg-sg-surface-warm inline-flex">
+          <button class="px-3 py-1.5 rounded-lg text-xs font-medium text-sg-text-secondary">Today</button>
+          <button class="px-3 py-1.5 rounded-lg text-xs font-medium bg-white text-sg-text-heading" style="box-shadow: 0 1px 2px rgba(0,0,0,0.06);">7d</button>
+          <button class="px-3 py-1.5 rounded-lg text-xs font-medium text-sg-text-secondary">30d</button>
+          <button class="px-3 py-1.5 rounded-lg text-xs font-medium text-sg-text-secondary">Custom</button>
+        </div>
+        <p class="text-xs text-sg-text-muted mt-3">Pill toggle with warm bg (#F5F0E8). Active item: white bg + subtle shadow.</p>
+      </div>
+
+      <!-- Step Indicator -->
+      <div class="bg-white rounded-sg-lg border border-sg-border shadow-sg-card p-8 mb-6">
+        <h3 class="text-lg font-semibold text-sg-text-heading mb-6">Step Indicator</h3>
+        <p class="text-sm text-sg-text-secondary mb-4">Used in client registration (07), loan create (12).</p>
+        <div class="bg-white rounded-2xl border border-sg-border shadow-sg-card p-5">
+          <div class="flex items-center justify-between max-w-2xl mx-auto">
+            <!-- Step 1: Completed -->
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-full bg-sg-primary flex items-center justify-center text-white text-[13px] font-bold">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <div>
+                <div class="text-[13px] font-semibold text-sg-text-heading">Personal Info</div>
+                <div class="text-[11px] text-sg-success-text">Complete</div>
+              </div>
+            </div>
+            <div class="flex-1 h-[2px] bg-sg-primary mx-4"></div>
+            <!-- Step 2: Current -->
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-full bg-sg-gold flex items-center justify-center text-white text-[13px] font-bold">2</div>
+              <div>
+                <div class="text-[13px] font-semibold text-sg-text-heading">Address</div>
+                <div class="text-[11px] text-sg-gold-dark">Current</div>
+              </div>
+            </div>
+            <div class="flex-1 h-[2px] bg-sg-border mx-4"></div>
+            <!-- Step 3: Pending -->
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-full bg-sg-border flex items-center justify-center text-sg-text-muted text-[13px] font-bold">3</div>
+              <div>
+                <div class="text-[13px] font-medium text-sg-text-muted">Review</div>
+                <div class="text-[11px] text-sg-text-muted">Pending</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="text-xs text-sg-text-muted mt-3">Gold (#E9B949) = current step | Primary (#2D6A4F) = completed | Border (#E8E5DE) = pending</p>
+      </div>
+
+      <!-- Breadcrumb -->
+      <div class="bg-white rounded-sg-lg border border-sg-border shadow-sg-card p-8 mb-6">
+        <h3 class="text-lg font-semibold text-sg-text-heading mb-6">Breadcrumb</h3>
+        <div class="border-b border-sg-border bg-sg-surface p-4 rounded-sg-md">
+          <nav class="flex items-center gap-2">
+            <a href="#" class="text-sm text-sg-text-secondary hover:text-sg-primary">Home</a>
+            <svg class="w-3.5 h-3.5 text-sg-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            <a href="#" class="text-sm text-sg-text-secondary hover:text-sg-primary">Clients</a>
+            <svg class="w-3.5 h-3.5 text-sg-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            <span class="text-sm font-medium text-sg-text-heading">Client Detail</span>
+          </nav>
+        </div>
+        <p class="text-xs text-sg-text-muted mt-3">Placed between nav and content. bg-[#FAFAF5], border-b border-[#E8E5DE].</p>
+      </div>
+
+      <!-- Modal -->
+      <div class="bg-white rounded-sg-lg border border-sg-border shadow-sg-card p-8 mb-6">
+        <h3 class="text-lg font-semibold text-sg-text-heading mb-6">Modal Dialog</h3>
+        <p class="text-sm text-sg-text-secondary mb-4">Used for deposits, withdrawals, transfers, confirmations.</p>
+        <div class="relative bg-black/10 rounded-sg-lg p-8 flex items-center justify-center">
+          <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg border border-sg-border">
+            <!-- Header -->
+            <div class="flex items-center justify-between px-6 pt-6 pb-4">
+              <h2 class="text-lg font-bold text-sg-text-heading">Make Deposit</h2>
+              <button class="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-sg-surface-muted transition text-sg-text-secondary">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
+              </button>
+            </div>
+            <!-- Tabs -->
+            <div class="px-6 border-b border-sg-border">
+              <div class="flex gap-6">
+                <button class="pb-3 text-sm font-semibold text-sg-primary border-b-2 border-sg-primary">Deposit</button>
+                <button class="pb-3 text-sm text-sg-text-secondary">Withdraw</button>
+              </div>
+            </div>
+            <!-- Body preview -->
+            <div class="px-6 py-4">
+              <div class="flex items-center gap-3 p-3 bg-sg-surface rounded-xl">
+                <div class="w-10 h-10 rounded-xl bg-sg-purple flex items-center justify-center text-white text-sm font-bold">EN</div>
+                <div>
+                  <div class="text-sm font-medium text-sg-text-heading">Esther Nyambura</div>
+                  <div class="text-xs text-sg-text-secondary font-mono">SA-00089742</div>
+                </div>
+              </div>
+            </div>
+            <!-- Footer -->
+            <div class="flex gap-3 justify-end px-6 pb-6">
+              <button class="bg-white border border-sg-border text-sg-text-heading text-sm font-medium px-5 py-2.5 rounded-xl">Cancel</button>
+              <button class="bg-sg-primary text-white text-sm font-semibold px-5 py-2.5 rounded-xl">Confirm Deposit</button>
+            </div>
+          </div>
+        </div>
+        <p class="text-xs text-sg-text-muted mt-3">Overlay: bg-black/30 backdrop-blur-[2px]. Modal: max-w-lg rounded-2xl shadow-2xl.</p>
+      </div>
+
+      <!-- Detail Card -->
+      <div class="bg-white rounded-sg-lg border border-sg-border shadow-sg-card p-8 mb-6">
+        <h3 class="text-lg font-semibold text-sg-text-heading mb-6">Detail Key-Value Card</h3>
+        <div class="bg-white rounded-2xl border border-sg-border shadow-sg-card p-5 max-w-md">
+          <h3 class="text-[14px] font-semibold text-sg-text-heading mb-4">Personal Details</h3>
+          <div class="space-y-3">
+            <div class="flex justify-between">
+              <span class="text-[13px] text-sg-text-secondary">Full Name</span>
+              <span class="text-[13px] text-sg-text-heading font-medium">Grace Wanjiku Kemunto</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-[13px] text-sg-text-secondary">Date of Birth</span>
+              <span class="text-[13px] text-sg-text-heading font-medium">Mar 15, 1990</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-[13px] text-sg-text-secondary">Gender</span>
+              <span class="text-[13px] text-sg-text-heading font-medium">Female</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         SECTION 5: LAYOUTS
+         ═══════════════════════════════════════════════════════════════════ -->
+    <section id="layouts" class="section-anchor">
+      <h2 class="text-3xl font-bold text-sg-text-heading mb-2">Layouts</h2>
+      <p class="text-sg-text-secondary mb-8">The prototypes use two distinct layout modes across 40 pages.</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Layout A: Top Nav -->
+        <div class="bg-white rounded-sg-lg border border-sg-border shadow-sg-card p-6">
+          <h3 class="text-sm font-semibold text-sg-text-heading mb-3">Layout A: Top Navigation Bar</h3>
+          <p class="text-xs text-sg-text-secondary mb-4">Used by pages 01-14 (Login, Dashboard, Clients, Loans) and some admin pages (28-29, 33-35, 37-40).</p>
+          <div class="border border-sg-border rounded-sg-md overflow-hidden">
+            <!-- Mini nav -->
+            <div class="h-8 bg-white border-b border-sg-border flex items-center px-3 gap-2">
+              <div class="w-4 h-4 rounded bg-sg-primary"></div>
+              <span class="text-[9px] font-bold text-sg-text-heading">Fineract</span>
+              <div class="flex gap-1 ml-2">
+                <span class="text-[8px] px-1.5 py-0.5 bg-sg-primary text-white rounded">Dashboard</span>
+                <span class="text-[8px] text-sg-text-muted px-1.5 py-0.5">Clients</span>
+                <span class="text-[8px] text-sg-text-muted px-1.5 py-0.5">Loans</span>
+              </div>
+              <div class="ml-auto flex gap-1 items-center">
+                <div class="w-3 h-3 rounded bg-sg-surface border border-sg-border"></div>
+                <div class="w-4 h-4 rounded-full bg-sg-primary/10"></div>
+              </div>
+            </div>
+            <!-- Breadcrumb -->
+            <div class="h-4 bg-sg-surface border-b border-sg-border flex items-center px-3">
+              <span class="text-[7px] text-sg-text-muted">Home &gt; Dashboard</span>
+            </div>
+            <!-- Content -->
+            <div class="bg-sg-surface p-3 h-28">
+              <div class="grid grid-cols-4 gap-1.5 mb-2">
+                <div class="bg-white rounded h-6 border border-sg-border"></div>
+                <div class="bg-white rounded h-6 border border-sg-border"></div>
+                <div class="bg-white rounded h-6 border border-sg-border"></div>
+                <div class="bg-white rounded h-6 border border-sg-border"></div>
+              </div>
+              <div class="bg-white rounded h-14 border border-sg-border"></div>
+            </div>
+          </div>
+          <div class="mt-3 text-xs text-sg-text-muted space-y-1">
+            <p>Nav: h-16, bg-white, border-b border-[#E8E5DE], sticky top-0 z-50</p>
+            <p>Active nav: bg-[#2D6A4F] text-white rounded-lg</p>
+            <p>Inactive nav: text-[#6B7280] hover:bg-[#F5F0E8]</p>
+            <p>Content: max-w-7xl mx-auto p-6</p>
+          </div>
+        </div>
+
+        <!-- Layout B: Sidebar -->
+        <div class="bg-white rounded-sg-lg border border-sg-border shadow-sg-card p-6">
+          <h3 class="text-sm font-semibold text-sg-text-heading mb-3">Layout B: Sidebar Navigation</h3>
+          <p class="text-xs text-sg-text-secondary mb-4">Used by pages 15-27 (Savings, Accounting, Reports, Groups, Organization) and some modals (17).</p>
+          <div class="border border-sg-border rounded-sg-md overflow-hidden flex">
+            <!-- Mini sidebar -->
+            <div class="w-16 bg-sg-surface-warm p-2 space-y-1 border-r border-sg-border">
+              <div class="flex items-center gap-1 mb-2">
+                <div class="w-4 h-4 rounded bg-sg-primary"></div>
+                <span class="text-[7px] font-bold">Savanna</span>
+              </div>
+              <div class="text-[6px] text-sg-text-muted uppercase mb-1">Main</div>
+              <div class="text-[7px] text-sg-text-secondary py-0.5 px-1 rounded">Dashboard</div>
+              <div class="text-[7px] text-sg-text-secondary py-0.5 px-1 rounded">Clients</div>
+              <div class="text-[7px] text-sg-text-heading font-semibold py-0.5 px-1 bg-white rounded border-l-2 border-sg-primary">Savings</div>
+              <div class="text-[6px] text-sg-text-muted uppercase mt-2 mb-1">Finance</div>
+              <div class="text-[7px] text-sg-text-secondary py-0.5 px-1 rounded">Accounting</div>
+              <div class="text-[7px] text-sg-text-secondary py-0.5 px-1 rounded">Reports</div>
+            </div>
+            <!-- Content -->
+            <div class="flex-1 bg-sg-surface p-3">
+              <div class="text-[7px] text-sg-text-muted mb-2">Home &gt; Savings</div>
+              <div class="bg-white rounded h-8 border border-sg-border mb-1.5"></div>
+              <div class="grid grid-cols-4 gap-1 mb-1.5">
+                <div class="bg-white rounded h-5 border border-sg-border"></div>
+                <div class="bg-white rounded h-5 border border-sg-border"></div>
+                <div class="bg-white rounded h-5 border border-sg-border"></div>
+                <div class="bg-white rounded h-5 border border-sg-border"></div>
+              </div>
+              <div class="bg-white rounded h-12 border border-sg-border"></div>
+            </div>
+          </div>
+          <div class="mt-3 text-xs text-sg-text-muted space-y-1">
+            <p>Sidebar: w-[260px], bg-[#F5F0E8], fixed left-0 top-0 bottom-0</p>
+            <p>Active: bg-white rounded-xl border-l-[3px] border-[#2D6A4F] shadow-sm</p>
+            <p>Section labels: text-[10px] uppercase tracking-widest text-[#9CA3AF]</p>
+            <p>User profile: bottom of sidebar, w-9 h-9 avatar + name + role</p>
+            <p>Main content: ml-[260px] flex-1 p-8</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detail Page with Side Panel -->
+      <div class="bg-white rounded-sg-lg border border-sg-border shadow-sg-card p-6 mt-6">
+        <h3 class="text-sm font-semibold text-sg-text-heading mb-3">Layout C: Master-Detail (Client Detail)</h3>
+        <p class="text-xs text-sg-text-secondary mb-4">Page 06: Left panel with mini client list (w-[280px]) + right panel with full detail. Selected client has border-l-[3px] border-[#2D6A4F] bg-[#FAFAF5].</p>
+        <div class="border border-sg-border rounded-sg-md overflow-hidden flex h-36">
+          <div class="w-24 bg-white border-r border-sg-border p-2 space-y-1">
+            <div class="flex items-center gap-1 p-1 bg-sg-surface rounded border-l-2 border-sg-primary">
+              <div class="w-4 h-4 rounded-full bg-sg-primary"></div>
+              <span class="text-[7px] font-semibold">Grace K.</span>
+            </div>
+            <div class="flex items-center gap-1 p-1 rounded">
+              <div class="w-4 h-4 rounded-full bg-sg-gold"></div>
+              <span class="text-[7px]">Samuel M.</span>
+            </div>
+            <div class="flex items-center gap-1 p-1 rounded">
+              <div class="w-4 h-4 rounded-full bg-sg-text-secondary"></div>
+              <span class="text-[7px]">Esther N.</span>
+            </div>
+          </div>
+          <div class="flex-1 bg-sg-surface p-3">
+            <div class="bg-white rounded h-10 border border-sg-border mb-1.5 p-1.5 flex gap-2">
+              <div class="w-6 h-6 rounded-full bg-sg-primary"></div>
+              <div>
+                <div class="w-16 h-2 bg-sg-text-heading/20 rounded mb-1"></div>
+                <div class="w-10 h-1.5 bg-sg-text-muted/20 rounded"></div>
+              </div>
+            </div>
+            <div class="flex gap-2 mb-1.5">
+              <span class="text-[7px] text-sg-primary font-semibold border-b border-sg-primary pb-0.5">Overview</span>
+              <span class="text-[7px] text-sg-text-muted">Applications</span>
+              <span class="text-[7px] text-sg-text-muted">Documents</span>
+            </div>
+            <div class="grid grid-cols-2 gap-1">
+              <div class="bg-white rounded h-8 border border-sg-border"></div>
+              <div class="bg-white rounded h-8 border border-sg-border"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         SECTION 6: PAGES
+         ═══════════════════════════════════════════════════════════════════ -->
+    <section id="pages" class="section-anchor">
+      <h2 class="text-3xl font-bold text-sg-text-heading mb-2">Pages (40 Total)</h2>
+      <p class="text-sg-text-secondary mb-8">Complete page inventory of the Fineract Prototypes v2.</p>
+
+      <div class="space-y-8">
+        <!-- Auth -->
+        <div>
+          <h3 class="text-lg font-semibold text-sg-text-heading mb-4 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-sg-primary"></span>Auth (1 page)
+          </h3>
+          <div class="bg-white rounded-sg-lg border border-sg-border overflow-hidden">
+            <table class="w-full text-sm">
+              <thead><tr class="bg-sg-surface-muted"><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">File</th><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">Title</th><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">Layout</th></tr></thead>
+              <tbody>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">01-login.html</td><td class="px-4 py-2 text-[13px]">Login</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Centered card</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Shell -->
+        <div>
+          <h3 class="text-lg font-semibold text-sg-text-heading mb-4 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-sg-text-secondary"></span>Shell (1 page)
+          </h3>
+          <div class="bg-white rounded-sg-lg border border-sg-border overflow-hidden">
+            <table class="w-full text-sm">
+              <thead><tr class="bg-sg-surface-muted"><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">File</th><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">Title</th><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">Layout</th></tr></thead>
+              <tbody>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">02-app-shell.html</td><td class="px-4 py-2 text-[13px]">App Shell / Navigation</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Top nav</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div>
+          <h3 class="text-lg font-semibold text-sg-text-heading mb-4 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-sg-gold"></span>Dashboard (2 pages)
+          </h3>
+          <div class="bg-white rounded-sg-lg border border-sg-border overflow-hidden">
+            <table class="w-full text-sm">
+              <thead><tr class="bg-sg-surface-muted"><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">File</th><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">Title</th><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">Layout</th></tr></thead>
+              <tbody>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">03-dashboard.html</td><td class="px-4 py-2 text-[13px]">Overview Dashboard</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Top nav</td></tr>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">04-dashboard-alt.html</td><td class="px-4 py-2 text-[13px]">Dashboard Alternate</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Top nav</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Clients -->
+        <div>
+          <h3 class="text-lg font-semibold text-sg-text-heading mb-4 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-sg-primary"></span>Clients (5 pages)
+          </h3>
+          <div class="bg-white rounded-sg-lg border border-sg-border overflow-hidden">
+            <table class="w-full text-sm">
+              <thead><tr class="bg-sg-surface-muted"><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">File</th><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">Title</th><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">Layout</th></tr></thead>
+              <tbody>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">05-clients-list.html</td><td class="px-4 py-2 text-[13px]">Members Directory</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Top nav</td></tr>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">06-client-detail.html</td><td class="px-4 py-2 text-[13px]">Member Profile (Master-Detail)</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Top nav + side panel</td></tr>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">07-client-create.html</td><td class="px-4 py-2 text-[13px]">New Client Registration (4-step)</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Top nav</td></tr>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">08-client-detail-applications.html</td><td class="px-4 py-2 text-[13px]">Client Applications Tab</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Top nav + side panel</td></tr>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">09-client-detail-documents.html</td><td class="px-4 py-2 text-[13px]">Client Documents Tab</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Top nav + side panel</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Loans -->
+        <div>
+          <h3 class="text-lg font-semibold text-sg-text-heading mb-4 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-sg-gold"></span>Loans (5 pages)
+          </h3>
+          <div class="bg-white rounded-sg-lg border border-sg-border overflow-hidden">
+            <table class="w-full text-sm">
+              <thead><tr class="bg-sg-surface-muted"><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">File</th><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">Title</th><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">Layout</th></tr></thead>
+              <tbody>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">10-loans-list.html</td><td class="px-4 py-2 text-[13px]">Loan Portfolio</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Top nav</td></tr>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">11-loan-detail.html</td><td class="px-4 py-2 text-[13px]">Loan Detail</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Top nav</td></tr>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">12-loan-create.html</td><td class="px-4 py-2 text-[13px]">New Loan Application</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Top nav</td></tr>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">13-loan-repayment-modal.html</td><td class="px-4 py-2 text-[13px]">Loan Repayment Modal</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Top nav + modal overlay</td></tr>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">14-loan-detail-transactions.html</td><td class="px-4 py-2 text-[13px]">Loan Transactions Tab</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Top nav</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Savings -->
+        <div>
+          <h3 class="text-lg font-semibold text-sg-text-heading mb-4 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-sg-purple"></span>Savings (3 pages)
+          </h3>
+          <div class="bg-white rounded-sg-lg border border-sg-border overflow-hidden">
+            <table class="w-full text-sm">
+              <thead><tr class="bg-sg-surface-muted"><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">File</th><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">Title</th><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">Layout</th></tr></thead>
+              <tbody>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">15-savings-list.html</td><td class="px-4 py-2 text-[13px]">Savings Accounts List</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Sidebar</td></tr>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">16-savings-detail.html</td><td class="px-4 py-2 text-[13px]">Savings Account Detail</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Sidebar</td></tr>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">17-savings-deposit-modal.html</td><td class="px-4 py-2 text-[13px]">Deposit/Withdraw Modal</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Sidebar + modal overlay</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Accounting -->
+        <div>
+          <h3 class="text-lg font-semibold text-sg-text-heading mb-4 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-sg-primary"></span>Accounting (2 pages)
+          </h3>
+          <div class="bg-white rounded-sg-lg border border-sg-border overflow-hidden">
+            <table class="w-full text-sm">
+              <thead><tr class="bg-sg-surface-muted"><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">File</th><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">Title</th><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">Layout</th></tr></thead>
+              <tbody>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">18-accounting-chart.html</td><td class="px-4 py-2 text-[13px]">Chart of Accounts</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Sidebar</td></tr>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">19-journal-entries.html</td><td class="px-4 py-2 text-[13px]">Journal Entries</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Sidebar</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Reports -->
+        <div>
+          <h3 class="text-lg font-semibold text-sg-text-heading mb-4 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-sg-gold"></span>Reports (1 page)
+          </h3>
+          <div class="bg-white rounded-sg-lg border border-sg-border overflow-hidden">
+            <table class="w-full text-sm">
+              <thead><tr class="bg-sg-surface-muted"><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">File</th><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">Title</th><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">Layout</th></tr></thead>
+              <tbody>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">20-reports.html</td><td class="px-4 py-2 text-[13px]">Reports Hub</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Sidebar</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Groups & Deposits -->
+        <div>
+          <h3 class="text-lg font-semibold text-sg-text-heading mb-4 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-sg-primary"></span>Groups, Centers &amp; Deposits (5 pages)
+          </h3>
+          <div class="bg-white rounded-sg-lg border border-sg-border overflow-hidden">
+            <table class="w-full text-sm">
+              <thead><tr class="bg-sg-surface-muted"><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">File</th><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">Title</th><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">Layout</th></tr></thead>
+              <tbody>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">21-groups-list.html</td><td class="px-4 py-2 text-[13px]">Groups List</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Sidebar</td></tr>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">22-group-detail.html</td><td class="px-4 py-2 text-[13px]">Group Detail</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Sidebar</td></tr>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">23-centers-list.html</td><td class="px-4 py-2 text-[13px]">Centers List</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Sidebar</td></tr>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">24-fixed-deposits-list.html</td><td class="px-4 py-2 text-[13px]">Fixed Deposits</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Sidebar</td></tr>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">25-recurring-deposits-list.html</td><td class="px-4 py-2 text-[13px]">Recurring Deposits</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Sidebar</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Organization -->
+        <div>
+          <h3 class="text-lg font-semibold text-sg-text-heading mb-4 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-sg-text-secondary"></span>Organization (2 pages)
+          </h3>
+          <div class="bg-white rounded-sg-lg border border-sg-border overflow-hidden">
+            <table class="w-full text-sm">
+              <thead><tr class="bg-sg-surface-muted"><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">File</th><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">Title</th><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">Layout</th></tr></thead>
+              <tbody>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">26-organization-offices.html</td><td class="px-4 py-2 text-[13px]">Offices</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Sidebar</td></tr>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">27-organization-staff.html</td><td class="px-4 py-2 text-[13px]">Staff Management</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Sidebar</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Admin & System -->
+        <div>
+          <h3 class="text-lg font-semibold text-sg-text-heading mb-4 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-sg-danger"></span>Admin &amp; System (13 pages)
+          </h3>
+          <div class="bg-white rounded-sg-lg border border-sg-border overflow-hidden">
+            <table class="w-full text-sm">
+              <thead><tr class="bg-sg-surface-muted"><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">File</th><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">Title</th><th class="text-left px-4 py-2 text-[11px] font-semibold text-sg-text-secondary uppercase">Layout</th></tr></thead>
+              <tbody>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">28-admin-users.html</td><td class="px-4 py-2 text-[13px]">Users &amp; Roles</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Top nav</td></tr>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">29-products-loan.html</td><td class="px-4 py-2 text-[13px]">Loan Products</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Top nav</td></tr>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">30-products-savings.html</td><td class="px-4 py-2 text-[13px]">Savings Products</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Top nav</td></tr>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">31-holidays.html</td><td class="px-4 py-2 text-[13px]">Holidays</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Top nav</td></tr>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">32-working-days.html</td><td class="px-4 py-2 text-[13px]">Working Days</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Top nav</td></tr>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">33-payment-types.html</td><td class="px-4 py-2 text-[13px]">Payment Types</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Top nav</td></tr>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">34-system-codes.html</td><td class="px-4 py-2 text-[13px]">System Codes</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Top nav</td></tr>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">35-system-config.html</td><td class="px-4 py-2 text-[13px]">System Configuration</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Top nav</td></tr>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">36-manage-jobs.html</td><td class="px-4 py-2 text-[13px]">Manage Jobs / Scheduler</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Top nav</td></tr>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">37-audit-trails.html</td><td class="px-4 py-2 text-[13px]">Audit Trails</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Top nav</td></tr>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">38-checker-inbox.html</td><td class="px-4 py-2 text-[13px]">Checker Inbox (Maker-Checker)</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Top nav</td></tr>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">39-notifications.html</td><td class="px-4 py-2 text-[13px]">Notifications</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Top nav</td></tr>
+                <tr class="border-t border-sg-border"><td class="px-4 py-2 font-mono text-[13px]">40-search-results.html</td><td class="px-4 py-2 text-[13px]">Global Search Results</td><td class="px-4 py-2 text-[13px] text-sg-text-secondary">Top nav</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         SECTION 7: ICONS
+         ═══════════════════════════════════════════════════════════════════ -->
+    <section id="icons" class="section-anchor">
+      <h2 class="text-3xl font-bold text-sg-text-heading mb-2">Icons</h2>
+      <p class="text-sg-text-secondary mb-8">All icons are inline SVGs (no icon library). Stroke-based, 24x24 viewBox, stroke-width 1.8-2. Common sizes: w-4 h-4, w-5 h-5, w-[18px] h-[18px] (sidebar).</p>
+
+      <div class="bg-white rounded-sg-lg border border-sg-border shadow-sg-card p-8">
+        <div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-6">
+          <!-- Currency -->
+          <div class="flex flex-col items-center gap-2">
+            <div class="w-10 h-10 rounded-sg-md bg-sg-surface border border-sg-border flex items-center justify-center">
+              <svg class="w-5 h-5 text-sg-text-secondary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8V7m0 1v8m0 0v1"/></svg>
+            </div>
+            <span class="text-[10px] text-sg-text-muted">Currency</span>
+          </div>
+          <!-- Search -->
+          <div class="flex flex-col items-center gap-2">
+            <div class="w-10 h-10 rounded-sg-md bg-sg-surface border border-sg-border flex items-center justify-center">
+              <svg class="w-5 h-5 text-sg-text-secondary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            </div>
+            <span class="text-[10px] text-sg-text-muted">Search</span>
+          </div>
+          <!-- Bell -->
+          <div class="flex flex-col items-center gap-2">
+            <div class="w-10 h-10 rounded-sg-md bg-sg-surface border border-sg-border flex items-center justify-center">
+              <svg class="w-5 h-5 text-sg-text-secondary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+            </div>
+            <span class="text-[10px] text-sg-text-muted">Notification</span>
+          </div>
+          <!-- Plus -->
+          <div class="flex flex-col items-center gap-2">
+            <div class="w-10 h-10 rounded-sg-md bg-sg-surface border border-sg-border flex items-center justify-center">
+              <svg class="w-5 h-5 text-sg-text-secondary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            </div>
+            <span class="text-[10px] text-sg-text-muted">Add / New</span>
+          </div>
+          <!-- Chevron Down -->
+          <div class="flex flex-col items-center gap-2">
+            <div class="w-10 h-10 rounded-sg-md bg-sg-surface border border-sg-border flex items-center justify-center">
+              <svg class="w-5 h-5 text-sg-text-secondary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </div>
+            <span class="text-[10px] text-sg-text-muted">Chevron</span>
+          </div>
+          <!-- Home -->
+          <div class="flex flex-col items-center gap-2">
+            <div class="w-10 h-10 rounded-sg-md bg-sg-surface border border-sg-border flex items-center justify-center">
+              <svg class="w-5 h-5 text-sg-text-secondary" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z"/></svg>
+            </div>
+            <span class="text-[10px] text-sg-text-muted">Dashboard</span>
+          </div>
+          <!-- Users -->
+          <div class="flex flex-col items-center gap-2">
+            <div class="w-10 h-10 rounded-sg-md bg-sg-surface border border-sg-border flex items-center justify-center">
+              <svg class="w-5 h-5 text-sg-text-secondary" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            </div>
+            <span class="text-[10px] text-sg-text-muted">Clients</span>
+          </div>
+          <!-- Download -->
+          <div class="flex flex-col items-center gap-2">
+            <div class="w-10 h-10 rounded-sg-md bg-sg-surface border border-sg-border flex items-center justify-center">
+              <svg class="w-5 h-5 text-sg-text-secondary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            </div>
+            <span class="text-[10px] text-sg-text-muted">Export</span>
+          </div>
+          <!-- Close -->
+          <div class="flex flex-col items-center gap-2">
+            <div class="w-10 h-10 rounded-sg-md bg-sg-surface border border-sg-border flex items-center justify-center">
+              <svg class="w-5 h-5 text-sg-text-secondary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
+            </div>
+            <span class="text-[10px] text-sg-text-muted">Close</span>
+          </div>
+          <!-- Eye -->
+          <div class="flex flex-col items-center gap-2">
+            <div class="w-10 h-10 rounded-sg-md bg-sg-surface border border-sg-border flex items-center justify-center">
+              <svg class="w-5 h-5 text-sg-text-secondary" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            </div>
+            <span class="text-[10px] text-sg-text-muted">Eye</span>
+          </div>
+          <!-- Trend Up -->
+          <div class="flex flex-col items-center gap-2">
+            <div class="w-10 h-10 rounded-sg-md bg-sg-surface border border-sg-border flex items-center justify-center">
+              <svg class="w-5 h-5 text-sg-text-secondary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"/></svg>
+            </div>
+            <span class="text-[10px] text-sg-text-muted">Trend Up</span>
+          </div>
+          <!-- 3-dot menu -->
+          <div class="flex flex-col items-center gap-2">
+            <div class="w-10 h-10 rounded-sg-md bg-sg-surface border border-sg-border flex items-center justify-center">
+              <svg class="w-5 h-5 text-sg-text-secondary" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+            </div>
+            <span class="text-[10px] text-sg-text-muted">More</span>
+          </div>
+          <!-- Reports -->
+          <div class="flex flex-col items-center gap-2">
+            <div class="w-10 h-10 rounded-sg-md bg-sg-surface border border-sg-border flex items-center justify-center">
+              <svg class="w-5 h-5 text-sg-text-secondary" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            </div>
+            <span class="text-[10px] text-sg-text-muted">Reports</span>
+          </div>
+          <!-- Settings -->
+          <div class="flex flex-col items-center gap-2">
+            <div class="w-10 h-10 rounded-sg-md bg-sg-surface border border-sg-border flex items-center justify-center">
+              <svg class="w-5 h-5 text-sg-text-secondary" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+            </div>
+            <span class="text-[10px] text-sg-text-muted">Settings</span>
+          </div>
+          <!-- Check -->
+          <div class="flex flex-col items-center gap-2">
+            <div class="w-10 h-10 rounded-sg-md bg-sg-surface border border-sg-border flex items-center justify-center">
+              <svg class="w-5 h-5 text-sg-text-secondary" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            </div>
+            <span class="text-[10px] text-sg-text-muted">Check</span>
+          </div>
+          <!-- Savanna logo -->
+          <div class="flex flex-col items-center gap-2">
+            <div class="w-10 h-10 rounded-sg-md bg-sg-surface border border-sg-border flex items-center justify-center">
+              <svg class="w-5 h-5 text-sg-text-secondary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 3v18m0-18c-4 3-7 6-8 10s1 7 8 8c7-1 9-4 8-8s-4-7-8-10z"/></svg>
+            </div>
+            <span class="text-[10px] text-sg-text-muted">Savanna Logo</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <footer class="bg-sg-primary-dark text-white py-12 mt-16">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="text-lg font-bold mb-1">Savanna Gate Design System v2.0</h3>
+          <p class="text-sg-primary-light text-sm">Extracted from D:\fineract-react\prototypes-v2\ (40 HTML pages)</p>
+        </div>
+        <div class="text-right text-sm text-sg-primary-light">
+          <p>Apache Fineract &mdash; SACCO Management Platform</p>
+          <p class="text-sg-gold mt-1">Powered by Tailwind CSS CDN + DM Sans</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
