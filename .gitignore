@@ -23,6 +23,10 @@ dist-ssr
 *.sln
 *.sw?
 
+# Claude Code scratch + local settings
+.claude/worktrees/
+.claude/settings.local.json
+
 # Fineract build artifacts
 fineract/build/
 fineract/*/build/
